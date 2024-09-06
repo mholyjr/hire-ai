@@ -94,3 +94,5 @@ export interface TeamInvitation {
   created_at: DateTime;
   updated_at: DateTime;
 }
+
+export type TODO = any;
