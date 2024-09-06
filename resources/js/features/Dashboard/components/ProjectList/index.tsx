@@ -39,7 +39,7 @@ import {
   CardFooter,
 } from "@/Components/ui/card";
 import { Project, TODO } from "@/types";
-import { NewProjectForm } from "./parts/NewProjectForm";
+import { NewProjectDialog } from "./parts/NewProjectDialog";
 
 type Props = {
   projects: Project[];
@@ -141,29 +141,7 @@ export const ProjectList: React.FC<Props> = ({ projects }) => {
               </DropdownMenuRadioGroup>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button size="sm" className="h-8">
-                <PlusIcon className="h-4 w-4" />
-                <span className="sr-only sm:not-sr-only">New Project</span>
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Create New Project</DialogTitle>
-                <DialogDescription>
-                  Fill out the form to create a new project.
-                </DialogDescription>
-              </DialogHeader>
-              <NewProjectForm onClose={close} />
-              <DialogFooter>
-                <div>
-                  <Button variant="ghost">Cancel</Button>
-                </div>
-                <Button>Create Project</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <NewProjectDialog />
         </div>
       </header>
       <main className="flex-1 p-6">

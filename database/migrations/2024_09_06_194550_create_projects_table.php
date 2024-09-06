@@ -13,7 +13,7 @@ return new class extends Migration
             $table->foreignId('team_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
-            $table->boolean('state');
+            $table->boolean('state')->default(true);
             $table->timestamps();
         });
     }

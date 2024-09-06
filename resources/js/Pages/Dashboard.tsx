@@ -1,8 +1,8 @@
 import React from "react";
 import AppLayout from "@/Layouts/AppLayout";
-import { ProjectList } from "@/features/Dashboard/components/ProjectList";
 import { usePage } from "@inertiajs/react";
 import { Project } from "@/types";
+import { ProjectList } from "@/features/Dashboard/components/ProjectList";
 
 export default function Dashboard() {
   const { projects = [] } = usePage().props as { projects?: Project[] };

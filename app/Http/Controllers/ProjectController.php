@@ -23,11 +23,10 @@ class ProjectController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'state' => 'required|boolean',
         ]);
-
+    
         $project = $request->user()->currentTeam->projects()->create($validated);
-
-        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+    
+        return redirect()->route('projects.index');
     }
 }
