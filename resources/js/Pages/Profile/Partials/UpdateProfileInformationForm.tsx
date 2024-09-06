@@ -1,17 +1,17 @@
-import { router } from '@inertiajs/core';
-import { Link, useForm } from '@inertiajs/react';
-import classNames from 'classnames';
-import React, { useRef, useState } from 'react';
-import useRoute from '@/Hooks/useRoute';
-import ActionMessage from '@/Components/ActionMessage';
-import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
-import { User } from '@/types';
-import useTypedPage from '@/Hooks/useTypedPage';
+import { router } from "@inertiajs/core";
+import { Link, useForm } from "@inertiajs/react";
+import classNames from "classnames";
+import React, { useRef, useState } from "react";
+import useRoute from "@/Hooks/useRoute";
+import ActionMessage from "@/Components/ActionMessage";
+import FormSection from "@/Components/FormSection";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
+import { User } from "@/types";
+import useTypedPage from "@/Hooks/useTypedPage";
 
 interface Props {
   user: User;
@@ -19,7 +19,7 @@ interface Props {
 
 export default function UpdateProfileInformationForm({ user }: Props) {
   const form = useForm({
-    _method: 'PUT',
+    _method: "PUT",
     name: user.name,
     email: user.email,
     photo: null as File | null,
@@ -31,8 +31,8 @@ export default function UpdateProfileInformationForm({ user }: Props) {
   const [verificationLinkSent, setVerificationLinkSent] = useState(false);
 
   function updateProfileInformation() {
-    form.post(route('user-profile-information.update'), {
-      errorBag: 'updateProfileInformation',
+    form.post(route("user-profile-information.update"), {
+      errorBag: "updateProfileInformation",
       preserveScroll: true,
       onSuccess: () => clearPhotoFileInput(),
     });
@@ -49,7 +49,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
       return;
     }
 
-    form.setData('photo', photo);
+    form.setData("photo", photo);
 
     const reader = new FileReader();
 
@@ -61,7 +61,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
   }
 
   function deletePhoto() {
-    router.delete(route('current-user-photo.destroy'), {
+    router.delete(route("current-user-photo.destroy"), {
       preserveScroll: true,
       onSuccess: () => {
         setPhotoPreview(null);
@@ -72,15 +72,15 @@ export default function UpdateProfileInformationForm({ user }: Props) {
 
   function clearPhotoFileInput() {
     if (photoRef.current?.value) {
-      photoRef.current.value = '';
-      form.setData('photo', null);
+      photoRef.current.value = "";
+      form.setData("photo", null);
     }
   }
 
   return (
     <FormSection
       onSubmit={updateProfileInformation}
-      title={'Profile Information'}
+      title={"Profile Information"}
       description={`Update your account's profile information and email address.`}
       renderActions={() => (
         <>
@@ -89,7 +89,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
           </ActionMessage>
 
           <PrimaryButton
-            className={classNames({ 'opacity-25': form.processing })}
+            className={classNames({ "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Save
@@ -116,9 +116,9 @@ export default function UpdateProfileInformationForm({ user }: Props) {
               <span
                 className="block rounded-full w-20 h-20"
                 style={{
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center center',
+                  backgroundSize: "cover",
+                  backgroundRepeat: "no-repeat",
+                  backgroundPosition: "center center",
                   backgroundImage: `url('${photoPreview}')`,
                 }}
               ></span>
@@ -164,7 +164,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
           type="text"
           className="mt-1 block w-full"
           value={form.data.name}
-          onChange={e => form.setData('name', e.currentTarget.value)}
+          onChange={e => form.setData("name", e.currentTarget.value)}
           autoComplete="name"
         />
         <InputError message={form.errors.name} className="mt-2" />
@@ -178,7 +178,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
           type="email"
           className="mt-1 block w-full"
           value={form.data.email}
-          onChange={e => form.setData('email', e.currentTarget.value)}
+          onChange={e => form.setData("email", e.currentTarget.value)}
         />
         <InputError message={form.errors.email} className="mt-2" />
 
@@ -188,7 +188,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             <p className="text-sm mt-2 dark:text-white">
               Your email address is unverified.
               <Link
-                href={route('verification.send')}
+                href={route("verification.send")}
                 method="post"
                 as="button"
                 className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"

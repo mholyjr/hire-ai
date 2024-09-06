@@ -1,22 +1,22 @@
-import { useForm } from '@inertiajs/react';
-import classNames from 'classnames';
-import React, { useState } from 'react';
-import useRoute from '@/Hooks/useRoute';
-import ActionMessage from '@/Components/ActionMessage';
-import ActionSection from '@/Components/ActionSection';
-import Checkbox from '@/Components/Checkbox';
-import ConfirmationModal from '@/Components/ConfirmationModal';
-import DangerButton from '@/Components/DangerButton';
-import DialogModal from '@/Components/DialogModal';
-import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
-import SectionBorder from '@/Components/SectionBorder';
-import { ApiToken } from '@/types';
-import useTypedPage from '@/Hooks/useTypedPage';
+import { useForm } from "@inertiajs/react";
+import classNames from "classnames";
+import React, { useState } from "react";
+import useRoute from "@/Hooks/useRoute";
+import ActionMessage from "@/Components/ActionMessage";
+import ActionSection from "@/Components/ActionSection";
+import Checkbox from "@/Components/Checkbox";
+import ConfirmationModal from "@/Components/ConfirmationModal";
+import DangerButton from "@/Components/DangerButton";
+import DialogModal from "@/Components/DialogModal";
+import FormSection from "@/Components/FormSection";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
+import SectionBorder from "@/Components/SectionBorder";
+import { ApiToken } from "@/types";
+import useTypedPage from "@/Hooks/useTypedPage";
 
 interface Props {
   tokens: ApiToken[];
@@ -31,7 +31,7 @@ export default function APITokenManager({
 }: Props) {
   const route = useRoute();
   const createApiTokenForm = useForm({
-    name: '',
+    name: "",
     permissions: defaultPermissions,
   });
   const updateApiTokenForm = useForm({
@@ -46,7 +46,7 @@ export default function APITokenManager({
   const page = useTypedPage();
 
   function createApiToken() {
-    createApiTokenForm.post(route('api-tokens.store'), {
+    createApiTokenForm.post(route("api-tokens.store"), {
       preserveScroll: true,
       onSuccess: () => {
         setDisplayingToken(true);
@@ -56,7 +56,7 @@ export default function APITokenManager({
   }
 
   function manageApiTokenPermissions(token: ApiToken) {
-    updateApiTokenForm.setData('permissions', token.abilities);
+    updateApiTokenForm.setData("permissions", token.abilities);
     setManagingPermissionsFor(token);
   }
 
@@ -65,7 +65,7 @@ export default function APITokenManager({
       return;
     }
     updateApiTokenForm.put(
-      route('api-tokens.update', [managingPermissionsFor]),
+      route("api-tokens.update", [managingPermissionsFor]),
       {
         preserveScroll: true,
         preserveState: true,
@@ -83,7 +83,7 @@ export default function APITokenManager({
       return;
     }
     deleteApiTokenForm.delete(
-      route('api-tokens.destroy', [apiTokenBeingDeleted]),
+      route("api-tokens.destroy", [apiTokenBeingDeleted]),
       {
         preserveScroll: true,
         preserveState: true,
@@ -97,9 +97,9 @@ export default function APITokenManager({
       {/* <!-- Generate API Token --> */}
       <FormSection
         onSubmit={createApiToken}
-        title={'Create API Token'}
+        title={"Create API Token"}
         description={
-          'API tokens allow third-party services to authenticate with our application on your behalf.'
+          "API tokens allow third-party services to authenticate with our application on your behalf."
         }
         renderActions={() => (
           <>
@@ -112,7 +112,7 @@ export default function APITokenManager({
 
             <PrimaryButton
               className={classNames({
-                'opacity-25': createApiTokenForm.processing,
+                "opacity-25": createApiTokenForm.processing,
               })}
               disabled={createApiTokenForm.processing}
             >
@@ -130,7 +130,7 @@ export default function APITokenManager({
             className="mt-1 block w-full"
             value={createApiTokenForm.data.name}
             onChange={e =>
-              createApiTokenForm.setData('name', e.currentTarget.value)
+              createApiTokenForm.setData("name", e.currentTarget.value)
             }
             autoFocus
           />
@@ -161,13 +161,13 @@ export default function APITokenManager({
                           )
                         ) {
                           createApiTokenForm.setData(
-                            'permissions',
+                            "permissions",
                             createApiTokenForm.data.permissions.filter(
                               p => p !== e.currentTarget.value,
                             ),
                           );
                         } else {
-                          createApiTokenForm.setData('permissions', [
+                          createApiTokenForm.setData("permissions", [
                             e.currentTarget.value,
                             ...createApiTokenForm.data.permissions,
                           ]);
@@ -192,9 +192,9 @@ export default function APITokenManager({
           {/* <!-- Manage API Tokens --> */}
           <div className="mt-10 sm:mt-0">
             <ActionSection
-              title={'Manage API Tokens'}
+              title={"Manage API Tokens"}
               description={
-                'You may delete any of your existing tokens if they are no longer needed.'
+                "You may delete any of your existing tokens if they are no longer needed."
               }
             >
               {/* <!-- API Token List --> */}
@@ -244,7 +244,7 @@ export default function APITokenManager({
         isOpen={displayingToken}
         onClose={() => setDisplayingToken(false)}
       >
-        <DialogModal.Content title={'API Token'}>
+        <DialogModal.Content title={"API Token"}>
           <div>
             Please copy your new API token. For your security, it won't be shown
             again.
@@ -266,7 +266,7 @@ export default function APITokenManager({
         isOpen={!!managingPermissionsFor}
         onClose={() => setManagingPermissionsFor(null)}
       >
-        <DialogModal.Content title={'API Token Permissions'}>
+        <DialogModal.Content title={"API Token Permissions"}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {availablePermissions.map(permission => (
               <div key={permission}>
@@ -283,13 +283,13 @@ export default function APITokenManager({
                         )
                       ) {
                         updateApiTokenForm.setData(
-                          'permissions',
+                          "permissions",
                           updateApiTokenForm.data.permissions.filter(
                             p => p !== e.currentTarget.value,
                           ),
                         );
                       } else {
-                        updateApiTokenForm.setData('permissions', [
+                        updateApiTokenForm.setData("permissions", [
                           e.currentTarget.value,
                           ...updateApiTokenForm.data.permissions,
                         ]);
@@ -311,8 +311,8 @@ export default function APITokenManager({
 
           <PrimaryButton
             onClick={updateApiToken}
-            className={classNames('ml-2', {
-              'opacity-25': updateApiTokenForm.processing,
+            className={classNames("ml-2", {
+              "opacity-25": updateApiTokenForm.processing,
             })}
             disabled={updateApiTokenForm.processing}
           >
@@ -326,7 +326,7 @@ export default function APITokenManager({
         isOpen={!!apiTokenBeingDeleted}
         onClose={() => setApiTokenBeingDeleted(null)}
       >
-        <ConfirmationModal.Content title={'Delete API Token'}>
+        <ConfirmationModal.Content title={"Delete API Token"}>
           Are you sure you would like to delete this API token?
         </ConfirmationModal.Content>
         <ConfirmationModal.Footer>
@@ -336,8 +336,8 @@ export default function APITokenManager({
 
           <DangerButton
             onClick={deleteApiToken}
-            className={classNames('ml-2', {
-              'opacity-25': deleteApiTokenForm.processing,
+            className={classNames("ml-2", {
+              "opacity-25": deleteApiTokenForm.processing,
             })}
             disabled={deleteApiTokenForm.processing}
           >

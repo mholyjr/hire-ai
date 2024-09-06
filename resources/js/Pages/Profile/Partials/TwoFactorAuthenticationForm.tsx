@@ -1,17 +1,17 @@
-import { router } from '@inertiajs/core';
-import { useForm } from '@inertiajs/react';
-import axios from 'axios';
-import classNames from 'classnames';
-import React, { useState } from 'react';
-import ActionSection from '@/Components/ActionSection';
-import ConfirmsPassword from '@/Components/ConfirmsPassword';
-import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
-import useTypedPage from '@/Hooks/useTypedPage';
+import { router } from "@inertiajs/core";
+import { useForm } from "@inertiajs/react";
+import axios from "axios";
+import classNames from "classnames";
+import React, { useState } from "react";
+import ActionSection from "@/Components/ActionSection";
+import ConfirmsPassword from "@/Components/ConfirmsPassword";
+import DangerButton from "@/Components/DangerButton";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import SecondaryButton from "@/Components/SecondaryButton";
+import TextInput from "@/Components/TextInput";
+import useTypedPage from "@/Hooks/useTypedPage";
 
 interface Props {
   requiresConfirmation: boolean;
@@ -28,7 +28,7 @@ export default function TwoFactorAuthenticationForm({
   const [confirming, setConfirming] = useState(false);
   const [setupKey, setSetupKey] = useState<string | null>(null);
   const confirmationForm = useForm({
-    code: '',
+    code: "",
   });
   const twoFactorEnabled =
     !enabling && page.props?.auth?.user?.two_factor_enabled;
@@ -37,7 +37,7 @@ export default function TwoFactorAuthenticationForm({
     setEnabling(true);
 
     router.post(
-      '/user/two-factor-authentication',
+      "/user/two-factor-authentication",
       {},
       {
         preserveScroll: true,
@@ -57,16 +57,16 @@ export default function TwoFactorAuthenticationForm({
   }
 
   function showSetupKey() {
-    return axios.get('/user/two-factor-secret-key').then(response => {
+    return axios.get("/user/two-factor-secret-key").then(response => {
       setSetupKey(response.data.secretKey);
     });
   }
 
   function confirmTwoFactorAuthentication() {
-    confirmationForm.post('/user/confirmed-two-factor-authentication', {
+    confirmationForm.post("/user/confirmed-two-factor-authentication", {
       preserveScroll: true,
       preserveState: true,
-      errorBag: 'confirmTwoFactorAuthentication',
+      errorBag: "confirmTwoFactorAuthentication",
       onSuccess: () => {
         setConfirming(false);
         setQrCode(null);
@@ -76,19 +76,19 @@ export default function TwoFactorAuthenticationForm({
   }
 
   function showQrCode() {
-    return axios.get('/user/two-factor-qr-code').then(response => {
+    return axios.get("/user/two-factor-qr-code").then(response => {
       setQrCode(response.data.svg);
     });
   }
 
   function showRecoveryCodes() {
-    return axios.get('/user/two-factor-recovery-codes').then(response => {
+    return axios.get("/user/two-factor-recovery-codes").then(response => {
       setRecoveryCodes(response.data);
     });
   }
 
   function regenerateRecoveryCodes() {
-    axios.post('/user/two-factor-recovery-codes').then(() => {
+    axios.post("/user/two-factor-recovery-codes").then(() => {
       showRecoveryCodes();
     });
   }
@@ -96,7 +96,7 @@ export default function TwoFactorAuthenticationForm({
   function disableTwoFactorAuthentication() {
     setDisabling(true);
 
-    router.delete('/user/two-factor-authentication', {
+    router.delete("/user/two-factor-authentication", {
       preserveScroll: true,
       onSuccess() {
         setDisabling(false);
@@ -107,9 +107,9 @@ export default function TwoFactorAuthenticationForm({
 
   return (
     <ActionSection
-      title={'Two Factor Authentication'}
+      title={"Two Factor Authentication"}
       description={
-        'Add additional security to your account using two factor authentication.'
+        "Add additional security to your account using two factor authentication."
       }
     >
       {(() => {
@@ -165,15 +165,15 @@ export default function TwoFactorAuthenticationForm({
 
               <div
                 className="mt-4"
-                dangerouslySetInnerHTML={{ __html: qrCode || '' }}
+                dangerouslySetInnerHTML={{ __html: qrCode || "" }}
               />
 
               {setupKey && (
                 <div className="mt-4 max-w-xl text-sm text-gray-600 dark:text-gray-400">
                   <p className="font-semibold">
-                    Setup Key:{' '}
+                    Setup Key:{" "}
                     <span
-                      dangerouslySetInnerHTML={{ __html: setupKey || '' }}
+                      dangerouslySetInnerHTML={{ __html: setupKey || "" }}
                     />
                   </p>
                 </div>
@@ -193,7 +193,7 @@ export default function TwoFactorAuthenticationForm({
                     autoComplete="one-time-code"
                     value={confirmationForm.data.code}
                     onChange={e =>
-                      confirmationForm.setData('code', e.currentTarget.value)
+                      confirmationForm.setData("code", e.currentTarget.value)
                     }
                   />
 
@@ -232,7 +232,7 @@ export default function TwoFactorAuthenticationForm({
             {confirming ? (
               <ConfirmsPassword onConfirm={confirmTwoFactorAuthentication}>
                 <PrimaryButton
-                  className={classNames('mr-3', { 'opacity-25': enabling })}
+                  className={classNames("mr-3", { "opacity-25": enabling })}
                   disabled={enabling}
                 >
                   Confirm
@@ -257,7 +257,7 @@ export default function TwoFactorAuthenticationForm({
             {confirming ? (
               <ConfirmsPassword onConfirm={disableTwoFactorAuthentication}>
                 <SecondaryButton
-                  className={classNames('mr-3', { 'opacity-25': disabling })}
+                  className={classNames("mr-3", { "opacity-25": disabling })}
                   disabled={disabling}
                 >
                   Cancel
@@ -266,7 +266,7 @@ export default function TwoFactorAuthenticationForm({
             ) : (
               <ConfirmsPassword onConfirm={disableTwoFactorAuthentication}>
                 <DangerButton
-                  className={classNames({ 'opacity-25': disabling })}
+                  className={classNames({ "opacity-25": disabling })}
                   disabled={disabling}
                 >
                   Disable
@@ -279,7 +279,7 @@ export default function TwoFactorAuthenticationForm({
             <ConfirmsPassword onConfirm={enableTwoFactorAuthentication}>
               <PrimaryButton
                 type="button"
-                className={classNames({ 'opacity-25': enabling })}
+                className={classNames({ "opacity-25": enabling })}
                 disabled={enabling}
               >
                 Enable

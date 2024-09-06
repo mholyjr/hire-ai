@@ -1,19 +1,19 @@
-import { useForm, Head } from '@inertiajs/react';
-import classNames from 'classnames';
-import React, { useRef, useState } from 'react';
-import useRoute from '@/Hooks/useRoute';
-import AuthenticationCard from '@/Components/AuthenticationCard';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
+import { useForm, Head } from "@inertiajs/react";
+import classNames from "classnames";
+import React, { useRef, useState } from "react";
+import useRoute from "@/Hooks/useRoute";
+import AuthenticationCard from "@/Components/AuthenticationCard";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import InputError from "@/Components/InputError";
 
 export default function TwoFactorChallenge() {
   const route = useRoute();
   const [recovery, setRecovery] = useState(false);
   const form = useForm({
-    code: '',
-    recovery_code: '',
+    code: "",
+    recovery_code: "",
   });
   const recoveryCodeRef = useRef<HTMLInputElement>(null);
   const codeRef = useRef<HTMLInputElement>(null);
@@ -26,17 +26,17 @@ export default function TwoFactorChallenge() {
     setTimeout(() => {
       if (isRecovery) {
         recoveryCodeRef.current?.focus();
-        form.setData('code', '');
+        form.setData("code", "");
       } else {
         codeRef.current?.focus();
-        form.setData('recovery_code', '');
+        form.setData("recovery_code", "");
       }
     }, 100);
   }
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    form.post(route('two-factor.login'));
+    form.post(route("two-factor.login"));
   }
 
   return (
@@ -45,8 +45,8 @@ export default function TwoFactorChallenge() {
 
       <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
         {recovery
-          ? 'Please confirm access to your account by entering one of your emergency recovery codes.'
-          : 'Please confirm access to your account by entering the authentication code provided by your authenticator application.'}
+          ? "Please confirm access to your account by entering one of your emergency recovery codes."
+          : "Please confirm access to your account by entering the authentication code provided by your authenticator application."}
       </div>
 
       <form onSubmit={onSubmit}>
@@ -59,7 +59,7 @@ export default function TwoFactorChallenge() {
               className="mt-1 block w-full"
               value={form.data.recovery_code}
               onChange={e =>
-                form.setData('recovery_code', e.currentTarget.value)
+                form.setData("recovery_code", e.currentTarget.value)
               }
               ref={recoveryCodeRef}
               autoComplete="one-time-code"
@@ -75,7 +75,7 @@ export default function TwoFactorChallenge() {
               inputMode="numeric"
               className="mt-1 block w-full"
               value={form.data.code}
-              onChange={e => form.setData('code', e.currentTarget.value)}
+              onChange={e => form.setData("code", e.currentTarget.value)}
               autoFocus
               autoComplete="one-time-code"
               ref={codeRef}
@@ -90,11 +90,11 @@ export default function TwoFactorChallenge() {
             className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 underline cursor-pointer"
             onClick={toggleRecovery}
           >
-            {recovery ? 'Use an authentication code' : 'Use a recovery code'}
+            {recovery ? "Use an authentication code" : "Use a recovery code"}
           </button>
 
           <PrimaryButton
-            className={classNames('ml-4', { 'opacity-25': form.processing })}
+            className={classNames("ml-4", { "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Log in

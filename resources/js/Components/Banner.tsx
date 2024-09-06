@@ -1,34 +1,34 @@
-import React, { useState } from 'react';
-import classNames from 'classnames';
-import useTypedPage from '@/Hooks/useTypedPage';
+import React, { useState } from "react";
+import classNames from "classnames";
+import useTypedPage from "@/Hooks/useTypedPage";
 
 export default function Banner() {
   const [show, setShow] = useState(true);
   const { props } = useTypedPage();
-  const style = props.jetstream.flash?.bannerStyle || 'success';
-  const message = props.jetstream.flash?.banner || '';
+  const style = props.jetstream.flash?.bannerStyle || "success";
+  const message = props.jetstream.flash?.banner || "";
 
   return (
     <div>
       {show && message ? (
         <div
           className={classNames({
-            'bg-indigo-500': style == 'success',
-            'bg-red-700': style == 'danger',
+            "bg-indigo-500": style == "success",
+            "bg-red-700": style == "danger",
           })}
         >
           <div className="max-w-screen-xl mx-auto py-2 px-3 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between flex-wrap">
               <div className="w-0 flex-1 flex items-center min-w-0">
                 <span
-                  className={classNames('flex p-2 rounded-lg', {
-                    'bg-indigo-600': style == 'success',
-                    'bg-red-600': style == 'danger',
+                  className={classNames("flex p-2 rounded-lg", {
+                    "bg-indigo-600": style == "success",
+                    "bg-red-600": style == "danger",
                   })}
                 >
                   {(() => {
                     switch (style) {
-                      case 'success':
+                      case "success":
                         return (
                           <svg
                             className="h-5 w-5 text-white"
@@ -45,7 +45,7 @@ export default function Banner() {
                             />
                           </svg>
                         );
-                      case 'danger':
+                      case "danger":
                         return (
                           <svg
                             className="h-5 w-5 text-white"
@@ -77,11 +77,11 @@ export default function Banner() {
                 <button
                   type="button"
                   className={classNames(
-                    '-mr-1 flex p-2 rounded-md focus:outline-none sm:-mr-2 transition',
+                    "-mr-1 flex p-2 rounded-md focus:outline-none sm:-mr-2 transition",
                     {
-                      'hover:bg-indigo-600 focus:bg-indigo-600':
-                        style == 'success',
-                      'hover:bg-red-600 focus:bg-red-600': style == 'danger',
+                      "hover:bg-indigo-600 focus:bg-indigo-600":
+                        style == "success",
+                      "hover:bg-red-600 focus:bg-red-600": style == "danger",
                     },
                   )}
                   aria-label="Dismiss"

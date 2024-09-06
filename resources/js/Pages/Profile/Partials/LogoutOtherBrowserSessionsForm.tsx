@@ -1,15 +1,15 @@
-import { useForm } from '@inertiajs/react';
-import classNames from 'classnames';
-import React, { useRef, useState } from 'react';
-import useRoute from '@/Hooks/useRoute';
-import ActionMessage from '@/Components/ActionMessage';
-import ActionSection from '@/Components/ActionSection';
-import DialogModal from '@/Components/DialogModal';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
-import { Session } from '@/types';
+import { useForm } from "@inertiajs/react";
+import classNames from "classnames";
+import React, { useRef, useState } from "react";
+import useRoute from "@/Hooks/useRoute";
+import ActionMessage from "@/Components/ActionMessage";
+import ActionSection from "@/Components/ActionSection";
+import DialogModal from "@/Components/DialogModal";
+import InputError from "@/Components/InputError";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
+import { Session } from "@/types";
 
 interface Props {
   sessions: Session[];
@@ -20,7 +20,7 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
   const route = useRoute();
   const passwordRef = useRef<HTMLInputElement>(null);
   const form = useForm({
-    password: '',
+    password: "",
   });
 
   function confirmLogout() {
@@ -30,7 +30,7 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
   }
 
   function logoutOtherBrowserSessions() {
-    form.delete(route('other-browser-sessions.destroy'), {
+    form.delete(route("other-browser-sessions.destroy"), {
       preserveScroll: true,
       onSuccess: () => closeModal(),
       onError: () => passwordRef.current?.focus(),
@@ -46,9 +46,9 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
 
   return (
     <ActionSection
-      title={'Browser Sessions'}
+      title={"Browser Sessions"}
       description={
-        'Manage and log out your active sessions on other browsers and devices.'
+        "Manage and log out your active sessions on other browsers and devices."
       }
     >
       <div className="max-w-xl text-sm text-gray-600 dark:text-gray-400">
@@ -129,7 +129,7 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
 
       {/* <!-- Log Out Other Devices Confirmation Modal --> */}
       <DialogModal isOpen={confirmingLogout} onClose={closeModal}>
-        <DialogModal.Content title={'Log Out Other Browser Sessions'}>
+        <DialogModal.Content title={"Log Out Other Browser Sessions"}>
           Please enter your password to confirm you would like to log out of
           your other browser sessions across all of your devices.
           <div className="mt-4">
@@ -139,7 +139,7 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
               placeholder="Password"
               ref={passwordRef}
               value={form.data.password}
-              onChange={e => form.setData('password', e.currentTarget.value)}
+              onChange={e => form.setData("password", e.currentTarget.value)}
             />
 
             <InputError message={form.errors.password} className="mt-2" />
@@ -151,7 +151,7 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
 
           <PrimaryButton
             onClick={logoutOtherBrowserSessions}
-            className={classNames('ml-2', { 'opacity-25': form.processing })}
+            className={classNames("ml-2", { "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Log Out Other Browser Sessions

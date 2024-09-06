@@ -1,6 +1,6 @@
-import classNames from 'classnames';
-import React, { PropsWithChildren } from 'react';
-import SectionTitle from '@/Components/SectionTitle';
+import classNames from "classnames";
+import React, { PropsWithChildren } from "react";
+import SectionTitle from "@/Components/SectionTitle";
 
 interface Props {
   title: string;
@@ -31,10 +31,10 @@ export default function FormSection({
         >
           <div
             className={classNames(
-              'px-4 py-5 bg-white dark:bg-gray-800 sm:p-6 shadow',
+              "px-4 py-5 bg-white dark:bg-gray-800 sm:p-6 shadow",
               hasActions
-                ? 'sm:rounded-tl-md sm:rounded-tr-md'
-                : 'sm:rounded-md',
+                ? "sm:rounded-tl-md sm:rounded-tr-md"
+                : "sm:rounded-md",
             )}
           >
             <div className="grid grid-cols-6 gap-6">{children}</div>

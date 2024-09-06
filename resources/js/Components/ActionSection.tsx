@@ -1,5 +1,5 @@
-import React, { PropsWithChildren } from 'react';
-import SectionTitle from '@/Components/SectionTitle';
+import React, { PropsWithChildren } from "react";
+import SectionTitle from "@/Components/SectionTitle";
 
 interface Props {
   title: string;

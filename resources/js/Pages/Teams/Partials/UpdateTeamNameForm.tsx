@@ -1,14 +1,14 @@
-import useRoute from '@/Hooks/useRoute';
-import ActionMessage from '@/Components/ActionMessage';
-import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import { JetstreamTeamPermissions, Team, User } from '@/types';
-import { useForm } from '@inertiajs/react';
-import classNames from 'classnames';
-import React from 'react';
+import useRoute from "@/Hooks/useRoute";
+import ActionMessage from "@/Components/ActionMessage";
+import FormSection from "@/Components/FormSection";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import { JetstreamTeamPermissions, Team, User } from "@/types";
+import { useForm } from "@inertiajs/react";
+import classNames from "classnames";
+import React from "react";
 
 interface Props {
   team: Team & { owner: User };
@@ -22,8 +22,8 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
   });
 
   function updateTeamName() {
-    form.put(route('teams.update', [team]), {
-      errorBag: 'updateTeamName',
+    form.put(route("teams.update", [team]), {
+      errorBag: "updateTeamName",
       preserveScroll: true,
     });
   }
@@ -31,7 +31,7 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
   return (
     <FormSection
       onSubmit={updateTeamName}
-      title={'Team Name'}
+      title={"Team Name"}
       description={`The team's name and owner information.`}
       renderActions={
         permissions.canUpdateTeam
@@ -42,7 +42,7 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
                 </ActionMessage>
 
                 <PrimaryButton
-                  className={classNames({ 'opacity-25': form.processing })}
+                  className={classNames({ "opacity-25": form.processing })}
                   disabled={form.processing}
                 >
                   Save
@@ -83,7 +83,7 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
           type="text"
           className="mt-1 block w-full"
           value={form.data.name}
-          onChange={e => form.setData('name', e.currentTarget.value)}
+          onChange={e => form.setData("name", e.currentTarget.value)}
           disabled={!permissions.canUpdateTeam}
         />
 

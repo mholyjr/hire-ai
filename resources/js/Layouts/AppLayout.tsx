@@ -1,16 +1,16 @@
-import { router } from '@inertiajs/core';
-import { Link, Head } from '@inertiajs/react';
-import classNames from 'classnames';
-import React, { PropsWithChildren, useState } from 'react';
-import useRoute from '@/Hooks/useRoute';
-import useTypedPage from '@/Hooks/useTypedPage';
-import ApplicationMark from '@/Components/ApplicationMark';
-import Banner from '@/Components/Banner';
-import Dropdown from '@/Components/Dropdown';
-import DropdownLink from '@/Components/DropdownLink';
-import NavLink from '@/Components/NavLink';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Team } from '@/types';
+import { router } from "@inertiajs/core";
+import { Link, Head } from "@inertiajs/react";
+import classNames from "classnames";
+import React, { PropsWithChildren, useState } from "react";
+import useRoute from "@/Hooks/useRoute";
+import useTypedPage from "@/Hooks/useTypedPage";
+import ApplicationMark from "@/Components/ApplicationMark";
+import Banner from "@/Components/Banner";
+import Dropdown from "@/Components/Dropdown";
+import DropdownLink from "@/Components/DropdownLink";
+import NavLink from "@/Components/NavLink";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
+import { Team } from "@/types";
 
 interface Props {
   title: string;
@@ -30,7 +30,7 @@ export default function AppLayout({
   function switchToTeam(e: React.FormEvent, team: Team) {
     e.preventDefault();
     router.put(
-      route('current-team.update'),
+      route("current-team.update"),
       {
         team_id: team.id,
       },
@@ -42,7 +42,7 @@ export default function AppLayout({
 
   function logout(e: React.FormEvent) {
     e.preventDefault();
-    router.post(route('logout'));
+    router.post(route("logout"));
   }
 
   return (
@@ -59,7 +59,7 @@ export default function AppLayout({
               <div className="flex">
                 {/* <!-- Logo --> */}
                 <div className="flex-shrink-0 flex items-center">
-                  <Link href={route('dashboard')}>
+                  <Link href={route("dashboard")}>
                     <ApplicationMark className="block h-9 w-auto" />
                   </Link>
                 </div>
@@ -67,8 +67,8 @@ export default function AppLayout({
                 {/* <!-- Navigation Links --> */}
                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   <NavLink
-                    href={route('dashboard')}
-                    active={route().current('dashboard')}
+                    href={route("dashboard")}
+                    active={route().current("dashboard")}
                   >
                     Dashboard
                   </NavLink>
@@ -116,7 +116,7 @@ export default function AppLayout({
 
                             {/* <!-- Team Settings --> */}
                             <DropdownLink
-                              href={route('teams.show', [
+                              href={route("teams.show", [
                                 page.props.auth.user?.current_team!,
                               ])}
                             >
@@ -124,7 +124,7 @@ export default function AppLayout({
                             </DropdownLink>
 
                             {page.props.jetstream.canCreateTeams ? (
-                              <DropdownLink href={route('teams.create')}>
+                              <DropdownLink href={route("teams.create")}>
                                 Create New Team
                               </DropdownLink>
                             ) : null}
@@ -213,12 +213,12 @@ export default function AppLayout({
                       Manage Account
                     </div>
 
-                    <DropdownLink href={route('profile.show')}>
+                    <DropdownLink href={route("profile.show")}>
                       Profile
                     </DropdownLink>
 
                     {page.props.jetstream.hasApiFeatures ? (
-                      <DropdownLink href={route('api-tokens.index')}>
+                      <DropdownLink href={route("api-tokens.index")}>
                         API Tokens
                       </DropdownLink>
                     ) : null}
@@ -250,7 +250,7 @@ export default function AppLayout({
                     <path
                       className={classNames({
                         hidden: showingNavigationDropdown,
-                        'inline-flex': !showingNavigationDropdown,
+                        "inline-flex": !showingNavigationDropdown,
                       })}
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -260,7 +260,7 @@ export default function AppLayout({
                     <path
                       className={classNames({
                         hidden: !showingNavigationDropdown,
-                        'inline-flex': showingNavigationDropdown,
+                        "inline-flex": showingNavigationDropdown,
                       })}
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -275,15 +275,15 @@ export default function AppLayout({
 
           {/* <!-- Responsive Navigation Menu --> */}
           <div
-            className={classNames('sm:hidden', {
+            className={classNames("sm:hidden", {
               block: showingNavigationDropdown,
               hidden: !showingNavigationDropdown,
             })}
           >
             <div className="pt-2 pb-3 space-y-1">
               <ResponsiveNavLink
-                href={route('dashboard')}
-                active={route().current('dashboard')}
+                href={route("dashboard")}
+                active={route().current("dashboard")}
               >
                 Dashboard
               </ResponsiveNavLink>
@@ -314,16 +314,16 @@ export default function AppLayout({
 
               <div className="mt-3 space-y-1">
                 <ResponsiveNavLink
-                  href={route('profile.show')}
-                  active={route().current('profile.show')}
+                  href={route("profile.show")}
+                  active={route().current("profile.show")}
                 >
                   Profile
                 </ResponsiveNavLink>
 
                 {page.props.jetstream.hasApiFeatures ? (
                   <ResponsiveNavLink
-                    href={route('api-tokens.index')}
-                    active={route().current('api-tokens.index')}
+                    href={route("api-tokens.index")}
+                    active={route().current("api-tokens.index")}
                   >
                     API Tokens
                   </ResponsiveNavLink>
@@ -345,18 +345,18 @@ export default function AppLayout({
 
                     {/* <!-- Team Settings --> */}
                     <ResponsiveNavLink
-                      href={route('teams.show', [
+                      href={route("teams.show", [
                         page.props.auth.user?.current_team!,
                       ])}
-                      active={route().current('teams.show')}
+                      active={route().current("teams.show")}
                     >
                       Team Settings
                     </ResponsiveNavLink>
 
                     {page.props.jetstream.canCreateTeams ? (
                       <ResponsiveNavLink
-                        href={route('teams.create')}
-                        active={route().current('teams.create')}
+                        href={route("teams.create")}
+                        active={route().current("teams.create")}
                       >
                         Create New Team
                       </ResponsiveNavLink>

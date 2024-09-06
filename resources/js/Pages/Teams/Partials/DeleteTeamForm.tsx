@@ -1,12 +1,12 @@
-import useRoute from '@/Hooks/useRoute';
-import ActionSection from '@/Components/ActionSection';
-import ConfirmationModal from '@/Components/ConfirmationModal';
-import DangerButton from '@/Components/DangerButton';
-import SecondaryButton from '@/Components/SecondaryButton';
-import { Team } from '@/types';
-import { useForm } from '@inertiajs/react';
-import classNames from 'classnames';
-import React, { useState } from 'react';
+import useRoute from "@/Hooks/useRoute";
+import ActionSection from "@/Components/ActionSection";
+import ConfirmationModal from "@/Components/ConfirmationModal";
+import DangerButton from "@/Components/DangerButton";
+import SecondaryButton from "@/Components/SecondaryButton";
+import { Team } from "@/types";
+import { useForm } from "@inertiajs/react";
+import classNames from "classnames";
+import React, { useState } from "react";
 
 interface Props {
   team: Team;
@@ -22,15 +22,15 @@ export default function DeleteTeamForm({ team }: Props) {
   }
 
   function deleteTeam() {
-    form.delete(route('teams.destroy', [team]), {
-      errorBag: 'deleteTeam',
+    form.delete(route("teams.destroy", [team]), {
+      errorBag: "deleteTeam",
     });
   }
 
   return (
     <ActionSection
-      title={'Delete Team'}
-      description={'Permanently delete this team.'}
+      title={"Delete Team"}
+      description={"Permanently delete this team."}
     >
       <div className="max-w-xl text-sm text-gray-600 dark:text-gray-400">
         Once a team is deleted, all of its resources and data will be
@@ -47,7 +47,7 @@ export default function DeleteTeamForm({ team }: Props) {
         isOpen={confirmingTeamDeletion}
         onClose={() => setConfirmingTeamDeletion(false)}
       >
-        <ConfirmationModal.Content title={'Delete Team'}>
+        <ConfirmationModal.Content title={"Delete Team"}>
           Are you sure you want to delete this team? Once a team is deleted, all
           of its resources and data will be permanently deleted.
         </ConfirmationModal.Content>
@@ -59,7 +59,7 @@ export default function DeleteTeamForm({ team }: Props) {
 
           <DangerButton
             onClick={deleteTeam}
-            className={classNames('ml-2', { 'opacity-25': form.processing })}
+            className={classNames("ml-2", { "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Delete Team

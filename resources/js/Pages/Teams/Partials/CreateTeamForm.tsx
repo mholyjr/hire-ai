@@ -1,25 +1,25 @@
-import { useForm } from '@inertiajs/react';
-import React from 'react';
-import useRoute from '@/Hooks/useRoute';
-import useTypedPage from '@/Hooks/useTypedPage';
-import ActionMessage from '@/Components/ActionMessage';
-import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import classNames from 'classnames';
+import { useForm } from "@inertiajs/react";
+import React from "react";
+import useRoute from "@/Hooks/useRoute";
+import useTypedPage from "@/Hooks/useTypedPage";
+import ActionMessage from "@/Components/ActionMessage";
+import FormSection from "@/Components/FormSection";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import classNames from "classnames";
 
 export default function CreateTeamForm() {
   const route = useRoute();
   const page = useTypedPage();
   const form = useForm({
-    name: '',
+    name: "",
   });
 
   function createTeam() {
-    form.post(route('teams.store'), {
-      errorBag: 'createTeam',
+    form.post(route("teams.store"), {
+      errorBag: "createTeam",
       preserveScroll: true,
     });
   }
@@ -27,8 +27,8 @@ export default function CreateTeamForm() {
   return (
     <FormSection
       onSubmit={createTeam}
-      title={'Team Details'}
-      description={'Create a new team to collaborate with others on projects.'}
+      title={"Team Details"}
+      description={"Create a new team to collaborate with others on projects."}
       renderActions={() => (
         <>
           <ActionMessage on={form.recentlySuccessful} className="mr-3">
@@ -36,7 +36,7 @@ export default function CreateTeamForm() {
           </ActionMessage>
 
           <PrimaryButton
-            className={classNames({ 'opacity-25': form.processing })}
+            className={classNames({ "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Save
@@ -72,7 +72,7 @@ export default function CreateTeamForm() {
           type="text"
           className="mt-1 block w-full"
           value={form.data.name}
-          onChange={e => form.setData('name', e.currentTarget.value)}
+          onChange={e => form.setData("name", e.currentTarget.value)}
           autoFocus
         />
         <InputError message={form.errors.name} className="mt-2" />

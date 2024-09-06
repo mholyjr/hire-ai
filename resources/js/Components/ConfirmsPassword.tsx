@@ -1,12 +1,12 @@
-import axios from 'axios';
-import classNames from 'classnames';
-import React, { PropsWithChildren, useRef, useState } from 'react';
-import useRoute from '@/Hooks/useRoute';
-import DialogModal from '@/Components/DialogModal';
-import InputError from '@/Components/InputError';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
+import axios from "axios";
+import classNames from "classnames";
+import React, { PropsWithChildren, useRef, useState } from "react";
+import useRoute from "@/Hooks/useRoute";
+import DialogModal from "@/Components/DialogModal";
+import InputError from "@/Components/InputError";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
 
 interface Props {
   title?: string;
@@ -16,23 +16,23 @@ interface Props {
 }
 
 export default function ConfirmsPassword({
-  title = 'Confirm Password',
-  content = 'For your security, please confirm your password to continue.',
-  button = 'Confirm',
+  title = "Confirm Password",
+  content = "For your security, please confirm your password to continue.",
+  button = "Confirm",
   onConfirm,
   children,
 }: PropsWithChildren<Props>) {
   const route = useRoute();
   const [confirmingPassword, setConfirmingPassword] = useState(false);
   const [form, setForm] = useState({
-    password: '',
-    error: '',
+    password: "",
+    error: "",
     processing: false,
   });
   const passwordRef = useRef<HTMLInputElement>(null);
 
   function startConfirmingPassword() {
-    axios.get(route('password.confirmation')).then(response => {
+    axios.get(route("password.confirmation")).then(response => {
       if (response.data.confirmed) {
         onConfirm();
       } else {
@@ -47,7 +47,7 @@ export default function ConfirmsPassword({
     setForm({ ...form, processing: true });
 
     axios
-      .post(route('password.confirm'), {
+      .post(route("password.confirm"), {
         password: form.password,
       })
       .then(() => {
@@ -66,7 +66,7 @@ export default function ConfirmsPassword({
 
   function closeModal() {
     setConfirmingPassword(false);
-    setForm({ processing: false, password: '', error: '' });
+    setForm({ processing: false, password: "", error: "" });
   }
 
   return (
@@ -97,7 +97,7 @@ export default function ConfirmsPassword({
           <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
 
           <PrimaryButton
-            className={classNames('ml-2', { 'opacity-25': form.processing })}
+            className={classNames("ml-2", { "opacity-25": form.processing })}
             onClick={confirmPassword}
             disabled={form.processing}
           >

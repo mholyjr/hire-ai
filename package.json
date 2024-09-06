@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr"
+    "build": "vite build && vite build --ssr",
+    "lint:format:fix": "prettier resources --write"
   },
   "devDependencies": {
     "@prettier/plugin-php": "^0.22.2",
@@ -35,7 +36,7 @@
   },
   "prettier": {
     "semi": true,
-    "singleQuote": true,
+    "singleQuote": false,
     "useTabs": false,
     "tabWidth": 2,
     "trailingComma": "all",

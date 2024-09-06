@@ -1,30 +1,30 @@
-import { Link, useForm, Head } from '@inertiajs/react';
-import classNames from 'classnames';
-import React from 'react';
-import useRoute from '@/Hooks/useRoute';
-import useTypedPage from '@/Hooks/useTypedPage';
-import AuthenticationCard from '@/Components/AuthenticationCard';
-import Checkbox from '@/Components/Checkbox';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import InputError from '@/Components/InputError';
+import { Link, useForm, Head } from "@inertiajs/react";
+import classNames from "classnames";
+import React from "react";
+import useRoute from "@/Hooks/useRoute";
+import useTypedPage from "@/Hooks/useTypedPage";
+import AuthenticationCard from "@/Components/AuthenticationCard";
+import Checkbox from "@/Components/Checkbox";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import InputError from "@/Components/InputError";
 
 export default function Register() {
   const page = useTypedPage();
   const route = useRoute();
   const form = useForm({
-    name: '',
-    email: '',
-    password: '',
-    password_confirmation: '',
+    name: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
     terms: false,
   });
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    form.post(route('register'), {
-      onFinish: () => form.reset('password', 'password_confirmation'),
+    form.post(route("register"), {
+      onFinish: () => form.reset("password", "password_confirmation"),
     });
   }
 
@@ -40,7 +40,7 @@ export default function Register() {
             type="text"
             className="mt-1 block w-full"
             value={form.data.name}
-            onChange={e => form.setData('name', e.currentTarget.value)}
+            onChange={e => form.setData("name", e.currentTarget.value)}
             required
             autoFocus
             autoComplete="name"
@@ -55,7 +55,7 @@ export default function Register() {
             type="email"
             className="mt-1 block w-full"
             value={form.data.email}
-            onChange={e => form.setData('email', e.currentTarget.value)}
+            onChange={e => form.setData("email", e.currentTarget.value)}
             required
           />
           <InputError className="mt-2" message={form.errors.email} />
@@ -68,7 +68,7 @@ export default function Register() {
             type="password"
             className="mt-1 block w-full"
             value={form.data.password}
-            onChange={e => form.setData('password', e.currentTarget.value)}
+            onChange={e => form.setData("password", e.currentTarget.value)}
             required
             autoComplete="new-password"
           />
@@ -85,7 +85,7 @@ export default function Register() {
             className="mt-1 block w-full"
             value={form.data.password_confirmation}
             onChange={e =>
-              form.setData('password_confirmation', e.currentTarget.value)
+              form.setData("password_confirmation", e.currentTarget.value)
             }
             required
             autoComplete="new-password"
@@ -104,7 +104,7 @@ export default function Register() {
                   name="terms"
                   id="terms"
                   checked={form.data.terms}
-                  onChange={e => form.setData('terms', e.currentTarget.checked)}
+                  onChange={e => form.setData("terms", e.currentTarget.checked)}
                   required
                 />
 
@@ -112,7 +112,7 @@ export default function Register() {
                   I agree to the
                   <a
                     target="_blank"
-                    href={route('terms.show')}
+                    href={route("terms.show")}
                     className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                   >
                     Terms of Service
@@ -120,7 +120,7 @@ export default function Register() {
                   and
                   <a
                     target="_blank"
-                    href={route('policy.show')}
+                    href={route("policy.show")}
                     className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
                   >
                     Privacy Policy
@@ -134,14 +134,14 @@ export default function Register() {
 
         <div className="flex items-center justify-end mt-4">
           <Link
-            href={route('login')}
+            href={route("login")}
             className="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
           >
             Already registered?
           </Link>
 
           <PrimaryButton
-            className={classNames('ml-4', { 'opacity-25': form.processing })}
+            className={classNames("ml-4", { "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Register

@@ -1,7 +1,7 @@
-import { Dialog, Transition, TransitionChild } from '@headlessui/react';
-import classNames from 'classnames';
-import React, { PropsWithChildren } from 'react';
-import ReactDOM from 'react-dom';
+import { Dialog, Transition, TransitionChild } from "@headlessui/react";
+import classNames from "classnames";
+import React, { PropsWithChildren } from "react";
+import ReactDOM from "react-dom";
 
 export interface ModalProps {
   isOpen: boolean;
@@ -12,18 +12,18 @@ export interface ModalProps {
 export default function Modal({
   isOpen,
   onClose,
-  maxWidth = '2xl',
+  maxWidth = "2xl",
   children,
 }: PropsWithChildren<ModalProps>) {
   const maxWidthClass = {
-    sm: 'sm:max-w-sm',
-    md: 'sm:max-w-md',
-    lg: 'sm:max-w-lg',
-    xl: 'sm:max-w-xl',
-    '2xl': 'sm:max-w-2xl',
+    sm: "sm:max-w-sm",
+    md: "sm:max-w-md",
+    lg: "sm:max-w-lg",
+    xl: "sm:max-w-xl",
+    "2xl": "sm:max-w-2xl",
   }[maxWidth];
 
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return null;
   }
 
@@ -67,7 +67,7 @@ export default function Modal({
           >
             <div
               className={classNames(
-                'inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full',
+                "inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:w-full",
                 maxWidthClass,
               )}
             >

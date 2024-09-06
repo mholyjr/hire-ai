@@ -1,6 +1,6 @@
-import React from 'react';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo';
-import { Head } from '@inertiajs/react';
+import React from "react";
+import AuthenticationCardLogo from "@/Components/AuthenticationCardLogo";
+import { Head } from "@inertiajs/react";
 
 interface Props {
   terms: string;

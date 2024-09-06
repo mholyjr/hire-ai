@@ -1,17 +1,17 @@
-import useRoute from '@/Hooks/useRoute';
-import useTypedPage from '@/Hooks/useTypedPage';
-import ActionMessage from '@/Components/ActionMessage';
-import ActionSection from '@/Components/ActionSection';
-import ConfirmationModal from '@/Components/ConfirmationModal';
-import DangerButton from '@/Components/DangerButton';
-import DialogModal from '@/Components/DialogModal';
-import FormSection from '@/Components/FormSection';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
-import SecondaryButton from '@/Components/SecondaryButton';
-import SectionBorder from '@/Components/SectionBorder';
+import useRoute from "@/Hooks/useRoute";
+import useTypedPage from "@/Hooks/useTypedPage";
+import ActionMessage from "@/Components/ActionMessage";
+import ActionSection from "@/Components/ActionSection";
+import ConfirmationModal from "@/Components/ConfirmationModal";
+import DangerButton from "@/Components/DangerButton";
+import DialogModal from "@/Components/DialogModal";
+import FormSection from "@/Components/FormSection";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
+import SecondaryButton from "@/Components/SecondaryButton";
+import SectionBorder from "@/Components/SectionBorder";
 import {
   JetstreamTeamPermissions,
   Nullable,
@@ -19,11 +19,11 @@ import {
   Team,
   TeamInvitation,
   User,
-} from '@/types';
-import { router } from '@inertiajs/core';
-import { useForm } from '@inertiajs/react';
-import classNames from 'classnames';
-import React, { useState } from 'react';
+} from "@/types";
+import { router } from "@inertiajs/core";
+import { useForm } from "@inertiajs/react";
+import classNames from "classnames";
+import React, { useState } from "react";
 
 interface UserMembership extends User {
   membership: {
@@ -47,7 +47,7 @@ export default function TeamMemberManager({
 }: Props) {
   const route = useRoute();
   const addTeamMemberForm = useForm({
-    email: '',
+    email: "",
     role: null as Nullable<string>,
   });
   const updateRoleForm = useForm({
@@ -63,22 +63,22 @@ export default function TeamMemberManager({
   const page = useTypedPage();
 
   function addTeamMember() {
-    addTeamMemberForm.post(route('team-members.store', [team]), {
-      errorBag: 'addTeamMember',
+    addTeamMemberForm.post(route("team-members.store", [team]), {
+      errorBag: "addTeamMember",
       preserveScroll: true,
       onSuccess: () => addTeamMemberForm.reset(),
     });
   }
 
   function cancelTeamInvitation(invitation: TeamInvitation) {
-    router.delete(route('team-invitations.destroy', [invitation]), {
+    router.delete(route("team-invitations.destroy", [invitation]), {
       preserveScroll: true,
     });
   }
 
   function manageRole(teamMember: UserMembership) {
     setManagingRoleFor(teamMember);
-    updateRoleForm.setData('role', teamMember.membership.role);
+    updateRoleForm.setData("role", teamMember.membership.role);
     setCurrentlyManagingRole(true);
   }
 
@@ -86,7 +86,7 @@ export default function TeamMemberManager({
     if (!managingRoleFor) {
       return;
     }
-    updateRoleForm.put(route('team-members.update', [team, managingRoleFor]), {
+    updateRoleForm.put(route("team-members.update", [team, managingRoleFor]), {
       preserveScroll: true,
       onSuccess: () => setCurrentlyManagingRole(false),
     });
@@ -98,7 +98,7 @@ export default function TeamMemberManager({
 
   function leaveTeam() {
     leaveTeamForm.delete(
-      route('team-members.destroy', [team, page.props.auth.user!]),
+      route("team-members.destroy", [team, page.props.auth.user!]),
     );
   }
 
@@ -111,9 +111,9 @@ export default function TeamMemberManager({
       return;
     }
     removeTeamMemberForm.delete(
-      route('team-members.destroy', [team, teamMemberBeingRemoved]),
+      route("team-members.destroy", [team, teamMemberBeingRemoved]),
       {
-        errorBag: 'removeTeamMember',
+        errorBag: "removeTeamMember",
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => setTeamMemberBeingRemoved(null),
@@ -134,9 +134,9 @@ export default function TeamMemberManager({
           {/* <!-- Add Team Member --> */}
           <FormSection
             onSubmit={addTeamMember}
-            title={'Add Team Member'}
+            title={"Add Team Member"}
             description={
-              'Add a new team member to your team, allowing them to collaborate with you.'
+              "Add a new team member to your team, allowing them to collaborate with you."
             }
             renderActions={() => (
               <>
@@ -149,7 +149,7 @@ export default function TeamMemberManager({
 
                 <PrimaryButton
                   className={classNames({
-                    'opacity-25': addTeamMemberForm.processing,
+                    "opacity-25": addTeamMemberForm.processing,
                   })}
                   disabled={addTeamMemberForm.processing}
                 >
@@ -174,7 +174,7 @@ export default function TeamMemberManager({
                 className="mt-1 block w-full"
                 value={addTeamMemberForm.data.email}
                 onChange={e =>
-                  addTeamMemberForm.setData('email', e.currentTarget.value)
+                  addTeamMemberForm.setData("email", e.currentTarget.value)
                 }
               />
               <InputError
@@ -197,22 +197,22 @@ export default function TeamMemberManager({
                     <button
                       type="button"
                       className={classNames(
-                        'relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600',
+                        "relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600",
                         {
-                          'border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none':
+                          "border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none":
                             i > 0,
-                          'rounded-b-none':
+                          "rounded-b-none":
                             i != Object.keys(availableRoles).length - 1,
                         },
                       )}
                       onClick={() =>
-                        addTeamMemberForm.setData('role', role.key)
+                        addTeamMemberForm.setData("role", role.key)
                       }
                       key={role.key}
                     >
                       <div
                         className={classNames({
-                          'opacity-50':
+                          "opacity-50":
                             addTeamMemberForm.data.role &&
                             addTeamMemberForm.data.role != role.key,
                         })}
@@ -221,9 +221,9 @@ export default function TeamMemberManager({
                         <div className="flex items-center">
                           <div
                             className={classNames(
-                              'text-sm text-gray-600 dark:text-gray-400',
+                              "text-sm text-gray-600 dark:text-gray-400",
                               {
-                                'font-semibold':
+                                "font-semibold":
                                   addTeamMemberForm.data.role == role.key,
                               },
                             )}
@@ -268,9 +268,9 @@ export default function TeamMemberManager({
           <div className="mt-10 sm:mt-0" />
 
           <ActionSection
-            title={'Pending Team Invitations'}
+            title={"Pending Team Invitations"}
             description={
-              'These people have been invited to your team and have been sent an invitation email. They may join the team by accepting the email invitation.'
+              "These people have been invited to your team and have been sent an invitation email. They may join the team by accepting the email invitation."
             }
           >
             {/* <!-- Pending Team Member Invitation List --> */}
@@ -310,8 +310,8 @@ export default function TeamMemberManager({
           <div className="mt-10 sm:mt-0" />
 
           <ActionSection
-            title={'Team Members'}
-            description={'All of the people that are part of this team.'}
+            title={"Team Members"}
+            description={"All of the people that are part of this team."}
           >
             {/* <!-- Team Member List --> */}
             <div className="space-y-6">
@@ -377,7 +377,7 @@ export default function TeamMemberManager({
         isOpen={currentlyManagingRole}
         onClose={() => setCurrentlyManagingRole(false)}
       >
-        <DialogModal.Content title={'Manage Role'}></DialogModal.Content>
+        <DialogModal.Content title={"Manage Role"}></DialogModal.Content>
         {managingRoleFor ? (
           <div>
             <div className="relative z-0 mt-1 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer">
@@ -385,20 +385,20 @@ export default function TeamMemberManager({
                 <button
                   type="button"
                   className={classNames(
-                    'relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600',
+                    "relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-600",
                     {
-                      'border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none':
+                      "border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none":
                         i > 0,
-                      'rounded-b-none':
+                      "rounded-b-none":
                         i !== Object.keys(availableRoles).length - 1,
                     },
                   )}
-                  onClick={() => updateRoleForm.setData('role', role.key)}
+                  onClick={() => updateRoleForm.setData("role", role.key)}
                   key={role.key}
                 >
                   <div
                     className={classNames({
-                      'opacity-50':
+                      "opacity-50":
                         updateRoleForm.data.role &&
                         updateRoleForm.data.role !== role.key,
                     })}
@@ -407,9 +407,9 @@ export default function TeamMemberManager({
                     <div className="flex items-center">
                       <div
                         className={classNames(
-                          'text-sm text-gray-600 dark:text-gray-400',
+                          "text-sm text-gray-600 dark:text-gray-400",
                           {
-                            'font-semibold':
+                            "font-semibold":
                               updateRoleForm.data.role === role.key,
                           },
                         )}
@@ -448,8 +448,8 @@ export default function TeamMemberManager({
 
           <PrimaryButton
             onClick={updateRole}
-            className={classNames('ml-2', {
-              'opacity-25': updateRoleForm.processing,
+            className={classNames("ml-2", {
+              "opacity-25": updateRoleForm.processing,
             })}
             disabled={updateRoleForm.processing}
           >
@@ -463,7 +463,7 @@ export default function TeamMemberManager({
         isOpen={confirmingLeavingTeam}
         onClose={() => setConfirmingLeavingTeam(false)}
       >
-        <ConfirmationModal.Content title={'Leave Team'}>
+        <ConfirmationModal.Content title={"Leave Team"}>
           Are you sure you would like to leave this team?
         </ConfirmationModal.Content>
         <ConfirmationModal.Footer>
@@ -473,8 +473,8 @@ export default function TeamMemberManager({
 
           <DangerButton
             onClick={leaveTeam}
-            className={classNames('ml-2', {
-              'opacity-25': leaveTeamForm.processing,
+            className={classNames("ml-2", {
+              "opacity-25": leaveTeamForm.processing,
             })}
             disabled={leaveTeamForm.processing}
           >
@@ -488,7 +488,7 @@ export default function TeamMemberManager({
         isOpen={!!teamMemberBeingRemoved}
         onClose={() => setTeamMemberBeingRemoved(null)}
       >
-        <ConfirmationModal.Content title={'Remove Team Member'}>
+        <ConfirmationModal.Content title={"Remove Team Member"}>
           Are you sure you would like to remove this person from the team?
         </ConfirmationModal.Content>
         <ConfirmationModal.Footer>
@@ -498,8 +498,8 @@ export default function TeamMemberManager({
 
           <DangerButton
             onClick={removeTeamMember}
-            className={classNames('ml-2', {
-              'opacity-25': removeTeamMemberForm.processing,
+            className={classNames("ml-2", {
+              "opacity-25": removeTeamMemberForm.processing,
             })}
             disabled={removeTeamMemberForm.processing}
           >

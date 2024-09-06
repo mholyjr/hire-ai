@@ -1,5 +1,5 @@
-import { Link } from '@inertiajs/react';
-import React, { PropsWithChildren } from 'react';
+import { Link } from "@inertiajs/react";
+import React, { PropsWithChildren } from "react";
 
 interface Props {
   as?: string;
@@ -15,7 +15,7 @@ export default function DropdownLink({
     <div>
       {(() => {
         switch (as) {
-          case 'button':
+          case "button":
             return (
               <button
                 type="submit"
@@ -24,7 +24,7 @@ export default function DropdownLink({
                 {children}
               </button>
             );
-          case 'a':
+          case "a":
             return (
               <a
                 href={href}
@@ -36,7 +36,7 @@ export default function DropdownLink({
           default:
             return (
               <Link
-                href={href || ''}
+                href={href || ""}
                 className="block px-4 py-2 text-sm leading-5 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-800 transition duration-150 ease-in-out"
               >
                 {children}

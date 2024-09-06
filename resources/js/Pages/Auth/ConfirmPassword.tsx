@@ -1,22 +1,22 @@
-import { useForm, Head } from '@inertiajs/react';
-import classNames from 'classnames';
-import React from 'react';
-import useRoute from '@/Hooks/useRoute';
-import AuthenticationCard from '@/Components/AuthenticationCard';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
+import { useForm, Head } from "@inertiajs/react";
+import classNames from "classnames";
+import React from "react";
+import useRoute from "@/Hooks/useRoute";
+import AuthenticationCard from "@/Components/AuthenticationCard";
+import InputError from "@/Components/InputError";
+import InputLabel from "@/Components/InputLabel";
+import PrimaryButton from "@/Components/PrimaryButton";
+import TextInput from "@/Components/TextInput";
 
 export default function ConfirmPassword() {
   const route = useRoute();
   const form = useForm({
-    password: '',
+    password: "",
   });
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    form.post(route('password.confirm'), {
+    form.post(route("password.confirm"), {
       onFinish: () => form.reset(),
     });
   }
@@ -38,7 +38,7 @@ export default function ConfirmPassword() {
             type="password"
             className="mt-1 block w-full"
             value={form.data.password}
-            onChange={e => form.setData('password', e.currentTarget.value)}
+            onChange={e => form.setData("password", e.currentTarget.value)}
             required
             autoComplete="current-password"
             autoFocus
@@ -48,7 +48,7 @@ export default function ConfirmPassword() {
 
         <div className="flex justify-end mt-4">
           <PrimaryButton
-            className={classNames('ml-4', { 'opacity-25': form.processing })}
+            className={classNames("ml-4", { "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Confirm

@@ -1,6 +1,6 @@
-import { Transition } from '@headlessui/react';
-import classNames from 'classnames';
-import React, { PropsWithChildren, useState } from 'react';
+import { Transition } from "@headlessui/react";
+import classNames from "classnames";
+import React, { PropsWithChildren, useState } from "react";
 
 interface Props {
   align?: string;
@@ -10,25 +10,25 @@ interface Props {
 }
 
 export default function Dropdown({
-  align = 'right',
-  width = '48',
-  contentClasses = 'py-1 bg-white dark:bg-gray-700',
+  align = "right",
+  width = "48",
+  contentClasses = "py-1 bg-white dark:bg-gray-700",
   renderTrigger,
   children,
 }: PropsWithChildren<Props>) {
   const [open, setOpen] = useState(false);
 
   const widthClass = {
-    '48': 'w-48',
+    "48": "w-48",
   }[width.toString()];
 
   const alignmentClasses = (() => {
-    if (align === 'left') {
-      return 'origin-top-left left-0';
-    } else if (align === 'right') {
-      return 'origin-top-right right-0';
+    if (align === "left") {
+      return "origin-top-left left-0";
+    } else if (align === "right") {
+      return "origin-top-right right-0";
     } else {
-      return 'origin-top';
+      return "origin-top";
     }
   })();
 
@@ -39,7 +39,7 @@ export default function Dropdown({
       {/* <!-- Full Screen Dropdown Overlay --> */}
       <div
         className="fixed inset-0 z-40"
-        style={{ display: open ? 'block' : 'none' }}
+        style={{ display: open ? "block" : "none" }}
         onClick={() => setOpen(false)}
       />
 
@@ -52,10 +52,10 @@ export default function Dropdown({
         leaveFrom="transform opacity-100 scale-100"
         leaveTo="transform opacity-0 scale-95"
       >
-        <div className={'relative z-50'}>
+        <div className={"relative z-50"}>
           <div
             className={classNames(
-              'absolute mt-2 rounded-md shadow-lg',
+              "absolute mt-2 rounded-md shadow-lg",
               widthClass,
               alignmentClasses,
             )}
@@ -63,7 +63,7 @@ export default function Dropdown({
           >
             <div
               className={classNames(
-                'rounded-md ring-1 ring-black ring-opacity-5',
+                "rounded-md ring-1 ring-black ring-opacity-5",
                 contentClasses,
               )}
             >
