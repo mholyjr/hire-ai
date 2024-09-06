@@ -39,6 +39,7 @@ import {
   CardFooter,
 } from "@/Components/ui/card";
 import { Project, TODO } from "@/types";
+import { NewProjectForm } from "./parts/NewProjectForm";
 
 type Props = {
   projects: Project[];
@@ -154,19 +155,7 @@ export const ProjectList: React.FC<Props> = ({ projects }) => {
                   Fill out the form to create a new project.
                 </DialogDescription>
               </DialogHeader>
-              <div>
-                <form className="grid gap-4">
-                  <Input
-                    label="Project Name"
-                    placeholder="Enter project name"
-                  />
-                  <Textarea
-                    label="Description"
-                    placeholder="Enter project description"
-                  />
-                  <Input label="Due Date" type="date" />
-                </form>
-              </div>
+              <NewProjectForm onClose={close} />
               <DialogFooter>
                 <div>
                   <Button variant="ghost">Cancel</Button>

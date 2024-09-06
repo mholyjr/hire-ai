@@ -17,4 +17,17 @@ class ProjectController extends Controller
             'projects' => $projects
         ]);
     }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'state' => 'required|boolean',
+        ]);
+
+        $project = $request->user()->currentTeam->projects()->create($validated);
+
+        return redirect()->route('projects.index')->with('success', 'Project created successfully.');
+    }
 }

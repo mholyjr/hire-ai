@@ -44,4 +44,12 @@ class Team extends JetstreamTeam
             'personal_team' => 'boolean',
         ];
     }
+
+    /**
+     * Get the projects for the team.
+     */
+    public function projects()
+    {
+        return $this->hasMany(Project::class);
+    }
 }

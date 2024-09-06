@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Http\Controllers\ProjectController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -23,4 +24,7 @@ Route::middleware([
     })->name('dashboard');
 });
 
-Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
+    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+});
