@@ -38,13 +38,17 @@ import {
   CardContent,
   CardFooter,
 } from "@/Components/ui/card";
-import { TODO } from "@/types";
+import { Project, TODO } from "@/types";
 
-export const ProjectList = () => {
+type Props = {
+  projects: Project[];
+};
+
+export const ProjectList: React.FC<Props> = ({ projects }) => {
   const [view, setView] = useState("table");
   const [search, setSearch] = useState("");
   const [filters, setFilters] = useState({
-    status: "all",
+    state: true,
   });
 
   useEffect(() => {
@@ -61,59 +65,13 @@ export const ProjectList = () => {
     localStorage.setItem("projectsFilters", JSON.stringify(filters));
   }, [view, filters]);
 
-  const projects = [
-    {
-      id: 1,
-      name: "Acme Website",
-      status: "active",
-      description: "Redesign and rebuild the Acme company website.",
-      dueDate: "2023-12-31",
-    },
-    {
-      id: 2,
-      name: "Marketing Campaign",
-      status: "active",
-      description:
-        "Plan and execute a new marketing campaign for the product launch.",
-      dueDate: "2023-11-15",
-    },
-    {
-      id: 3,
-      name: "Mobile App Development",
-      status: "in-progress",
-      description: "Develop a new mobile app for the company.",
-      dueDate: "2024-03-01",
-    },
-    {
-      id: 4,
-      name: "Analytics Dashboard",
-      status: "in-progress",
-      description: "Build a new analytics dashboard for the sales team.",
-      dueDate: "2024-02-28",
-    },
-    {
-      id: 5,
-      name: "HR System Upgrade",
-      status: "archived",
-      description: "Upgrade the HR management system to the latest version.",
-      dueDate: "2023-09-30",
-    },
-    {
-      id: 6,
-      name: "Customer Support Portal",
-      status: "active",
-      description: "Develop a new customer support portal for the company.",
-      dueDate: "2024-01-15",
-    },
-  ];
-
   const filteredProjects = projects.filter(project => {
-    if (filters.status !== "all" && project.status !== filters.status) {
+    if (filters.state && project.state !== filters.state) {
       return false;
     }
     if (
       search.trim() !== "" &&
-      !project.name.toLowerCase().includes(search.toLowerCase())
+      !project.title.toLowerCase().includes(search.toLowerCase())
     ) {
       return false;
     }
@@ -164,9 +122,9 @@ export const ProjectList = () => {
               <DropdownMenuLabel>Filter by status</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuRadioGroup
-                value={filters.status}
+                value={String(filters.state)}
                 onValueChange={value =>
-                  setFilters({ ...filters, status: value })
+                  setFilters({ ...filters, state: Boolean(value) })
                 }
               >
                 <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
@@ -240,21 +198,17 @@ export const ProjectList = () => {
                 {filteredProjects.map(project => (
                   <TableRow key={project.id}>
                     <TableCell className="font-medium">
-                      {project.name}
+                      {project.title}
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       {project.description}
                     </TableCell>
                     <TableCell className="hidden md:table-cell">
-                      {project.dueDate}
+                      {project.created_at}
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      <Badge
-                        variant={
-                          project.status === "active" ? "secondary" : "outline"
-                        }
-                      >
-                        {project.status}
+                      <Badge variant={project.state ? "secondary" : "outline"}>
+                        {project.state}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -272,7 +226,7 @@ export const ProjectList = () => {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>Edit</DropdownMenuItem>
                           <DropdownMenuItem>Open</DropdownMenuItem>
-                          {project.status !== "archived" && (
+                          {project.state && (
                             <DropdownMenuItem>Archive</DropdownMenuItem>
                           )}
                         </DropdownMenuContent>
@@ -288,19 +242,15 @@ export const ProjectList = () => {
             {filteredProjects.map(project => (
               <Card key={project.id}>
                 <CardHeader className="flex items-center justify-between">
-                  <div className="font-medium">{project.name}</div>
-                  <Badge
-                    variant={
-                      project.status === "active" ? "secondary" : "outline"
-                    }
-                  >
-                    {project.status}
+                  <div className="font-medium">{project.title}</div>
+                  <Badge variant={project ? "secondary" : "outline"}>
+                    {project.state}
                   </Badge>
                 </CardHeader>
                 <CardContent>
                   <p className="line-clamp-2">{project.description}</p>
                   <div className="text-sm text-muted-foreground">
-                    Due: {project.dueDate}
+                    {project.created_at}
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-end gap-2">
@@ -312,7 +262,7 @@ export const ProjectList = () => {
                     <DoorOpenIcon className="h-4 w-4" />
                     <span className="sr-only">Open</span>
                   </Button>
-                  {project.status !== "archived" && (
+                  {project.state && (
                     <Button variant="ghost" size="icon">
                       <ArchiveIcon className="h-4 w-4" />
                       <span className="sr-only">Archive</span>

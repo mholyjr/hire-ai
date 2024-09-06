@@ -96,3 +96,13 @@ export interface TeamInvitation {
 }
 
 export type TODO = any;
+
+export interface Project {
+  id: number;
+  team_id: number;
+  title: string;
+  description: string | null;
+  state: boolean;
+  created_at: string;
+  updated_at: string;
+}

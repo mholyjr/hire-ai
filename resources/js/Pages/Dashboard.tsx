@@ -1,8 +1,14 @@
 import React from "react";
 import AppLayout from "@/Layouts/AppLayout";
 import { ProjectList } from "@/features/Dashboard/components/ProjectList";
+import { usePage } from "@inertiajs/react";
+import { Project } from "@/types";
 
 export default function Dashboard() {
+  const { projects = [] } = usePage().props as { projects?: Project[] };
+
+  console.log(projects);
+
   return (
     <AppLayout
       title="Dashboard"
@@ -12,7 +18,7 @@ export default function Dashboard() {
         </h2>
       )}
     >
-       <ProjectList />
+      <ProjectList projects={projects} />
     </AppLayout>
   );
 }

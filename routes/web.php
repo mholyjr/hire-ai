@@ -22,3 +22,5 @@ Route::middleware([
         return Inertia::render('Dashboard');
     })->name('dashboard');
 });
+
+Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
