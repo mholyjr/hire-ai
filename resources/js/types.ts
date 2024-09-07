@@ -102,7 +102,7 @@ export interface Project {
   team_id: number;
   title: string;
   description: string | null;
-  state: boolean;
+  state: 0 | 1;
   created_at: string;
   updated_at: string;
 }

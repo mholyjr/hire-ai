@@ -6,23 +6,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
 } from "@/Components/ui/dropdown-menu";
 import { Button } from "@/Components/ui/button";
-import { Input } from "@/Components/ui/input";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-  DialogFooter,
-} from "@/Components/ui/dialog";
-import { Textarea } from "@/Components/ui/textarea";
+
 import {
   Table,
   TableHeader,
@@ -39,111 +25,15 @@ import {
   CardFooter,
 } from "@/Components/ui/card";
 import { Project, TODO } from "@/types";
-import { NewProjectDialog } from "./parts/NewProjectDialog";
 
 type Props = {
-  projects: Project[];
+  view: string;
+  filteredProjects: Project[];
 };
 
-export const ProjectList: React.FC<Props> = ({ projects }) => {
-  const [view, setView] = useState("table");
-  const [search, setSearch] = useState("");
-  const [filters, setFilters] = useState({
-    state: true,
-  });
-
-  useEffect(() => {
-    const storedView = localStorage.getItem("projectsView") || "table";
-    const storedFilters = JSON.parse(
-      localStorage.getItem("projectsFilters") || "{}",
-    );
-    setView(storedView as "table" | "grid");
-    setFilters(storedFilters);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("projectsView", view);
-    localStorage.setItem("projectsFilters", JSON.stringify(filters));
-  }, [view, filters]);
-
-  const filteredProjects = projects.filter(project => {
-    if (filters.state && project.state !== filters.state) {
-      return false;
-    }
-    if (
-      search.trim() !== "" &&
-      !project.title.toLowerCase().includes(search.toLowerCase())
-    ) {
-      return false;
-    }
-    return true;
-  });
-
+export const ProjectList: React.FC<Props> = ({ view, filteredProjects }) => {
   return (
     <div className="flex flex-col w-full min-h-screen bg-muted/40">
-      <header className="flex items-center justify-between h-16 px-6 border-b bg-background">
-        <h1 className="text-lg font-semibold">Projects</h1>
-        <div className="flex items-center gap-4">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-1">
-                <ViewIcon className="h-4 w-4" />
-                <span className="sr-only sm:not-sr-only">
-                  {view === "table" ? "Grid" : "Table"} View
-                </span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onSelect={() => setView("table")}>
-                Table View
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => setView("grid")}>
-                Grid View
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <div className="relative flex-1 max-w-md">
-            <Input
-              type="search"
-              placeholder="Search projects..."
-              value={search}
-              onChange={e => setSearch(e.target.value)}
-              className="w-full rounded-lg bg-background pl-8"
-            />
-            <SearchIcon className="absolute left-2 top-2 h-4 w-4 text-muted-foreground" />
-          </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="h-8 gap-1">
-                <FilterIcon className="h-4 w-4" />
-                <span className="sr-only sm:not-sr-only">Filter</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-48">
-              <DropdownMenuLabel>Filter by status</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuRadioGroup
-                value={String(filters.state)}
-                onValueChange={value =>
-                  setFilters({ ...filters, state: Boolean(value) })
-                }
-              >
-                <DropdownMenuRadioItem value="all">All</DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="active">
-                  Active
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="in-progress">
-                  In Progress
-                </DropdownMenuRadioItem>
-                <DropdownMenuRadioItem value="archived">
-                  Archived
-                </DropdownMenuRadioItem>
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <NewProjectDialog />
-        </div>
-      </header>
       <main className="flex-1 p-6">
         {view === "table" ? (
           <div className="border rounded-lg bg-background">
