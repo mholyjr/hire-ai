@@ -25,6 +25,7 @@ import {
   CardFooter,
 } from "@/Components/ui/card";
 import { Project, TODO } from "@/types";
+import { useForm } from "@inertiajs/react";
 
 type Props = {
   view: string;
@@ -32,6 +33,15 @@ type Props = {
 };
 
 export const ProjectList: React.FC<Props> = ({ view, filteredProjects }) => {
+  const form = useForm();
+
+  const archiveProject = (project: Project) => {
+    form.patch(route("projects.archive", project.id), {
+      preserveState: true,
+      preserveScroll: true,
+    });
+  };
+
   return (
     <div className="flex flex-col w-full min-h-screen bg-muted/40">
       <main className="flex-1 p-6">
@@ -83,9 +93,11 @@ export const ProjectList: React.FC<Props> = ({ view, filteredProjects }) => {
                         <DropdownMenuContent align="end">
                           <DropdownMenuItem>Edit</DropdownMenuItem>
                           <DropdownMenuItem>Open</DropdownMenuItem>
-                          {project.state && (
-                            <DropdownMenuItem>Archive</DropdownMenuItem>
-                          )}
+                          <DropdownMenuItem
+                            onClick={() => archiveProject(project)}
+                          >
+                            {project.state ? "Archive" : "Unarchive"}
+                          </DropdownMenuItem>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableCell>

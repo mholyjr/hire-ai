@@ -25,4 +25,5 @@ Route::middleware([
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+    Route::patch('/projects/{project}/archive', [ProjectController::class, 'archive'])->name('projects.archive');
 });
