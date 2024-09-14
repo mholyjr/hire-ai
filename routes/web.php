@@ -4,6 +4,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\PositionController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,8 +28,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::patch('/projects/{project}/archive', [ProjectController::class, 'archive'])->name('projects.archive');
     // Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
-    Route::get('/projects/{project:slug}', [PositionController::class, 'index'])->name('positions.index');
-    Route::post('/projects/{project:slug}', [PositionController::class, 'store'])->name('positions.store');
+    Route::get('/projects/{project:slug}', [PositionController::class, 'index'])->name('projects.show');
+    Route::post('/projects/{project:slug}/positions', [PositionController::class, 'store'])->name('positions.store');
     Route::get('/positions/{position:slug}', [PositionController::class, 'show'])->name('positions.show');
     Route::post('/positions/{position:slug}/candidates', [CandidateController::class, 'store'])->name('candidates.store');
 });

@@ -3,6 +3,7 @@ import AppLayout from "@/Layouts/AppLayout";
 import { Project, Position } from "@/types";
 import { Link } from "@inertiajs/react";
 import { Header } from "@/Components/Header";
+import { NewPositionDialog } from "@/features/Positions/Partials/NewPositionDialog";
 
 type Props = {
   project: Project & { positions: Position[] };
@@ -25,6 +26,7 @@ export default function Index({ project }: Props) {
           setSearch={setSearch}
           filters={filters}
           setFilters={setFilters}
+          newItemModal={<NewPositionDialog project={project} />}
         />
       )}
     >

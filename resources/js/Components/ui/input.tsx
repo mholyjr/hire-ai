@@ -1,17 +1,17 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Label } from "./label";
+import { InputError } from "./input-error";
 
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   label?: string;
-
   help?: React.ReactNode;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, error, label, help, ...props }, ref) => {
+  ({ className, type, label, help, error, ...props }, ref) => {
     return (
       <>
         {label && <Label>{label}</Label>}
@@ -24,6 +24,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
+        {error && <InputError message={error} />}
       </>
     );
   },
