@@ -11,6 +11,7 @@ import DropdownLink from "@/Components/DropdownLink";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Team } from "@/types";
+import { ModeToggle } from "@/Components/ui/mode-toggle";
 
 interface Props {
   title: string;
@@ -230,6 +231,9 @@ export default function AppLayout({
                       <DropdownLink as="button">Log Out</DropdownLink>
                     </form>
                   </Dropdown>
+                </div>
+                <div className="ml-3 relative">
+                  <ModeToggle />
                 </div>
               </div>
 

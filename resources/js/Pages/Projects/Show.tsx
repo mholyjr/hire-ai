@@ -30,20 +30,18 @@ export default function Index({ project }: Props) {
         />
       )}
     >
-      <div className="py-12">
-        <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-          <div className="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
-            <h1 className="text-2xl font-bold mb-4">Positions</h1>
-            {/* {project.positions.map(position => (
-              <div key={position.id} className="mb-4">
-                <Link href={route("positions.show", position.slug)}>
-                  <h2 className="text-xl font-semibold">{position.title}</h2>
-                </Link>
-                <p className="text-gray-600">{position.description}</p>
-              </div>
-            ))} */}
-          </div>
-        </div>
+      <div className="py-12 px-6 grid grid-cols-4 gap-6">
+        {project.positions.map(position => (
+          <Link href={route("positions.show", position.slug)}>
+            <div
+              key={position.id}
+              className="bg-white dark:bg-dark rounded-lg p-6 "
+            >
+              <h2 className="text-xl font-semibold">{position.title}</h2>
+              <p>{position.description}</p>
+            </div>
+          </Link>
+        ))}
       </div>
     </AppLayout>
   );
