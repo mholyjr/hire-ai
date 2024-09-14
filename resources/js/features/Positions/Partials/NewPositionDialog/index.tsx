@@ -60,10 +60,10 @@ export const NewPositionDialog: React.FC<Props> = ({ project }) => {
         setOpen(false);
         reset();
       },
-      onError: () => {
+      onError: err => {
         setFormMessage({
           type: "error",
-          text: "Failed to create position. Please check the form for errors.",
+          text: err.response,
         });
       },
     });
