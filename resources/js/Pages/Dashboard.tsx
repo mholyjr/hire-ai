@@ -3,7 +3,9 @@ import AppLayout from "@/Layouts/AppLayout";
 import { usePage } from "@inertiajs/react";
 import { Project } from "@/types";
 import { ProjectList } from "@/features/Dashboard/components/ProjectList";
-import { Header } from "@/features/Dashboard/components/Header";
+import { Header } from "@/Components/Header";
+import { NewProjectDialog } from "@/features/Dashboard/components/ProjectList/parts/NewProjectDialog";
+
 
 export default function Dashboard() {
   const { projects = [] } = usePage().props as { projects?: Project[] };
@@ -58,6 +60,8 @@ export default function Dashboard() {
           setSearch={setSearch}
           filters={filters}
           setFilters={setFilters}
+          newItemModal={<NewProjectDialog />}
+          title="Projects"
         />
       )}
     >

@@ -44,4 +44,19 @@ class ProjectController extends Controller
 
         return redirect()->back()->with('message', 'Project status updated successfully.');
     }
+
+    public function show($slug)
+    {
+        $project = Project::where('slug', $slug)->firstOrFail();
+        
+        // $this->authorize('view', $project);
+    
+        return Inertia::render('Projects/Show', [
+            'project' => $project->load('positions'),
+        ]);
+    }
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
 }

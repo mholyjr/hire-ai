@@ -97,12 +97,61 @@ export interface TeamInvitation {
 
 export type TODO = any;
 
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  email_verified_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Project {
   id: number;
-  team_id: number;
   title: string;
   description: string | null;
+  slug: string;
+  user_id: number;
+  created_at: string;
+  updated_at: string;
+  positions?: Position[];
   state: 0 | 1;
+}
+
+export interface Position {
+  id: number;
+  project_id: number;
+  title: string;
+  description: string | null;
+  slug: string;
+  created_at: string;
+  updated_at: string;
+  candidates?: Candidate[];
+  persona?: Persona;
+}
+
+export interface Candidate {
+  id: number;
+  position_id: number;
+  name: string;
+  email: string;
+  phone: string | null;
+  cv_path: string;
+  ai_rating: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Persona {
+  id: number;
+  position_id: number;
+  position: string;
+  work_experience: string;
+  education: string;
+  seniority: string;
+  nationality: string | null;
+  languages_spoken: string[];
+  additional_info: string | null;
   created_at: string;
   updated_at: string;
 }

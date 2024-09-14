@@ -13,15 +13,16 @@ import {
 import { Button } from "@/Components/ui/button";
 import { FilterIcon, SearchIcon, ViewIcon } from "lucide-react";
 import { TODO } from "@/types";
-import { NewProjectDialog } from "./ProjectList/parts/NewProjectDialog";
 
 type Props = {
   view: string;
-  setView: (view: string) => void;
+  setView?: (view: string) => void;
   search: string;
   setSearch: (search: string) => void;
   filters: TODO;
   setFilters: (filters: TODO) => void;
+  newItemModal?: React.ReactNode;
+  title: string;
 };
 
 export const Header: React.FC<Props> = ({
@@ -31,28 +32,33 @@ export const Header: React.FC<Props> = ({
   setSearch,
   filters,
   setFilters,
+  newItemModal,
+  title,
 }) => (
   <header className="flex items-center justify-between h-16 px-6 border-b bg-background">
-    <h1 className="text-lg font-semibold">Projects</h1>
+    <h1 className="text-lg font-semibold">{title}</h1>
     <div className="flex items-center gap-4">
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" className="h-8 gap-1">
-            <ViewIcon className="h-4 w-4" />
-            <span className="sr-only sm:not-sr-only">
-              {view === "table" ? "Grid" : "Table"} View
-            </span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem onSelect={() => setView("table")}>
-            Table View
-          </DropdownMenuItem>
-          <DropdownMenuItem onSelect={() => setView("grid")}>
-            Grid View
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {setView && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-8 gap-1">
+              <ViewIcon className="h-4 w-4" />
+              <span className="sr-only sm:not-sr-only">
+                {view === "table" ? "Grid" : "Table"} View
+              </span>
+            </Button>
+          </DropdownMenuTrigger>
+
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onSelect={() => setView("table")}>
+              Table View
+            </DropdownMenuItem>
+            <DropdownMenuItem onSelect={() => setView("grid")}>
+              Grid View
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
       <div className="relative flex-1 max-w-md">
         <Input
           type="search"
@@ -88,7 +94,7 @@ export const Header: React.FC<Props> = ({
           </DropdownMenuRadioGroup>
         </DropdownMenuContent>
       </DropdownMenu>
-      <NewProjectDialog />
+      {newItemModal && newItemModal}
     </div>
   </header>
 );

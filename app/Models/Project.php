@@ -30,4 +30,9 @@ class Project extends Model
     {
         return $query->where('team_id', $teamId);
     }
+
+    public function positions()
+    {
+        return $this->hasMany(Position::class);
+    }
 }

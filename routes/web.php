@@ -26,4 +26,13 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
     Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::patch('/projects/{project}/archive', [ProjectController::class, 'archive'])->name('projects.archive');
+    // Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
+    Route::get('/projects/{project:slug}', [PositionController::class, 'index'])->name('positions.index');
+    Route::post('/projects/{project:slug}', [PositionController::class, 'store'])->name('positions.store');
+    Route::get('/positions/{position:slug}', [PositionController::class, 'show'])->name('positions.show');
+    Route::post('/positions/{position:slug}/candidates', [CandidateController::class, 'store'])->name('candidates.store');
 });
+
+Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])
+    ->name('projects.show')
+    ->middleware('auth');

@@ -26,6 +26,7 @@ import {
 } from "@/Components/ui/card";
 import { Project, TODO } from "@/types";
 import { useForm } from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
 
 type Props = {
   view: string;
@@ -65,7 +66,9 @@ export const ProjectList: React.FC<Props> = ({ view, filteredProjects }) => {
                 {filteredProjects.map(project => (
                   <TableRow key={project.id}>
                     <TableCell className="font-medium">
-                      {project.title}
+                      <Link href={route("projects.show", project.slug)}>
+                        {project.title}
+                      </Link>
                     </TableCell>
                     <TableCell className="hidden sm:table-cell">
                       {project.description}
