@@ -35,7 +35,7 @@ export default function Index({ project }: Props) {
           <Link href={route("positions.show", position.slug)}>
             <div
               key={position.id}
-              className="bg-white dark:bg-dark rounded-lg p-6 "
+              className="bg-white dark:bg-secondary rounded-lg p-6 "
             >
               <h2 className="text-xl font-semibold">{position.title}</h2>
               <p>{position.description}</p>
