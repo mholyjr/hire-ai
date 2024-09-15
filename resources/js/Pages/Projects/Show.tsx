@@ -4,6 +4,8 @@ import { Project, Position } from "@/types";
 import { Link } from "@inertiajs/react";
 import { Header } from "@/Components/Header";
 import { NewPositionDialog } from "@/features/Positions/Partials/NewPositionDialog";
+import { Button } from "@/Components/ui/button";
+import { Empty } from "@/Components/Empty";
 
 type Props = {
   project: Project & { positions: Position[] };
@@ -30,19 +32,27 @@ export default function Index({ project }: Props) {
         />
       )}
     >
-      <div className="py-12 px-6 grid grid-cols-4 gap-6">
-        {project.positions.map(position => (
-          <Link href={route("positions.show", position.slug)}>
-            <div
-              key={position.id}
-              className="bg-white dark:bg-secondary rounded-lg p-6 "
-            >
-              <h2 className="text-xl font-semibold">{position.title}</h2>
-              <p>{position.description}</p>
-            </div>
-          </Link>
-        ))}
-      </div>
+      {!project.positions || project.positions.length === 0 ? (
+        <Empty
+          title="No positions"
+          message="There are no positions available for this project"
+          action={<NewPositionDialog project={project} />}
+        />
+      ) : (
+        <div className="py-12 px-6 grid grid-cols-4 gap-6">
+          {project.positions.map(position => (
+            <Link href={route("positions.show", position.slug)}>
+              <div
+                key={position.id}
+                className="bg-white dark:bg-secondary rounded-lg p-6 "
+              >
+                <h2 className="text-xl font-semibold">{position.title}</h2>
+                <p>{position.description}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </AppLayout>
   );
 }
