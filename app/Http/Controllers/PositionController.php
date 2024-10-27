@@ -25,8 +25,6 @@ class PositionController extends Controller
 
     public function store(Request $request)
     {
-        \Log::info('Store method called');
-
         $this->authorize('create', Position::class);
 
         $validated = $request->validate([
