@@ -3,8 +3,8 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\CandidateController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -20,20 +20,13 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', [ProjectController::class, 'index'])->name('dashboard');
+    Route::get('/positions', [PositionController::class, 'index'])->name('positions');
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    Route::get('/projects', [ProjectController::class, 'index'])->name('projects.index');
-    Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
-    Route::patch('/projects/{project}/archive', [ProjectController::class, 'archive'])->name('projects.archive');
-    // Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])->name('projects.show');
-    Route::get('/projects/{project:slug}', [PositionController::class, 'index'])->name('projects.show');
-    Route::post('/projects/{project:slug}/positions', [PositionController::class, 'store'])->name('positions.store');
+    // Route::get('/positions', [PositionController::class, 'index'])->name('positions.index');
+    Route::post('/positions', [PositionController::class, 'store'])->name('positions.store');
+    Route::patch('/positions/{position}/archive', [PositionController::class, 'archive'])->name('positions.archive');
     Route::get('/positions/{position:slug}', [PositionController::class, 'show'])->name('positions.show');
     Route::post('/positions/{position:slug}/candidates', [CandidateController::class, 'store'])->name('candidates.store');
 });
-
-Route::get('/projects/{project:slug}', [ProjectController::class, 'show'])
-    ->name('projects.show')
-    ->middleware('auth');

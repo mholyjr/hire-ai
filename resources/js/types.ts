@@ -128,6 +128,7 @@ export interface Position {
   updated_at: string;
   candidates?: Candidate[];
   persona?: Persona;
+  state: 0 | 1;
 }
 
 export interface Candidate {

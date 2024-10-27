@@ -1,14 +1,13 @@
 import React from "react";
 import AppLayout from "@/Layouts/AppLayout";
 import { usePage } from "@inertiajs/react";
-import { Project } from "@/types";
+import { Position } from "@/types";
 import { ProjectList } from "@/features/Dashboard/components/ProjectList";
 import { Header } from "@/Components/Header";
-import { NewProjectDialog } from "@/features/Dashboard/components/ProjectList/parts/NewProjectDialog";
+import { NewPositionDialog } from "@/features/Positions/Partials/NewPositionDialog";
 
-
-export default function Dashboard() {
-  const { projects = [] } = usePage().props as { projects?: Project[] };
+export default function Positions() {
+  const { positions = [] } = usePage().props as { positions?: Position[] };
 
   const [view, setView] = React.useState("table");
   const [search, setSearch] = React.useState("");
@@ -17,32 +16,32 @@ export default function Dashboard() {
   });
 
   React.useEffect(() => {
-    const storedView = localStorage.getItem("projectsView") || "table";
+    const storedView = localStorage.getItem("positionsView") || "table";
     const storedFilters = JSON.parse(
-      localStorage.getItem("projectsFilters") || "{}",
+      localStorage.getItem("positionsFilters") || "{}",
     );
     setView(storedView as "table" | "grid");
     setFilters(storedFilters);
   }, []);
 
   React.useEffect(() => {
-    localStorage.setItem("projectsView", view);
-    localStorage.setItem("projectsFilters", JSON.stringify(filters));
+    localStorage.setItem("positionsView", view);
+    localStorage.setItem("positionsFilters", JSON.stringify(filters));
   }, [view, filters]);
 
-  const filteredProjects = projects.filter(project => {
+  const filteredPositions = positions.filter(position => {
     if (filters.state !== undefined && filters.state !== null) {
       const stateFilter = Number(filters.state);
-      if (project.state !== stateFilter) return false;
+      if (position.state !== stateFilter) return false;
     }
 
     // Search filter
     if (search.trim() !== "") {
       const searchLower = search.toLowerCase().trim();
       return (
-        project.title.toLowerCase().includes(searchLower) ||
-        (project.description &&
-          project.description.toLowerCase().includes(searchLower))
+        position.title.toLowerCase().includes(searchLower) ||
+        (position.description &&
+          position.description.toLowerCase().includes(searchLower))
       );
     }
 
@@ -51,7 +50,7 @@ export default function Dashboard() {
 
   return (
     <AppLayout
-      title="Dashboard"
+      title="Positions"
       renderHeader={() => (
         <Header
           view={view}
@@ -60,12 +59,12 @@ export default function Dashboard() {
           setSearch={setSearch}
           filters={filters}
           setFilters={setFilters}
-          newItemModal={<NewProjectDialog />}
-          title="Projects"
+          newItemModal={<NewPositionDialog />}
+          title="Positions"
         />
       )}
     >
-      <ProjectList filteredProjects={filteredProjects} view={view} />
+      <ProjectList filteredProjects={filteredPositions} view={view} />
     </AppLayout>
   );
 }

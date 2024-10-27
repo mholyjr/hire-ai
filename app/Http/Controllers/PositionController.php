@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Project;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -12,39 +11,23 @@ use Illuminate\Support\Facades\DB;
 
 class PositionController extends Controller
 {
-
     use AuthorizesRequests;
 
-    public function index(Project $project)
+    public function index(Request $request)
     {
-        $this->authorize('view', $project);
-
-        return Inertia::render('Positions/Index', [
-            'project' => $project->load('positions'),
+        $teamId = $request->user()->currentTeam->id;
+        $positions = Position::forTeam($teamId)->get();
+        
+        return Inertia::render('Positions', [
+            'positions' => $positions
         ]);
     }
 
-    public function create(Project $project)
+    public function store(Request $request)
     {
-        $this->authorize('update', $project);
+        \Log::info('Store method called');
 
-        return Inertia::render('Positions/Create', [
-            'project' => $project,
-        ]);
-    }
-
-    public function show(Position $position)
-    {
-        $this->authorize('view', $position->project);
-
-        return Inertia::render('Positions/Show', [
-            'position' => $position->load('candidates', 'persona'),
-        ]);
-    }
-
-    public function store(Request $request, Project $project)
-    {
-        $this->authorize('update', $project);
+        $this->authorize('create', Position::class);
 
         $validated = $request->validate([
             'title' => 'required|string|max:255',
@@ -62,7 +45,7 @@ class PositionController extends Controller
         DB::beginTransaction();
 
         try {
-            $position = $project->positions()->create([
+            $position = $request->user()->currentTeam->positions()->create([
                 'title' => $validated['title'],
                 'description' => $validated['description'],
             ]);
@@ -83,6 +66,16 @@ class PositionController extends Controller
             throw $e;
         }
 
-        return redirect()->route('projects.show', $project->slug);
+        return redirect()->route('positions');
+    }
+
+    public function archive(Request $request, Position $position)
+    {
+        $this->authorize('update', $position);
+
+        $position->state = !$position->state;
+        $position->save();
+
+        return redirect()->back()->with('message', 'Position status updated successfully.');
     }
 }

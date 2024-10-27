@@ -24,20 +24,20 @@ import {
   CardContent,
   CardFooter,
 } from "@/Components/ui/card";
-import { Project, TODO } from "@/types";
+import { Position, Project, TODO } from "@/types";
 import { useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
 
 type Props = {
   view: string;
-  filteredProjects: Project[];
+  filteredProjects: Position[];
 };
 
 export const ProjectList: React.FC<Props> = ({ view, filteredProjects }) => {
   const form = useForm();
 
-  const archiveProject = (project: Project) => {
-    form.patch(route("projects.archive", project.id), {
+  const archiveProject = (project: Position) => {
+    form.patch(route("positions.archive", project.id), {
       preserveState: true,
       preserveScroll: true,
     });
@@ -66,7 +66,7 @@ export const ProjectList: React.FC<Props> = ({ view, filteredProjects }) => {
                 {filteredProjects.map(project => (
                   <TableRow key={project.id}>
                     <TableCell className="font-medium">
-                      <Link href={route("projects.show", project.slug)}>
+                      <Link href={route("positions.show", project.slug)}>
                         {project.title}
                       </Link>
                     </TableCell>

@@ -12,7 +12,8 @@ use App\Actions\Jetstream\UpdateTeamName;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Jetstream\Jetstream;
-use App\Policies\ProjectPolicy;
+use App\Policies\PositionPolicy;
+use App\Models\Position;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -68,6 +69,6 @@ class JetstreamServiceProvider extends ServiceProvider
      */
     public function registerPolicies(): void
     {
-        Gate::policy(Project::class, ProjectPolicy::class);
+        Gate::policy(Position::class, PositionPolicy::class);
     }
 }

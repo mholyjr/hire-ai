@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('positions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
             $table->string('title');
+            $table->boolean('state')->default(true);
+            $table->foreignId('team_id')->constrained()->onDelete('cascade');
             $table->text('description')->nullable();
             $table->string('slug')->unique();
             $table->timestamps();

@@ -48,8 +48,8 @@ class Team extends JetstreamTeam
     /**
      * Get the projects for the team.
      */
-    public function projects()
+    public function positions()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(Position::class);
     }
 }

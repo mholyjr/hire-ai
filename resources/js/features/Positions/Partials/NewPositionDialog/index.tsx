@@ -10,11 +10,6 @@ import {
 import { Button } from "@/Components/ui/button";
 import { NewPositionForm } from "./Partials/NewPositionForm";
 import { useForm } from "@inertiajs/react";
-import { Project } from "@/types";
-
-type Props = {
-  project: Project;
-};
 
 export type PositionFormData = {
   title: string;
@@ -30,7 +25,7 @@ export type PositionFormData = {
   };
 };
 
-export const NewPositionDialog: React.FC<Props> = ({ project }) => {
+export const NewPositionDialog: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const [formMessage, setFormMessage] = React.useState<{
     type: "success" | "error";
@@ -55,7 +50,7 @@ export const NewPositionDialog: React.FC<Props> = ({ project }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormMessage(null);
-    post(route("positions.store", project.slug), {
+    post(route("positions.store"), {
       onSuccess: () => {
         setOpen(false);
         reset();
