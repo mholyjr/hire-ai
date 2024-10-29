@@ -53,6 +53,7 @@ export default function Positions() {
       title="Positions"
       renderHeader={() => (
         <Header
+          type="list"
           view={view}
           setView={setView}
           search={search}

@@ -16,4 +16,9 @@ class PositionPolicy
     {
         return $user->belongsToTeam($position->team);
     }
+
+    public function view(User $user, Position $position): bool
+    {
+        return $user->belongsToTeam($position->team);
+    }
 }

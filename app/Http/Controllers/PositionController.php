@@ -76,4 +76,15 @@ class PositionController extends Controller
 
         return redirect()->back()->with('message', 'Position status updated successfully.');
     }
+
+    public function show(Position $position)
+    {
+        $this->authorize('view', $position);
+        
+        $position->load(['persona', 'candidates']);
+        
+        return Inertia::render('Positions/Show', [
+            'position' => $position
+        ]);
+    }
 }
