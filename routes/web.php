@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\CandidateController;
+use App\Http\Controllers\GoogleLoginController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -30,3 +31,6 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/positions/{position:slug}', [PositionController::class, 'show'])->name('positions.show');
     Route::post('/positions/{position:slug}/candidates', [CandidateController::class, 'store'])->name('candidates.store');
 });
+
+Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback']);

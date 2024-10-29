@@ -40,6 +40,13 @@ export default function Login({ canResetPassword, status }: Props) {
       )}
 
       <form onSubmit={onSubmit}>
+        <div className="block mt-4">
+          <div className="flex items-center justify-end mt-4">
+            <a href="/login/google" className="inline-block">
+              <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" />
+            </a>
+          </div>
+        </div>
         <div>
           <InputLabel htmlFor="email">Email</InputLabel>
           <TextInput
