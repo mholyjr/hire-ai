@@ -6,12 +6,12 @@ import useRoute from "@/Hooks/useRoute";
 import ActionMessage from "@/Components/ActionMessage";
 import FormSection from "@/Components/FormSection";
 import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { User } from "@/types";
 import useTypedPage from "@/Hooks/useTypedPage";
+import { Label } from "@/Components/ui/label";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 
 interface Props {
   user: User;
@@ -88,12 +88,12 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             Saved.
           </ActionMessage>
 
-          <PrimaryButton
+          <Button
             className={classNames({ "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Save
-          </PrimaryButton>
+          </Button>
         </>
       )}
     >
@@ -108,7 +108,7 @@ export default function UpdateProfileInformationForm({ user }: Props) {
             onChange={updatePhotoPreview}
           />
 
-          <InputLabel htmlFor="photo" value="Photo" />
+          <Label htmlFor="photo">Profile image</Label>
 
           {photoPreview ? (
             // <!-- New Profile Photo Preview -->
@@ -158,29 +158,30 @@ export default function UpdateProfileInformationForm({ user }: Props) {
 
       {/* <!-- Name --> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="name" value="Name" />
-        <TextInput
+        <Label htmlFor="name">Name</Label>
+        <Input
           id="name"
           type="text"
           className="mt-1 block w-full"
           value={form.data.name}
           onChange={e => form.setData("name", e.currentTarget.value)}
           autoComplete="name"
+          error={form.errors.name}
         />
-        <InputError message={form.errors.name} className="mt-2" />
       </div>
 
       {/* <!-- Email --> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="email" value="Email" />
-        <TextInput
+        <Label htmlFor="email">Email</Label>
+        <Input
           id="email"
           type="email"
           className="mt-1 block w-full"
           value={form.data.email}
           onChange={e => form.setData("email", e.currentTarget.value)}
+          error={form.errors.email}
+          disabled
         />
-        <InputError message={form.errors.email} className="mt-2" />
 
         {page.props.jetstream.hasEmailVerification &&
         user.email_verified_at === null ? (

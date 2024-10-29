@@ -6,10 +6,11 @@ import ActionMessage from "@/Components/ActionMessage";
 import ActionSection from "@/Components/ActionSection";
 import DialogModal from "@/Components/DialogModal";
 import InputError from "@/Components/InputError";
-import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 import { Session } from "@/types";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
 
 interface Props {
   sessions: Session[];
@@ -118,9 +119,7 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
       ) : null}
 
       <div className="flex items-center mt-5">
-        <PrimaryButton onClick={confirmLogout}>
-          Log Out Other Browser Sessions
-        </PrimaryButton>
+        <Button onClick={confirmLogout}>Log Out Other Browser Sessions</Button>
 
         <ActionMessage on={form.recentlySuccessful} className="ml-3">
           Done.
@@ -133,29 +132,28 @@ export default function LogoutOtherBrowserSessions({ sessions }: Props) {
           Please enter your password to confirm you would like to log out of
           your other browser sessions across all of your devices.
           <div className="mt-4">
-            <TextInput
+            <Input
               type="password"
               className="mt-1 block w-3/4"
               placeholder="Password"
               ref={passwordRef}
               value={form.data.password}
               onChange={e => form.setData("password", e.currentTarget.value)}
+              error={form.errors.password}
             />
-
-            <InputError message={form.errors.password} className="mt-2" />
           </div>
         </DialogModal.Content>
 
         <DialogModal.Footer>
           <SecondaryButton onClick={closeModal}>Cancel</SecondaryButton>
 
-          <PrimaryButton
+          <Button
             onClick={logoutOtherBrowserSessions}
             className={classNames("ml-2", { "opacity-25": form.processing })}
             disabled={form.processing}
           >
             Log Out Other Browser Sessions
-          </PrimaryButton>
+          </Button>
         </DialogModal.Footer>
       </DialogModal>
     </ActionSection>

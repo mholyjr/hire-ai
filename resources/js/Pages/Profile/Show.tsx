@@ -8,6 +8,7 @@ import useTypedPage from "@/Hooks/useTypedPage";
 import SectionBorder from "@/Components/SectionBorder";
 import AppLayout from "@/Layouts/AppLayout";
 import { Session } from "@/types";
+import { Header } from "@/Components/Header";
 
 interface Props {
   sessions: Session[];
@@ -24,9 +25,7 @@ export default function Show({
     <AppLayout
       title={"Profile"}
       renderHeader={() => (
-        <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-          Profile
-        </h2>
+        <Header type="detail" title="Profile" />
       )}
     >
       <div>
@@ -47,7 +46,7 @@ export default function Show({
             </div>
           ) : null}
 
-          {page.props.jetstream.canManageTwoFactorAuthentication ? (
+          {/* {page.props.jetstream.canManageTwoFactorAuthentication ? (
             <div className="mt-10 sm:mt-0">
               <TwoFactorAuthenticationForm
                 requiresConfirmation={confirmsTwoFactorAuthentication}
@@ -55,7 +54,7 @@ export default function Show({
 
               <SectionBorder />
             </div>
-          ) : null}
+          ) : null} */}
 
           <div className="mt-10 sm:mt-0">
             <LogoutOtherBrowserSessions sessions={sessions} />
