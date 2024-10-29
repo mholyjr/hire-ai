@@ -3,11 +3,10 @@ import classNames from "classnames";
 import React from "react";
 import useRoute from "@/Hooks/useRoute";
 import AuthenticationCard from "@/Components/AuthenticationCard";
-import Checkbox from "@/Components/Checkbox";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import InputError from "@/Components/InputError";
+import { GoogleLogin } from "@/Components/GoogleLogin";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
 
 interface Props {
   canResetPassword: boolean;
@@ -21,6 +20,12 @@ export default function Login({ canResetPassword, status }: Props) {
     password: "",
     remember: "",
   });
+
+  const [usePassword, setUsePassword] = React.useState(false);
+
+  React.useEffect(() => {
+    setUsePassword(!!form.data.email);
+  }, [form.data.email]);
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -40,55 +45,68 @@ export default function Login({ canResetPassword, status }: Props) {
       )}
 
       <form onSubmit={onSubmit}>
-        <div className="block mt-4">
-          <div className="flex items-center justify-end mt-4">
-            <a href="/login/google" className="inline-block">
-              <img src="https://developers.google.com/identity/images/btn_google_signin_dark_normal_web.png" />
-            </a>
-          </div>
-        </div>
         <div>
-          <InputLabel htmlFor="email">Email</InputLabel>
-          <TextInput
+          <Label htmlFor="email">Email</Label>
+          <Input
             id="email"
             type="email"
             className="mt-1 block w-full"
             value={form.data.email}
             onChange={e => form.setData("email", e.currentTarget.value)}
+            error={form.errors.email}
             required
             autoFocus
           />
-          <InputError className="mt-2" message={form.errors.email} />
         </div>
-
-        <div className="mt-4">
-          <InputLabel htmlFor="password">Password</InputLabel>
-          <TextInput
-            id="password"
-            type="password"
-            className="mt-1 block w-full"
-            value={form.data.password}
-            onChange={e => form.setData("password", e.currentTarget.value)}
-            required
-            autoComplete="current-password"
-          />
-          <InputError className="mt-2" message={form.errors.password} />
-        </div>
-
-        <div className="mt-4">
-          <label className="flex items-center">
-            <Checkbox
-              name="remember"
-              checked={form.data.remember === "on"}
-              onChange={e =>
-                form.setData("remember", e.currentTarget.checked ? "on" : "")
-              }
+        {usePassword && (
+          <div className="mt-4">
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              type="password"
+              className="mt-1 block w-full"
+              value={form.data.password}
+              onChange={e => form.setData("password", e.currentTarget.value)}
+              required
+              autoComplete="current-password"
+              error={form.errors.password}
             />
-            <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
-              Remember me
-            </span>
-          </label>
+          </div>
+        )}
+        <Button
+          className={classNames("w-full mt-4", {
+            "opacity-25": form.processing,
+          })}
+          disabled={form.processing}
+        >
+          Log in
+        </Button>
+        <div className="relative my-8">
+          <span className="block w-full h-px bg-gray-300"></span>
+          <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto">
+            Or continue with
+          </p>
         </div>
+        <div className="block mt-4">
+          <GoogleLogin />
+        </div>
+        {/* <div className="mt-4">
+              <label className="flex items-center">
+                <Checkbox
+                  name="remember"
+                  checked={form.data.remember === "on"}
+                  onChange={e =>
+                    form.setData(
+                      "remember",
+                      e.currentTarget.checked ? "on" : "",
+                    )
+                  }
+                />
+                <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">
+                  Remember me
+                </span>
+              </label>
+            </div> */}
 
         <div className="flex flex-col space-y-2 md:flex-row md:items-center md:justify-between md:space-y-0 mt-4">
           {canResetPassword && (
@@ -109,13 +127,6 @@ export default function Login({ canResetPassword, status }: Props) {
             >
               Need an account?
             </Link>
-
-            <PrimaryButton
-              className={classNames("ml-4", { "opacity-25": form.processing })}
-              disabled={form.processing}
-            >
-              Log in
-            </PrimaryButton>
           </div>
         </div>
       </form>
