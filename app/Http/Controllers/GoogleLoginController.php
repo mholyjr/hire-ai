@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
@@ -41,6 +42,16 @@ class GoogleLoginController extends Controller
                 $newUser->email = $user->email;
                 $newUser->google_id = $user->id;
                 $newUser->password = bcrypt(Str::random()); // Set some random password
+                $newUser->save();
+
+                // Create personal team for the new user
+                $newUser->ownedTeams()->save(Team::forceCreate([
+                    'user_id' => $newUser->id,
+                    'name' => explode(' ', $newUser->name, 2)[0]."'s Team",
+                    'personal_team' => true,
+                ]));
+
+                $newUser->current_team_id = $newUser->ownedTeams()->first()->id;
                 $newUser->save();
 
                 auth()->login($newUser, true);
