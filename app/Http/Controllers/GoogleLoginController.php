@@ -18,22 +18,33 @@ class GoogleLoginController extends Controller
     {
         $user = Socialite::driver('google')->user();
 
+        // First check if user exists with google_id
         $existingUser = User::where('google_id', $user->id)->first();
 
         if ($existingUser) {
-            // Log in the existing user.
+            // Log in the existing user
             auth()->login($existingUser, true);
         } else {
-            // Create a new user.
-            $newUser = new User();
-            $newUser->name = $user->name;
-            $newUser->email = $user->email;
-            $newUser->google_id = $user->id;
-            $newUser->password = bcrypt(request(Str::random())); // Set some random password
-            $newUser->save();
+            // Check if user exists with same email
+            $userWithEmail = User::where('email', $user->email)->first();
 
-            // Log in the new user.
-            auth()->login($newUser, true);
+            if ($userWithEmail) {
+                // Update existing user with google_id
+                $userWithEmail->google_id = $user->id;
+                $userWithEmail->save();
+                
+                auth()->login($userWithEmail, true);
+            } else {
+                // Create a new user
+                $newUser = new User();
+                $newUser->name = $user->name;
+                $newUser->email = $user->email;
+                $newUser->google_id = $user->id;
+                $newUser->password = bcrypt(Str::random()); // Set some random password
+                $newUser->save();
+
+                auth()->login($newUser, true);
+            }
         }
 
         return redirect()->intended('/positions');
