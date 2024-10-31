@@ -4,6 +4,9 @@ import { Position, Persona, Candidate } from "@/types";
 import { Card, CardContent, CardHeader } from "@/Components/ui/card";
 import { Badge } from "@/Components/ui/badge";
 import { Header } from "@/Components/Header";
+import { NewPositionForm } from "@/features/Positions/Partials/NewPositionDialog/Partials/NewPositionForm";
+import { useForm } from "@inertiajs/react";
+import { PersonaForm } from "./Partials/PersonaForm";
 
 interface Props {
   position: Position & {
@@ -13,6 +16,22 @@ interface Props {
 }
 
 export default function Show({ position }: Props) {
+  const { data, setData, patch, processing, errors } = useForm({
+    title: position.title,
+    description: position.description,
+    persona: {
+      position: position.persona.position,
+      work_experience: position.persona.work_experience,
+      education: position.persona.education,
+      seniority: position.persona.seniority,
+      nationality: position.persona.nationality || "",
+      languages_spoken: position.persona.languages_spoken,
+      additional_info: position.persona.additional_info || "",
+    },
+  });
+
+  console.log(data)
+
   return (
     <AppLayout
       title={position.title}
@@ -48,7 +67,8 @@ export default function Show({ position }: Props) {
               <h3 className="text-lg font-semibold">Persona Details</h3>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+             <PersonaForm data={data} setData={setData} />
+              {/* <div className="space-y-4">
                 <div>
                   <h4 className="font-medium">Position</h4>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -91,7 +111,7 @@ export default function Show({ position }: Props) {
                     </p>
                   </div>
                 )}
-              </div>
+              </div> */}
             </CardContent>
           </Card>
 
