@@ -7,6 +7,7 @@ import { Header } from "@/Components/Header";
 import { NewPositionForm } from "@/features/Positions/Partials/NewPositionDialog/Partials/NewPositionForm";
 import { useForm } from "@inertiajs/react";
 import { PersonaForm } from "./Partials/PersonaForm";
+import { DragDrop } from "@/Components/DragDrop";
 
 interface Props {
   position: Position & {
@@ -30,7 +31,7 @@ export default function Show({ position }: Props) {
     },
   });
 
-  console.log(data)
+  console.log(data);
 
   return (
     <AppLayout
@@ -39,6 +40,15 @@ export default function Show({ position }: Props) {
     >
       <div className="px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <DragDrop
+            position={position}
+            onUploadSuccess={path => {
+              console.log("CV uploaded:", path);
+            }}
+            onUploadError={error => {
+              console.error("Upload failed:", error);
+            }}
+          />
           {/* Position Details */}
           <Card className="md:col-span-2">
             <CardHeader>
@@ -67,7 +77,7 @@ export default function Show({ position }: Props) {
               <h3 className="text-lg font-semibold">Persona Details</h3>
             </CardHeader>
             <CardContent>
-             <PersonaForm data={data} setData={setData} />
+              <PersonaForm data={data} setData={setData} />
               {/* <div className="space-y-4">
                 <div>
                   <h4 className="font-medium">Position</h4>

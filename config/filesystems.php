@@ -56,7 +56,21 @@ return [
             'throw' => false,
         ],
 
+        'gcs' => [
+            'driver' => 'gcs',
+            'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', null),
+            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
+            'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
+            'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
+            'visibility' => 'public',
+            'visibility_handler' => \League\Flysystem\GoogleCloudStorage\UniformBucketLevelAccessVisibility::class,
+            'metadata' => ['cacheControl' => 'public,max-age=86400'],
+        ],
+
     ],
+
+   
 
     /*
     |--------------------------------------------------------------------------

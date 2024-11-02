@@ -8,6 +8,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PositionController extends Controller
 {
@@ -85,6 +86,25 @@ class PositionController extends Controller
         
         return Inertia::render('Positions/Show', [
             'position' => $position
+        ]);
+    }
+
+    public function upload(Request $request, Position $position)
+    {
+        $this->authorize('update', $position);
+
+        $request->validate([
+            'file' => 'required|file|mimes:pdf|max:10240'
+        ]);
+
+        $path = $request->file('file')->store('positions', 'gcs');
+        
+        $position->update([
+            'file_path' => $path
+        ]);
+
+        return response()->json([
+            'filePath' => $path
         ]);
     }
 }

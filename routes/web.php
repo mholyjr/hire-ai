@@ -25,11 +25,11 @@ Route::middleware([
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
-    // Route::get('/positions', [PositionController::class, 'index'])->name('positions.index');
     Route::post('/positions', [PositionController::class, 'store'])->name('positions.store');
     Route::patch('/positions/{position}/archive', [PositionController::class, 'archive'])->name('positions.archive');
     Route::get('/positions/{position:slug}', [PositionController::class, 'show'])->name('positions.show');
     Route::post('/positions/{position:slug}/candidates', [CandidateController::class, 'store'])->name('candidates.store');
+    Route::post('/positions/{position}/upload', [PositionController::class, 'upload'])->name('positions.upload');
 });
 
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');

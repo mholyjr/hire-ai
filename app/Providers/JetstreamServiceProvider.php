@@ -13,6 +13,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Jetstream\Jetstream;
 use App\Policies\PositionPolicy;
+use App\Policies\CandidatePolicy;
+use App\Models\Candidate;
 use App\Models\Position;
 
 class JetstreamServiceProvider extends ServiceProvider
@@ -70,5 +72,6 @@ class JetstreamServiceProvider extends ServiceProvider
     public function registerPolicies(): void
     {
         Gate::policy(Position::class, PositionPolicy::class);
+        Gate::policy(Candidate::class, CandidatePolicy::class);
     }
 }
