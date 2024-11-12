@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::create('candidates', function (Blueprint $table) {
-        //     $table->id();
-        //     $table->foreignId('position_id')->constrained()->onDelete('cascade');
-        //     $table->string('name');
-        //     $table->string('email');
-        //     $table->string('phone')->nullable();
-        //     $table->string('cv_path');
-        //     $table->float('ai_rating')->nullable();
-        //     $table->timestamps();
-        // });
+        Schema::create('candidates', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('position_id')->constrained()->onDelete('cascade');
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('cv_path');
+            $table->float('ai_rating')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**
