@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\Position;
+use App\Policies\PositionPolicy;
 
 class AppServiceProvider extends ServiceProvider
 {

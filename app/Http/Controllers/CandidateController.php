@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessCandidateCv;
 use App\Models\Position;
 use App\Models\Candidate;
 use Illuminate\Http\Request;
@@ -39,7 +40,7 @@ class CandidateController extends Controller
                 ]
             );
 
-            $position->candidates()->create([
+            $candidate = $position->candidates()->create([
                 'name' => $cvData['name'] ?? $validated['name'] ?? "",
                 'email' => $cvData['email'] ?? $validated['email'] ?? "",
                 'phone' => $cvData['phone'] ?? $validated['phone'] ?? "",
@@ -47,10 +48,38 @@ class CandidateController extends Controller
                 'cv_data' => "",
             ]);
 
+            dispatch(new ProcessCandidateCv($candidate, $cvPath));
+
+            \Log::info('Dispatching ProcessCandidateCv job', [
+                'candidate_id' => $candidate->id,
+                'cv_path' => $cvPath
+            ]);
+
             return redirect()->route('positions.show', $position->slug);
         } catch (\Exception $e) {
             report($e);
             throw $e;
         }
+    }
+
+    public function updateFromCvProcessing(Request $request, Candidate $candidate)
+    {
+        // Ensure only internal requests from Google Cloud Tasks can access this endpoint
+        // if (!app()->environment('local') && !$request->header('X-Cloud-Task-Queue-Name')) {
+        //     abort(403);
+        // }
+
+        \Log::info('Received CV processing update request', [
+            'candidate_id' => $candidate->id,
+            'payload' => $request->all()
+        ]);
+
+        $cvData = $request->all();
+        
+        // Update only the cv_data field
+        $candidate->cv_data = json_encode($cvData);
+        $candidate->status = "done";
+        $candidate->save();
+        return response()->json(['message' => 'Candidate updated successfully']);
     }
 }
