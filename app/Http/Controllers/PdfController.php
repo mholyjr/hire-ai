@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Candidate;
+use App\Models\Position;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Log;
 use OpenAI as OpenAIClient;
 use Google\Cloud\Storage\StorageClient;
-use Illuminate\Support\Facades\Http;
 use stdClass;
 
 class PdfController extends Controller
@@ -146,6 +145,12 @@ class PdfController extends Controller
                 'status' => 'pending_rating'
             ]);
 
+            $position_data = Position::with('persona')
+                ->findOrFail($candidate->position_id)
+                ->toArray();
+
+            $this->rateCandidate($position_data, $candidate);
+
             return [
                 'message' => 'Candidate updated successfully',
                 'data' => $candidate->toArray()
@@ -153,6 +158,67 @@ class PdfController extends Controller
         } catch (\Exception $e) {
             throw $e;
         }
+    }
+
+    private function rateCandidate(mixed $position, Candidate $candidate): void
+    {
+        $persona = $position['persona'];
+
+        $openai = OpenAIClient::client(config('services.openai.api_key'));
+
+        $prompt = "I need you to analyze this candidate for the following position:
+
+            Position Title: {$persona['position']}
+            
+            Key Requirements:
+            - Work Experience: {$persona['work_experience']}
+            - Education: {$persona['education']}
+            - Seniority Level: {$persona['seniority']}
+            - Required Languages: " . implode(', ', $persona['languages_spoken']) . "
+            
+            Additional Information:
+            " . ($persona['additional_info'] ? "- {$persona['additional_info']}" : "None provided");
+
+        $prompt .= "
+            Our candidate information:
+            CV Data: {$candidate->cv_data}
+        ";
+
+        $thread = $openai->threads()->create([
+            'messages' => [
+                [
+                    'role' => 'user',
+                    'content' => $prompt,
+                ]
+            ]
+        ]);
+
+        $run = $openai->threads()->runs()->create(
+            threadId: $thread->id,
+            parameters: [
+                'assistant_id' => 'asst_mxd4aJRThYJCpMSt9YN2VaYL',
+            ]
+        );
+
+        // Wait for completion
+        while (in_array($run->status, ['queued', 'in_progress'])) {
+            sleep(1);
+            $run = $openai->threads()->runs()->retrieve(
+                threadId: $thread->id,
+                runId: $run->id
+            );
+        }
+
+        // Check if the run failed
+        if ($run->status === 'failed') {
+            $errorMessage = $run->last_error->message ?? 'Unknown error';
+            // Log::error('Assistant run failed', ['error' => $errorMessage]);
+            throw new \Exception('Assistant run failed: ' . $errorMessage);
+        }
+
+        // Get the assistant's response
+        $messages = $openai->threads()->messages()->list($thread->id);
+        $assistantResponse = $messages->data[0]->content[0]->text->value;
     }
 
     /**
