@@ -8,6 +8,7 @@ use App\Models\Candidate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Log;
 
 class CandidateController extends Controller
 {
@@ -48,9 +49,10 @@ class CandidateController extends Controller
                 'cv_data' => "",
             ]);
 
+            // Create LRO job to process CV
             dispatch(new ProcessCandidateCv($candidate, $cvPath));
 
-            \Log::info('Dispatching ProcessCandidateCv job', [
+            Log::info('Dispatching ProcessCandidateCv job', [
                 'candidate_id' => $candidate->id,
                 'cv_path' => $cvPath
             ]);
@@ -69,13 +71,13 @@ class CandidateController extends Controller
         //     abort(403);
         // }
 
-        \Log::info('Received CV processing update request', [
+        Log::info('Received CV processing update request', [
             'candidate_id' => $candidate->id,
             'payload' => $request->all()
         ]);
 
         $cvData = $request->all();
-        
+
         // Update only the cv_data field
         $candidate->cv_data = json_encode($cvData);
         $candidate->status = "done";

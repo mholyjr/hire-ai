@@ -17,10 +17,9 @@ class ProcessCandidateCv
     {
         $cloudTasks->dispatch(
             queue: 'pdf-cvs',
-            url: "http://hireapp-ai-gcp.test/api/pdfs",
+            url: "http://138.201.246.60/api/pdfs",
             method: HttpMethod::POST,
             payload: [
-                'token' => config('services.hireapp_ai_gcp.api_key'),
                 'file' => $this->cvPath,
                 'resource' => $this->candidate->id,
             ],

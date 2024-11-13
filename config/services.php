@@ -36,12 +36,12 @@ return [
     ],
 
     'google' => [
-        'project_id' => env('GOOGLE_CLOUD_PROJECT_ID'),
-        'client_id' => env('GOOGLE_CLIENT_ID'),
-        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT_URI'),
-        'location_id' => env('GOOGLE_CLOUD_TASKS_LOCATION_ID'),
-        'credentials_path' => env('GOOGLE_CLOUD_KEY_FILE'),
+        'project_id' => env('GOOGLE_SERVICE_ACC_PROJECT_ID'),
+        'private_key_id' => env('GOOGLE_SERVICE_ACC_PRIVATE_KEY_ID'),
+        'private_key' => env('GOOGLE_SERVICE_ACC_PRIVATE_KEY'),
+        'client_email' => env('GOOGLE_SERVICE_ACC_CLIENT_EMAIL'),
+        'client_id' => env('GOOGLE_SERVICE_ACC_CLIENT_ID'),
+        'client_x509_cert_url' => env('GOOGLE_SERVICE_ACC_CLIENT_X509_CERT_URL'),
     ],
 
     'openai' => [
@@ -52,5 +52,4 @@ return [
         'url' => env('HIREAPP_AI_GCP_URL'),
         'api_key' => env('HIREAPP_AI_GCP_API_KEY'),
     ],
-
 ];

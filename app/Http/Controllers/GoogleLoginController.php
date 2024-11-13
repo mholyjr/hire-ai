@@ -33,7 +33,7 @@ class GoogleLoginController extends Controller
                 // Update existing user with google_id
                 $userWithEmail->google_id = $user->id;
                 $userWithEmail->save();
-                
+
                 auth()->login($userWithEmail, true);
             } else {
                 // Create a new user
@@ -47,7 +47,7 @@ class GoogleLoginController extends Controller
                 // Create personal team for the new user
                 $newUser->ownedTeams()->save(Team::forceCreate([
                     'user_id' => $newUser->id,
-                    'name' => explode(' ', $newUser->name, 2)[0]."'s Team",
+                    'name' => explode(' ', $newUser->name, 2)[0] . "'s Team",
                     'personal_team' => true,
                 ]));
 
