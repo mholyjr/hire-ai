@@ -39,7 +39,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -58,9 +58,21 @@ return [
 
         'gcs' => [
             'driver' => 'gcs',
-            'key_file_path' => env('GOOGLE_CLOUD_KEY_FILE', null),
-            'project_id' => env('GOOGLE_CLOUD_PROJECT_ID', 'your-project-id'),
-            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET', 'your-bucket'),
+            'credentials' => [
+                'type' => env('GOOGLE_SERVICE_ACC_TYPE'),
+                'project_id' => env('GOOGLE_SERVICE_ACC_PROJECT_ID'),
+                'private_key_id' => env('GOOGLE_SERVICE_ACC_PRIVATE_KEY_ID'),
+                'private_key' => env('GOOGLE_SERVICE_ACC_PRIVATE_KEY'),
+                'client_email' => env('GOOGLE_SERVICE_ACC_CLIENT_EMAIL'),
+                'client_id' => env('GOOGLE_SERVICE_ACC_CLIENT_ID'),
+                'auth_uri' => env('GOOGLE_SERVICE_ACC_AUTH_URI'),
+                'token_uri' => env('GOOGLE_SERVICE_ACC_TOKEN_URI'),
+                'auth_provider_x509_cert_url' => env('GOOGLE_SERVICE_ACC_AUTH_PROVIDER_X509_CERT_URL'),
+                'client_x509_cert_url' => env('GOOGLE_SERVICE_ACC_CLIENT_X509_CERT_URL'),
+                'universe_domain' => env('GOOGLE_SERVICE_ACC_UNIVERSE_DOMAIN'),
+            ],
+            'project_id' => env('GOOGLE_SERVICE_ACC_PROJECT_ID'),
+            'bucket' => env('GOOGLE_CLOUD_STORAGE_BUCKET'),
             'path_prefix' => env('GOOGLE_CLOUD_STORAGE_PATH_PREFIX', ''),
             'storage_api_uri' => env('GOOGLE_CLOUD_STORAGE_API_URI', null),
             'visibility' => 'public',
@@ -70,7 +82,7 @@ return [
 
     ],
 
-   
+
 
     /*
     |--------------------------------------------------------------------------
