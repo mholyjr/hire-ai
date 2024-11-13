@@ -41,9 +41,6 @@ class CandidateController extends Controller
                 ]
             );
 
-            \Log::info('CV Path after storage:', ['path' => $cvPath]);
-
-
             $candidate = $position->candidates()->create([
                 'name' => $cvData['name'] ?? $validated['name'] ?? "",
                 'email' => $cvData['email'] ?? $validated['email'] ?? "",
@@ -52,13 +49,10 @@ class CandidateController extends Controller
                 'cv_data' => "",
             ]);
 
-            // Create LRO job to process CV
-            dispatch(new ProcessCandidateCv($candidate, $cvPath));
-
-            Log::info('Dispatching ProcessCandidateCv job', [
-                'candidate_id' => $candidate->id,
-                'cv_path' => $cvPath
-            ]);
+            // Create LRO job to process CV only in dev mode
+            if (app()->environment('local')) {
+                dispatch(new ProcessCandidateCv($candidate, $cvPath));
+            }
 
             return redirect()->route('positions.show', $position->slug);
         } catch (\Exception $e) {

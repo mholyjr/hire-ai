@@ -20,8 +20,6 @@ class ProcessCandidateCv
             'resource' => $this->candidate->id,
         ];
 
-        \Log::info('ProcessCandidateCv payload:', $payload);
-
         $cloudTasks->dispatch(
             queue: 'pdf-cvs',
             url: "http://138.201.246.60/api/pdfs",

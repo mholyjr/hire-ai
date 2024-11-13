@@ -9,7 +9,7 @@ class Candidate extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'email', 'phone', 'cv_path', 'ai_rating', 'status'];
+    protected $fillable = ['name', 'email', 'phone', 'cv_path', 'ai_rating', 'status', 'cv_data'];
 
     public function position()
     {
