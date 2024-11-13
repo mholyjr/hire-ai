@@ -39,18 +39,9 @@ export default function Show({ position }: Props) {
       renderHeader={() => <Header type="detail" title={position.title} />}
     >
       <div className="px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <DragDrop
-            position={position}
-            onUploadSuccess={path => {
-              console.log("CV uploaded:", path);
-            }}
-            onUploadError={error => {
-              console.error("Upload failed:", error);
-            }}
-          />
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           {/* Position Details */}
-          <Card className="md:col-span-2">
+          {/* <Card className="md:col-span-2">
             <CardHeader>
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold">Position Details</h3>
@@ -69,61 +60,27 @@ export default function Show({ position }: Props) {
                 </div>
               </div>
             </CardContent>
-          </Card>
-
-          {/* Persona Details */}
-          <Card>
-            <CardHeader>
-              <h3 className="text-lg font-semibold">Persona Details</h3>
-            </CardHeader>
-            <CardContent>
-              <PersonaForm data={data} setData={setData} />
-              {/* <div className="space-y-4">
-                <div>
-                  <h4 className="font-medium">Position</h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {position.persona.position}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium">Seniority</h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {position.persona.seniority}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium">Work Experience</h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {position.persona.work_experience}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium">Education</h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {position.persona.education}
-                  </p>
-                </div>
-                <div>
-                  <h4 className="font-medium">Languages</h4>
-                  <div className="flex gap-2 flex-wrap">
-                    {position.persona.languages_spoken.map(language => (
-                      <Badge key={language} variant="secondary">
-                        {language}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-                {position.persona.additional_info && (
-                  <div>
-                    <h4 className="font-medium">Additional Information</h4>
-                    <p className="text-gray-600 dark:text-gray-400">
-                      {position.persona.additional_info}
-                    </p>
-                  </div>
-                )}
-              </div> */}
-            </CardContent>
-          </Card>
+          </Card> */}
+          <div className="flex flex-col gap-8">
+            <DragDrop
+              position={position}
+              onUploadSuccess={path => {
+                console.log("CV uploaded:", path);
+              }}
+              onUploadError={error => {
+                console.error("Upload failed:", error);
+              }}
+            />
+            {/* Persona Details */}
+            <Card>
+              <CardHeader>
+                <h3 className="text-lg font-semibold">Persona Details</h3>
+              </CardHeader>
+              <CardContent>
+                <PersonaForm data={data} setData={setData} />
+              </CardContent>
+            </Card>
+          </div>
 
           {/* Candidates Section */}
           <Card className="md:col-span-3">
