@@ -15,14 +15,18 @@ class ProcessCandidateCv
 
     public function handle(GoogleCloudTasks $cloudTasks): void
     {
+        $payload = [
+            'file' => $this->cvPath,
+            'resource' => $this->candidate->id,
+        ];
+
+        \Log::info('ProcessCandidateCv payload:', $payload);
+
         $cloudTasks->dispatch(
             queue: 'pdf-cvs',
             url: "http://138.201.246.60/api/pdfs",
             method: HttpMethod::POST,
-            payload: [
-                'file' => $this->cvPath,
-                'resource' => $this->candidate->id,
-            ],
+            payload: $payload,
         );
     }
 }

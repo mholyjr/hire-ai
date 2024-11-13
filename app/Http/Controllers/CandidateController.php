@@ -41,6 +41,9 @@ class CandidateController extends Controller
                 ]
             );
 
+            \Log::info('CV Path after storage:', ['path' => $cvPath]);
+
+
             $candidate = $position->candidates()->create([
                 'name' => $cvData['name'] ?? $validated['name'] ?? "",
                 'email' => $cvData['email'] ?? $validated['email'] ?? "",
