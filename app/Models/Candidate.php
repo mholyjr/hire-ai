@@ -15,4 +15,9 @@ class Candidate extends Model
     {
         return $this->belongsTo(Position::class);
     }
+
+    public function aiRating()
+    {
+        return $this->hasOne(AiRating::class);
+    }
 }

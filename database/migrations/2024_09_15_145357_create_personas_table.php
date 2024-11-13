@@ -11,18 +11,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('personas', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('position_id')->constrained()->onDelete('cascade');
-            $table->string('position');
-            $table->text('work_experience');
-            $table->text('education');
-            $table->string('seniority');
-            $table->string('nationality')->nullable();
-            $table->json('languages_spoken');
-            $table->text('additional_info')->nullable();
-            $table->timestamps();
-        });
+        if (!Schema::hasTable('personas')) {
+            Schema::create('personas', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('position_id')->constrained()->onDelete('cascade');
+                $table->string('position');
+                $table->text('work_experience');
+                $table->text('education');
+                $table->string('seniority');
+                $table->string('nationality')->nullable();
+                $table->json('languages_spoken');
+                $table->text('additional_info')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**

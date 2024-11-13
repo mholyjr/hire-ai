@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AiRating;
 use App\Models\Candidate;
 use App\Models\Position;
 use Illuminate\Http\Request;
@@ -219,6 +220,18 @@ class PdfController extends Controller
         // Get the assistant's response
         $messages = $openai->threads()->messages()->list($thread->id);
         $assistantResponse = $messages->data[0]->content[0]->text->value;
+        $data = json_decode($assistantResponse);
+
+        // Create a new AI rating
+        $rating = new AiRating([
+            'candidate_id' => $candidate->id,
+            'rating' => $data->rating,
+            'summary' => $data->summary,
+            'cons' => json_encode($data->cons),
+            'pros' => json_encode($data->pros),
+        ]);
+
+        $rating->save();
     }
 
     /**

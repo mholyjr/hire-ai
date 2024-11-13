@@ -22,6 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        ini_set('max_execution_time', '300'); // 300 seconds = 5 minutes
         Gate::policy(Position::class, PositionPolicy::class);
     }
 }
