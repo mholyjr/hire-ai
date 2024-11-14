@@ -10,36 +10,17 @@ import { EmptyPositions } from "./Positions/Partials/EmptyPositions";
 export default function Positions() {
   const { positions = [] } = usePage().props as { positions?: Position[] };
 
-  const [view, setView] = React.useState("table");
-  const [search, setSearch] = React.useState("");
-  const [filters, setFilters] = React.useState({
-    state: null,
-  });
-
   return (
-    <AppLayout
-      title="Positions"
-      renderHeader={() =>
-        positions.length !== 0 ? (
-          <Header
-            type="list"
-            view={view}
-            setView={setView}
-            search={search}
-            setSearch={setSearch}
-            filters={filters}
-            setFilters={setFilters}
-            newItemModal={<NewPositionDialog />}
-            title="Positions"
-          />
-        ) : (
-          <></>
-        )
-      }
-    >
+    <AppLayout title="Positions" renderHeader={() => <></>}>
       {positions.length === 0 && <EmptyPositions />}
       {positions.length !== 0 && (
-        <ProjectList filteredProjects={positions} view={view} />
+        <div className="px-32 pt-20">
+          <div className="flex justify-between items-center mb-12">
+            <h1 className="text-2xl font-bold ">Your Open Positions</h1>
+            <NewPositionDialog />
+          </div>
+          <ProjectList positions={positions} />
+        </div>
       )}
     </AppLayout>
   );

@@ -50,9 +50,18 @@ export const NewPositionDialog: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormMessage(null);
+
+    // Set title and description based on position
+    const title = data.persona.position;
+    const description = `We are looking for a ${data.persona.seniority} ${data.persona.position}`;
+    setData(prev => ({
+      ...prev,
+      title,
+      description,
+    }));
+
     post(route("positions.store"), {
       onSuccess: () => {
-        setOpen(false);
         reset();
       },
       onError: err => {

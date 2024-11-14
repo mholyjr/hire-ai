@@ -129,6 +129,8 @@ export interface Position {
   candidates?: Candidate[];
   persona?: Persona;
   state: 0 | 1;
+  num_of_candidates: number;
+  avg_rating: number;
 }
 
 export interface AiRating {

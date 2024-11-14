@@ -17,8 +17,29 @@ class PositionController extends Controller
     public function index(Request $request)
     {
         $teamId = $request->user()->currentTeam->id;
-        $positions = Position::forTeam($teamId)->get();
-        
+
+        $positions = Position::forTeam($teamId)
+            ->where('state', 1)
+            ->withCount('candidates')
+            ->with(['candidates.aiRating'])  // Load the relationships
+            ->get()
+            ->map(function ($position) {
+                // Calculate average rating manually
+                $ratings = $position->candidates->pluck('aiRating.rating')->filter();
+                $avgRating = $ratings->count() > 0 ? $ratings->avg() : 0;
+
+                return [
+                    'id' => $position->id,
+                    'title' => $position->title,
+                    'description' => $position->description,
+                    'created_at' => $position->created_at,
+                    'num_of_candidates' => (int) $position->candidates_count,
+                    'avg_rating' => round($avgRating, 1),
+                    'slug' => $position->slug,
+                    'state' => $position->state
+                ];
+            });
+
         return Inertia::render('Positions', [
             'positions' => $positions
         ]);
@@ -81,9 +102,9 @@ class PositionController extends Controller
     public function show(Position $position)
     {
         $this->authorize('view', $position);
-        
+
         $position->load(['persona', 'candidates.aiRating']);
-        
+
         return Inertia::render('Positions/Show', [
             'position' => $position
         ]);
@@ -98,7 +119,7 @@ class PositionController extends Controller
         ]);
 
         $path = $request->file('file')->store('positions', 'gcs');
-        
+
         $position->update([
             'file_path' => $path
         ]);
