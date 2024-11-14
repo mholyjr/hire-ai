@@ -69,9 +69,17 @@ export default function AppLayout({
                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   <NavLink
                     href={route("positions")}
-                    active={route().current("positions")}
+                    active={route().current("positions") || route().current("positions.show")}
                   >
-                    positions
+                    Positions
+                  </NavLink>
+                  <NavLink
+                    href={route("teams.show", [
+                      page.props.auth.user?.current_team!,
+                    ])}
+                    active={route().current("teams.show")}
+                  >
+                    Team Settings
                   </NavLink>
                 </div>
               </div>
