@@ -5,6 +5,7 @@ import { Position } from "@/types";
 import { ProjectList } from "@/features/Dashboard/components/ProjectList";
 import { Header } from "@/Components/Header";
 import { NewPositionDialog } from "@/features/Positions/Partials/NewPositionDialog";
+import { EmptyPositions } from "./Positions/Partials/EmptyPositions";
 
 export default function Positions() {
   const { positions = [] } = usePage().props as { positions?: Position[] };
@@ -15,57 +16,31 @@ export default function Positions() {
     state: null,
   });
 
-  React.useEffect(() => {
-    const storedView = localStorage.getItem("positionsView") || "table";
-    const storedFilters = JSON.parse(
-      localStorage.getItem("positionsFilters") || "{}",
-    );
-    setView(storedView as "table" | "grid");
-    setFilters(storedFilters);
-  }, []);
-
-  React.useEffect(() => {
-    localStorage.setItem("positionsView", view);
-    localStorage.setItem("positionsFilters", JSON.stringify(filters));
-  }, [view, filters]);
-
-  const filteredPositions = positions.filter(position => {
-    if (filters.state !== undefined && filters.state !== null) {
-      const stateFilter = Number(filters.state);
-      if (position.state !== stateFilter) return false;
-    }
-
-    // Search filter
-    if (search.trim() !== "") {
-      const searchLower = search.toLowerCase().trim();
-      return (
-        position.title.toLowerCase().includes(searchLower) ||
-        (position.description &&
-          position.description.toLowerCase().includes(searchLower))
-      );
-    }
-
-    return true;
-  });
-
   return (
     <AppLayout
       title="Positions"
-      renderHeader={() => (
-        <Header
-          type="list"
-          view={view}
-          setView={setView}
-          search={search}
-          setSearch={setSearch}
-          filters={filters}
-          setFilters={setFilters}
-          newItemModal={<NewPositionDialog />}
-          title="Positions"
-        />
-      )}
+      renderHeader={() =>
+        positions.length !== 0 ? (
+          <Header
+            type="list"
+            view={view}
+            setView={setView}
+            search={search}
+            setSearch={setSearch}
+            filters={filters}
+            setFilters={setFilters}
+            newItemModal={<NewPositionDialog />}
+            title="Positions"
+          />
+        ) : (
+          <></>
+        )
+      }
     >
-      <ProjectList filteredProjects={filteredPositions} view={view} />
+      {positions.length === 0 && <EmptyPositions />}
+      {positions.length !== 0 && (
+        <ProjectList filteredProjects={positions} view={view} />
+      )}
     </AppLayout>
   );
 }
