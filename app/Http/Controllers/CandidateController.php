@@ -63,11 +63,6 @@ class CandidateController extends Controller
 
     public function updateFromCvProcessing(Request $request, Candidate $candidate)
     {
-        // Ensure only internal requests from Google Cloud Tasks can access this endpoint
-        // if (!app()->environment('local') && !$request->header('X-Cloud-Task-Queue-Name')) {
-        //     abort(403);
-        // }
-
         Log::info('Received CV processing update request', [
             'candidate_id' => $candidate->id,
             'payload' => $request->all()
@@ -80,5 +75,14 @@ class CandidateController extends Controller
         $candidate->status = "done";
         $candidate->save();
         return response()->json(['message' => 'Candidate updated successfully']);
+    }
+
+    public function checkAiRating(Candidate $candidate)
+    {
+        $this->authorize('view', $candidate);
+
+        $candidate->load('aiRating');
+
+        return response()->json($candidate);
     }
 }

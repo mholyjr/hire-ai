@@ -30,6 +30,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/positions/{position:slug}', [PositionController::class, 'show'])->name('positions.show');
     Route::post('/positions/{position:slug}/candidates', [CandidateController::class, 'store'])->name('candidates.store');
     Route::post('/positions/{position}/upload', [PositionController::class, 'upload'])->name('positions.upload');
+    Route::get('/candidates/{candidate}/ai-rating', [CandidateController::class, 'checkAiRating'])
+        ->name('candidates.check-ai-rating');
 });
 
 Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('auth.google');

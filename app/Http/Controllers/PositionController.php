@@ -82,7 +82,7 @@ class PositionController extends Controller
     {
         $this->authorize('view', $position);
         
-        $position->load(['persona', 'candidates']);
+        $position->load(['persona', 'candidates.aiRating']);
         
         return Inertia::render('Positions/Show', [
             'position' => $position

@@ -8,6 +8,8 @@ import { NewPositionForm } from "@/features/Positions/Partials/NewPositionDialog
 import { useForm } from "@inertiajs/react";
 import { PersonaForm } from "./Partials/PersonaForm";
 import { DragDrop } from "@/Components/DragDrop";
+import { CandidateRow } from "./Partials/CandidateRow";
+import { CandidateItem } from "./Partials/CandidateItem";
 
 interface Props {
   position: Position & {
@@ -31,36 +33,13 @@ export default function Show({ position }: Props) {
     },
   });
 
-  console.log(data);
-
   return (
     <AppLayout
       title={position.title}
       renderHeader={() => <Header type="detail" title={position.title} />}
     >
       <div className="px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          {/* Position Details */}
-          {/* <Card className="md:col-span-2">
-            <CardHeader>
-              <div className="flex justify-between items-center">
-                <h3 className="text-lg font-semibold">Position Details</h3>
-                <Badge variant={position.state ? "secondary" : "outline"}>
-                  {position.state ? "Active" : "Archived"}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-medium">Description</h4>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    {position.description}
-                  </p>
-                </div>
-              </div>
-            </CardContent>
-          </Card> */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="flex flex-col gap-8">
             <DragDrop
               position={position}
@@ -81,39 +60,13 @@ export default function Show({ position }: Props) {
               </CardContent>
             </Card>
           </div>
-
-          {/* Candidates Section */}
-          <Card className="md:col-span-3">
-            <CardHeader>
-              <h3 className="text-lg font-semibold">Candidates</h3>
-            </CardHeader>
-            <CardContent>
-              {position.candidates.length === 0 ? (
-                <p className="text-gray-600 dark:text-gray-400">
-                  No candidates yet.
-                </p>
-              ) : (
-                <div className="space-y-4">
-                  {position.candidates.map(candidate => (
-                    <div
-                      key={candidate.id}
-                      className="flex items-center justify-between border-b pb-4"
-                    >
-                      <div>
-                        <h4 className="font-medium">{candidate.name}</h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {candidate.email}
-                        </p>
-                      </div>
-                      {candidate.ai_rating && (
-                        <Badge>Score: {candidate.ai_rating}</Badge>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          <div className="md:col-span-3">
+            <div className="grid gap-8 grid-cols-2">
+              {position.candidates.map(candidate => (
+                <CandidateItem key={candidate.id} candidate={candidate} />
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </AppLayout>

@@ -11,6 +11,10 @@ class Candidate extends Model
 
     protected $fillable = ['name', 'email', 'phone', 'cv_path', 'ai_rating', 'status', 'cv_data'];
 
+    protected $casts = [
+        'cv_data' => 'array',
+    ];
+
     public function position()
     {
         return $this->belongsTo(Position::class);

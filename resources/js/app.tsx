@@ -7,9 +7,19 @@ import { createInertiaApp } from "@inertiajs/react";
 import { RouteContext } from "@/Hooks/useRoute";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ThemeProvider } from "@/Components/theme-provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const appName =
   window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5000,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 createInertiaApp({
   title: title => `${title} - ${appName}`,
@@ -26,7 +36,9 @@ createInertiaApp({
     return root.render(
       <RouteContext.Provider value={(window as any).route}>
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
-          <App {...props} />
+          <QueryClientProvider client={queryClient}>
+            <App {...props} />
+          </QueryClientProvider>
         </ThemeProvider>
       </RouteContext.Provider>,
     );

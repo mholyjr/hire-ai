@@ -131,6 +131,17 @@ export interface Position {
   state: 0 | 1;
 }
 
+export interface AiRating {
+  id: number;
+  candidate_id: number;
+  rating: number;
+  summary: string;
+  pros: string[];
+  cons: string[];
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Candidate {
   id: number;
   position_id: number;
@@ -138,7 +149,9 @@ export interface Candidate {
   email: string;
   phone: string | null;
   cv_path: string;
-  ai_rating: number | null;
+  cv_data: Resume;
+  ai_rating: AiRating | null;
+  status: string;
   created_at: string;
   updated_at: string;
 }
@@ -155,4 +168,27 @@ export interface Persona {
   additional_info: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface Education {
+  Degree: string;
+  Field: string;
+  Institution: string;
+  Year: string;
+}
+
+export interface WorkExperience {
+  Role: string;
+  Company: string;
+  Years: string;
+  Responsibilities: string[];
+}
+
+export interface Resume {
+  name: string;
+  email: string;
+  phone: string;
+  skills: string[];
+  education: Education[];
+  experience: WorkExperience[];
 }
