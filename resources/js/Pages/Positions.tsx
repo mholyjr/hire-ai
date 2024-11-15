@@ -11,17 +11,14 @@ export default function Positions() {
   const { positions = [] } = usePage().props as { positions?: Position[] };
 
   return (
-    <AppLayout title="Positions" renderHeader={() => <></>}>
-      {positions.length === 0 && <EmptyPositions />}
-      {positions.length !== 0 && (
-        <div className="px-32 pt-20">
-          <div className="flex justify-between items-center mb-12">
-            <h1 className="text-2xl font-bold ">Your Open Positions</h1>
-            <NewPositionDialog />
-          </div>
-          <ProjectList positions={positions} />
-        </div>
+    <AppLayout
+      title="Positions"
+      renderHeader={() => (
+        <Header title="Your open positions" action={<NewPositionDialog />} />
       )}
+    >
+      {positions.length === 0 && <EmptyPositions />}
+      {positions.length !== 0 && <ProjectList positions={positions} />}
     </AppLayout>
   );
 }

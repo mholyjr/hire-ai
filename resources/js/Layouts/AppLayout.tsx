@@ -69,7 +69,10 @@ export default function AppLayout({
                 <div className="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                   <NavLink
                     href={route("positions")}
-                    active={route().current("positions") || route().current("positions.show")}
+                    active={
+                      route().current("positions") ||
+                      route().current("positions.show")
+                    }
                   >
                     Positions
                   </NavLink>
@@ -414,7 +417,7 @@ export default function AppLayout({
         {renderHeader ? renderHeader() : null}
 
         {/* <!-- Page Content --> */}
-        <main>{children}</main>
+        <main className="px-4 sm:px-6 md:px-12 lg:px-32 pb-20">{children}</main>
       </div>
     </div>
   );
