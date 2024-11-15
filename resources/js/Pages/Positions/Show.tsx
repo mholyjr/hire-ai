@@ -17,6 +17,7 @@ import {
 } from "@/Components/ui/popover";
 import { Button } from "@/Components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 interface Props {
   position: Position & {
@@ -26,6 +27,7 @@ interface Props {
 }
 
 export default function Show({ position }: Props) {
+  const { toast } = useToast();
   const { data, setData, patch, processing, errors } = useForm({
     title: position.title,
     description: position.description,
@@ -57,10 +59,19 @@ export default function Show({ position }: Props) {
                 <DragDrop
                   position={position}
                   onUploadSuccess={path => {
-                    console.log("CV uploaded:", path);
+                    toast({
+                      title: "The upload is complete 🎉",
+                      description:
+                        "Your CV has been uploaded successfully. Please wait for the AI to review it.",
+                    });
                   }}
                   onUploadError={error => {
-                    console.error("Upload failed:", error);
+                    toast({
+                      variant: "destructive",
+                      title: "Upload has failed",
+                      description:
+                        "Upload wasn't successful. Please try again.",
+                    });
                   }}
                 />
               </PopoverContent>

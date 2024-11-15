@@ -8,6 +8,7 @@ import { RouteContext } from "@/Hooks/useRoute";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ThemeProvider } from "@/Components/theme-provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "./Components/ui/toaster";
 
 const appName =
   window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
@@ -38,6 +39,7 @@ createInertiaApp({
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <QueryClientProvider client={queryClient}>
             <App {...props} />
+            <Toaster />
           </QueryClientProvider>
         </ThemeProvider>
       </RouteContext.Provider>,
