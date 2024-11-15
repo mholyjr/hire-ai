@@ -35,7 +35,11 @@ const ItemCard = ({
   return (
     <Card key={position.id} className="hover:shadow-lg transition-shadow">
       <CardHeader className="flex flex-row items-center justify-between">
-        <CardTitle className="capitalize text-2xl">{position.title}</CardTitle>
+        <CardTitle className="capitalize text-2xl">
+          <Link href={route("positions.show", position.slug)}>
+            {position.title}
+          </Link>
+        </CardTitle>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="m-0 !mt-0">
