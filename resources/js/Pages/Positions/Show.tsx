@@ -10,6 +10,13 @@ import { PersonaForm } from "./Partials/PersonaForm";
 import { DragDrop } from "@/Components/DragDrop";
 import { CandidateRow } from "./Partials/CandidateRow";
 import { CandidateItem } from "./Partials/CandidateItem";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/Components/ui/popover";
+import { Button } from "@/Components/ui/button";
+import { PlusCircleIcon } from "lucide-react";
 
 interface Props {
   position: Position & {
@@ -36,36 +43,49 @@ export default function Show({ position }: Props) {
   return (
     <AppLayout
       title={position.title}
-      renderHeader={() => <Header type="detail" title={position.title} />}
+      renderHeader={() => (
+        <Header
+          title={position.title}
+          action={
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button className="inline-flex gap-2">
+                  <PlusCircleIcon size={16} /> Upload CV
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <DragDrop
+                  position={position}
+                  onUploadSuccess={path => {
+                    console.log("CV uploaded:", path);
+                  }}
+                  onUploadError={error => {
+                    console.error("Upload failed:", error);
+                  }}
+                />
+              </PopoverContent>
+            </Popover>
+          }
+        />
+      )}
     >
-      <div className="px-6 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="flex flex-col gap-8">
-            <DragDrop
-              position={position}
-              onUploadSuccess={path => {
-                console.log("CV uploaded:", path);
-              }}
-              onUploadError={error => {
-                console.error("Upload failed:", error);
-              }}
-            />
-            {/* Persona Details */}
-            <Card>
-              <CardHeader>
-                <h3 className="text-lg font-semibold">Persona Details</h3>
-              </CardHeader>
-              <CardContent>
-                <PersonaForm data={data} setData={setData} />
-              </CardContent>
-            </Card>
-          </div>
-          <div className="md:col-span-3">
-            <div className="grid gap-8 grid-cols-2">
-              {position.candidates.map(candidate => (
-                <CandidateItem key={candidate.id} candidate={candidate} />
-              ))}
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="flex flex-col gap-8">
+          {/* Persona Details */}
+          <Card>
+            <CardHeader>
+              <h3 className="text-lg font-semibold">Persona Details</h3>
+            </CardHeader>
+            <CardContent>
+              <PersonaForm data={data} setData={setData} />
+            </CardContent>
+          </Card>
+        </div>
+        <div className="md:col-span-3">
+          <div className="grid gap-8 grid-cols-2">
+            {position.candidates.map(candidate => (
+              <CandidateItem key={candidate.id} candidate={candidate} />
+            ))}
           </div>
         </div>
       </div>
