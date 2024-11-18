@@ -194,3 +194,22 @@ export interface Resume {
   education: Education[];
   experience: WorkExperience[];
 }
+
+export interface PageProps {
+  auth: Auth;
+  jetstream: {
+    canCreateTeams: boolean;
+    canManageTwoFactorAuthentication: boolean;
+    canUpdatePassword: boolean;
+    canUpdateProfileInformation: boolean;
+    flash: any;
+    hasAccountDeletionFeatures: boolean;
+    hasApiFeatures: boolean;
+    hasTeamFeatures: boolean;
+    hasTermsAndPrivacyPolicyFeature: boolean;
+    managesProfilePhotos: boolean;
+    hasEmailVerification: boolean;
+  };
+  errors: Record<string, string>;
+  errorBags: Record<string, Record<string, string>>;
+}

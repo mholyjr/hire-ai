@@ -213,7 +213,6 @@ class PdfController extends Controller
         // Check if the run failed
         if ($run->status === 'failed') {
             $errorMessage = $run->last_error->message ?? 'Unknown error';
-            // Log::error('Assistant run failed', ['error' => $errorMessage]);
             throw new \Exception('Assistant run failed: ' . $errorMessage);
         }
 
@@ -231,38 +230,8 @@ class PdfController extends Controller
             'pros' => json_encode($data->pros),
         ]);
 
+        $candidate->position->team()->decrement('credits', 1);
+
         $rating->save();
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

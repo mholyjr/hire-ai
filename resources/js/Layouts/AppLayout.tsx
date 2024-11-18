@@ -77,6 +77,15 @@ export default function AppLayout({
                     Positions
                   </NavLink>
                   <NavLink
+                    href={route("billing")}
+                    active={
+                      route().current("billing") ||
+                      route().current("billing.index")
+                    }
+                  >
+                    Billing
+                  </NavLink>
+                  <NavLink
                     href={route("teams.show", [
                       page.props.auth.user?.current_team!,
                     ])}

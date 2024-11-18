@@ -54,4 +54,8 @@ return [
         'url' => env('HIREAPP_AI_GCP_URL'),
         'api_key' => env('HIREAPP_AI_GCP_API_KEY'),
     ],
+
+    'stripe' => [
+        'secret' => env('STRIPE_SECRET'),
+    ]
 ];

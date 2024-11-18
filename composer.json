@@ -9,6 +9,7 @@
         "google/cloud-storage": "^1.44",
         "google/cloud-tasks": "^1.15",
         "inertiajs/inertia-laravel": "^1.0",
+        "laravel/cashier": "^15.5",
         "laravel/framework": "^11.9",
         "laravel/jetstream": "^5.1",
         "laravel/sanctum": "^4.0",
