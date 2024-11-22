@@ -18,6 +18,9 @@ class PositionController extends Controller
     {
         $teamId = $request->user()->currentTeam->id;
 
+        // Get stats for the team
+        $stats = app(StatsController::class)->getTeamStats($request)->getData();
+
         $positions = Position::forTeam($teamId)
             ->where('state', 1)
             ->withCount('candidates')
@@ -41,7 +44,8 @@ class PositionController extends Controller
             });
 
         return Inertia::render('Positions', [
-            'positions' => $positions
+            'positions' => $positions,
+            'teamStats' => $stats
         ]);
     }
 

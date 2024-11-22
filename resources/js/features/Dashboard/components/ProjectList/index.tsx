@@ -20,6 +20,8 @@ import { Position, TODO } from "@/types";
 import { useForm } from "@inertiajs/react";
 import { Link } from "@inertiajs/react";
 import { Settings, Star } from "lucide-react";
+import { Headline } from "@/Components/ui/Headline";
+import { NewPositionDialog } from "@/features/Positions/Partials/NewPositionDialog";
 
 type Props = {
   positions: Position[];
@@ -98,6 +100,13 @@ export const ProjectList: React.FC<Props> = ({ positions }) => {
 
   return (
     <div className="flex flex-col w-full">
+      <div className=" pt-8 md:pt-12">
+        <div className="flex flex-col md:flex-row md:justify-between items-center mb-12 gap-4 md:gap-0">
+          <Headline>Your open positions</Headline>
+          <NewPositionDialog />
+        </div>
+      </div>
+
       <main className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {positions.map(position => {
           return (
