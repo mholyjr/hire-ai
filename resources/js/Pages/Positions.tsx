@@ -19,16 +19,18 @@ interface PositionsProps {
 export default function Positions({ positions, teamStats }: PositionsProps) {
   // const { positions = [] } = usePage().props as { positions?: Position[] };
 
+  const pageHeader =
+    positions.length !== 0 ? <Header title="Team's daily stats" /> : <></>;
+
   return (
-    <AppLayout
-      title="Positions"
-      renderHeader={() => <Header title="Your daily stats" />}
-    >
+    <AppLayout title="Positions" renderHeader={() => pageHeader}>
       <div className="grid gap-8">
-        <TeamStatsCharts
-          candidatesData={teamStats.candidates_data}
-          ratingsData={teamStats.ratings_data}
-        />
+        {positions.length !== 0 && (
+          <TeamStatsCharts
+            candidatesData={teamStats.candidates_data}
+            ratingsData={teamStats.ratings_data}
+          />
+        )}
         {positions.length === 0 && <EmptyPositions />}
         {positions.length !== 0 && <ProjectList positions={positions} />}
       </div>

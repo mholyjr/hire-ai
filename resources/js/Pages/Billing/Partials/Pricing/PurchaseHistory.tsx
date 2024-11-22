@@ -10,12 +10,26 @@ import {
 } from "@/Components/ui/table";
 import { CreditPurchase } from "@/types";
 import dayjs from "dayjs";
+import { ReceiptIcon } from "lucide-react";
 
 export function PurchaseHistory({
   purchaseHistory,
 }: {
   purchaseHistory: CreditPurchase[];
 }) {
+  if (purchaseHistory.length === 0) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Purchase History</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center justify-center py-8 text-center">
+          <ReceiptIcon className="h-12 w-12 text-gray-400 mb-4" />
+          <p className="text-gray-500">No purchase history available yet. Select a credits package above to start.</p>
+        </CardContent>
+      </Card>
+    );
+  }
   return (
     <Card>
       <CardHeader>
