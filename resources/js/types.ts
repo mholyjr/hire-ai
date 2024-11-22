@@ -8,6 +8,7 @@ export interface Team {
   personal_team: boolean;
   created_at: DateTime;
   updated_at: DateTime;
+  credits: number;
 }
 
 export interface User {
@@ -212,4 +213,25 @@ export interface PageProps {
   };
   errors: Record<string, string>;
   errorBags: Record<string, Record<string, string>>;
+}
+
+export interface CreditPurchase {
+  id: number;
+  team_id: number;
+  amount: number;
+  credits: number;
+  stripe_payment_id: string;
+  created_at: DateTime;
+  updated_at: DateTime;
+}
+
+export interface BillingPageProps extends PageProps {
+  plans: {
+    title: string;
+    purchaseUrl: string;
+    pricePerCredit: string;
+    totalPrice: number;
+    credits: number;
+  }[];
+  purchases: CreditPurchase[];
 }

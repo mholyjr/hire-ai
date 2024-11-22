@@ -12,6 +12,7 @@ import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Team } from "@/types";
 import { ModeToggle } from "@/Components/ui/mode-toggle";
+import { Badge } from "@/Components/ui/badge";
 
 interface Props {
   title: string;
@@ -95,10 +96,10 @@ export default function AppLayout({
                   </NavLink>
                 </div>
               </div>
-
               <div className="hidden sm:flex sm:items-center sm:ml-6">
                 <div className="ml-3 relative">
                   {/* <!-- Teams Dropdown --> */}
+
                   {page.props.jetstream.hasTeamFeatures ? (
                     <Dropdown
                       align="right"
@@ -251,6 +252,12 @@ export default function AppLayout({
                       <DropdownLink as="button">Log Out</DropdownLink>
                     </form>
                   </Dropdown>
+                </div>
+                {/* Cretids section */}
+                <div className="ml-3 relative">
+                  <Badge>
+                    {page.props.auth.user?.current_team?.credits ?? 0} credits
+                  </Badge>
                 </div>
                 <div className="ml-3 relative">
                   <ModeToggle />
