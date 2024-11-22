@@ -35,6 +35,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/positions/{position}/upload', [PositionController::class, 'upload'])->name('positions.upload');
     Route::get('/candidates/{candidate}/ai-rating', [CandidateController::class, 'checkAiRating'])
         ->name('candidates.check-ai-rating');
+    Route::patch('candidates/{candidate}/state', [CandidateController::class, 'updateState'])
+        ->name('candidates.update-state')
+        ->middleware(['auth']);
 
     Route::get('/billing', [BillingController::class, 'index'])->name('billing');
     Route::get('/billing/portal', [StripeController::class, 'portal'])->name('billing.portal');

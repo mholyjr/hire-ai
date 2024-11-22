@@ -145,6 +145,13 @@ export interface AiRating {
   updated_at: string;
 }
 
+export type CandidateState =
+  | "maybe"
+  | "short_list"
+  | "no"
+  | "hired"
+  | "rejected";
+
 export interface Candidate {
   id: number;
   position_id: number;
@@ -157,6 +164,7 @@ export interface Candidate {
   status: string;
   created_at: string;
   updated_at: string;
+  state: CandidateState;
 }
 
 export interface Persona {

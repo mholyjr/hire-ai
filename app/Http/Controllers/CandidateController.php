@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Log;
+use App\Enums\CandidateState;
 
 class CandidateController extends Controller
 {
@@ -45,6 +46,7 @@ class CandidateController extends Controller
                 'name' => $cvData['name'] ?? $validated['name'] ?? "",
                 'email' => $cvData['email'] ?? $validated['email'] ?? "",
                 'phone' => $cvData['phone'] ?? $validated['phone'] ?? "",
+                'state' => CandidateState::MAYBE->value,
                 'cv_path' => $cvPath,
                 'cv_data' => "",
             ]);
@@ -84,5 +86,23 @@ class CandidateController extends Controller
         $candidate->load('aiRating');
 
         return response()->json($candidate);
+    }
+
+    public function updateState(Request $request, Candidate $candidate)
+    {
+        $this->authorize('update', $candidate);
+
+        $validated = $request->validate([
+            'state' => ['required', 'string', 'in:' . implode(',', array_column(CandidateState::cases(), 'value'))],
+        ]);
+
+        $candidate->update([
+            'state' => $validated['state'],
+        ]);
+
+        return response()->json([
+            'message' => 'Candidate state updated successfully',
+            'candidate' => $candidate
+        ]);
     }
 }

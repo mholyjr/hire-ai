@@ -16,9 +16,11 @@ import {
   DialogTrigger,
 } from "@/Components/ui/dialog";
 import { Button } from "@/Components/ui/button";
-import { Candidate } from "@/types";
+import { Candidate, CandidateState } from "@/types";
 import { useAiRating } from "../Hooks/useAiRating";
 import { CandidateDetail } from "./CandidateDetail";
+import { ToggleGroup, ToggleGroupItem } from "@/Components/ui/toggle-group";
+import { useUpdateState } from "../Hooks/useUpdateState";
 
 const CandidateItemSkeleton = () => {
   return (
@@ -31,17 +33,77 @@ const CandidateItemSkeleton = () => {
   );
 };
 
+const ToggleState = ({
+  candidate,
+  refetch,
+}: {
+  candidate: Candidate;
+  refetch: any;
+}) => {
+  const { mutate: updateState } = useUpdateState(candidate.id);
+
+  const values = [
+    {
+      value: "rejected",
+      label: "Reject",
+    },
+    {
+      value: "maybe",
+      label: "Maybe",
+    },
+    {
+      value: "short_list",
+      label: "Short list",
+    },
+  ];
+
+  const handleChange = (value: string) => {
+    console.log("test", value);
+    updateState(
+      {
+        state: value as CandidateState,
+      },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+      },
+    );
+  };
+
+  return (
+    <ToggleGroup
+      type="single"
+      variant="outline"
+      className="justify-start"
+      value={candidate.state}
+      onValueChange={value => handleChange(value)}
+    >
+      {values.map(({ value, label }) => (
+        <ToggleGroupItem
+          key={value}
+          value={value}
+          className="data-[state=on]:bg-primary data-[state=on]:text-white"
+        >
+          {label}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
+  );
+};
+
 export const CandidateItem = ({ candidate }: { candidate: Candidate }) => {
   const {
     data: freshData,
     isLoading,
     isError,
+    refetch,
   } = useAiRating(candidate.id, candidate);
 
   if (!freshData.ai_rating) {
     return <CandidateItemSkeleton />;
   }
-console.log(freshData)
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -59,21 +121,26 @@ console.log(freshData)
           <CardDescription>{candidate.ai_rating?.summary}</CardDescription>
         </div>
       </CardContent>
-      <CardFooter>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" className="w-full">
-              View Details
-              <ChevronRight className="ml-2 h-4 w-4" />
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-3xl">
-            <DialogHeader>
-              <DialogTitle>{candidate.name}</DialogTitle>
-            </DialogHeader>
-            <CandidateDetail candidate={candidate} />
-          </DialogContent>
-        </Dialog>
+      <CardFooter className="grid grid-cols-2 gap-4">
+        <div>
+          <ToggleState candidate={freshData} refetch={refetch} />
+        </div>
+        <div>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="w-full">
+                View Details
+                <ChevronRight className="ml-2 h-4 w-4" />
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-3xl">
+              <DialogHeader>
+                <DialogTitle>{candidate.name}</DialogTitle>
+              </DialogHeader>
+              <CandidateDetail candidate={candidate} />
+            </DialogContent>
+          </Dialog>
+        </div>
       </CardFooter>
     </Card>
   );
