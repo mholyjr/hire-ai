@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import SectionTitle from "@/Components/SectionTitle";
+import { Card, CardContent } from "./ui/card";
 
 interface Props {
   title: string;
@@ -16,9 +17,9 @@ export default function ActionSection({
       <SectionTitle title={title} description={description} />
 
       <div className="mt-5 md:mt-0 md:col-span-2">
-        <div className="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-          {children}
-        </div>
+        <Card className="">
+          <CardContent className="pt-6">{children}</CardContent>
+        </Card>
       </div>
     </div>
   );

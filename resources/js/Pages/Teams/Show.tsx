@@ -11,6 +11,7 @@ import {
   User,
 } from "@/types";
 import React from "react";
+import { Header } from "@/Components/Header";
 
 interface UserMembership extends User {
   membership: {
@@ -33,13 +34,11 @@ export default function Show({ team, availableRoles, permissions }: Props) {
     <AppLayout
       title="Team Settings"
       renderHeader={() => (
-        <h2 className="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-          Team Settings
-        </h2>
+       <Header title="Team Settings" />
       )}
     >
       <div>
-        <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div className="py-10 ">
           <UpdateTeamNameForm team={team} permissions={permissions} />
 
           <div className="mt-10 sm:mt-0">

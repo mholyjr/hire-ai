@@ -24,12 +24,10 @@ export default function Show({
   return (
     <AppLayout
       title={"Profile"}
-      renderHeader={() => (
-        <Header type="detail" title="Profile" />
-      )}
+      renderHeader={() => <Header title="Profile settings" />}
     >
       <div>
-        <div className="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+        <div className="py-10">
           {page.props.jetstream.canUpdateProfileInformation ? (
             <div>
               <UpdateProfileInformationForm user={page.props.auth.user!} />

@@ -1,14 +1,13 @@
 import useRoute from "@/Hooks/useRoute";
 import ActionMessage from "@/Components/ActionMessage";
 import FormSection from "@/Components/FormSection";
-import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import { JetstreamTeamPermissions, Team, User } from "@/types";
 import { useForm } from "@inertiajs/react";
 import classNames from "classnames";
 import React from "react";
+import { Input } from "@/Components/ui/input";
+import { Button } from "@/Components/ui/button";
 
 interface Props {
   team: Team & { owner: User };
@@ -36,18 +35,20 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
       renderActions={
         permissions.canUpdateTeam
           ? () => (
-              <>
-                <ActionMessage on={form.recentlySuccessful} className="mr-3">
-                  Saved.
-                </ActionMessage>
+              <div className="flex gap-3 items-center">
+                {form.recentlySuccessful && (
+                  <ActionMessage on={form.recentlySuccessful}>
+                    Saved.
+                  </ActionMessage>
+                )}
 
-                <PrimaryButton
+                <Button
                   className={classNames({ "opacity-25": form.processing })}
                   disabled={form.processing}
                 >
                   Save
-                </PrimaryButton>
-              </>
+                </Button>
+              </div>
             )
           : undefined
       }
@@ -76,18 +77,16 @@ export default function UpdateTeamNameForm({ team, permissions }: Props) {
 
       {/* <!-- Team Name --> */}
       <div className="col-span-6 sm:col-span-4">
-        <InputLabel htmlFor="name" value="Team Name" />
-
-        <TextInput
+        <Input
+          label="Team Name"
           id="name"
           type="text"
           className="mt-1 block w-full"
           value={form.data.name}
           onChange={e => form.setData("name", e.currentTarget.value)}
           disabled={!permissions.canUpdateTeam}
+          error={form.errors.name}
         />
-
-        <InputError message={form.errors.name} className="mt-2" />
       </div>
     </FormSection>
   );

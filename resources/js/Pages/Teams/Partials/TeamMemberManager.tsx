@@ -9,7 +9,6 @@ import FormSection from "@/Components/FormSection";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
 import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 import SectionBorder from "@/Components/SectionBorder";
 import {
@@ -24,6 +23,8 @@ import { router } from "@inertiajs/core";
 import { useForm } from "@inertiajs/react";
 import classNames from "classnames";
 import React, { useState } from "react";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
 
 interface UserMembership extends User {
   membership: {
@@ -140,21 +141,16 @@ export default function TeamMemberManager({
             }
             renderActions={() => (
               <>
-                <ActionMessage
-                  on={addTeamMemberForm.recentlySuccessful}
-                  className="mr-3"
-                >
-                  Added.
-                </ActionMessage>
+                {addTeamMemberForm.recentlySuccessful && (
+                  <ActionMessage
+                    on={addTeamMemberForm.recentlySuccessful}
+                    className="mr-3"
+                  >
+                    Added.
+                  </ActionMessage>
+                )}
 
-                <PrimaryButton
-                  className={classNames({
-                    "opacity-25": addTeamMemberForm.processing,
-                  })}
-                  disabled={addTeamMemberForm.processing}
-                >
-                  Add
-                </PrimaryButton>
+                <Button disabled={addTeamMemberForm.processing}>Add</Button>
               </>
             )}
           >
@@ -167,8 +163,8 @@ export default function TeamMemberManager({
 
             {/* <!-- Member Email --> */}
             <div className="col-span-6 sm:col-span-4">
-              <InputLabel htmlFor="email" value="Email" />
-              <TextInput
+              <Input
+                label="Email"
                 id="email"
                 type="email"
                 className="mt-1 block w-full"
@@ -176,10 +172,7 @@ export default function TeamMemberManager({
                 onChange={e =>
                   addTeamMemberForm.setData("email", e.currentTarget.value)
                 }
-              />
-              <InputError
-                message={addTeamMemberForm.errors.email}
-                className="mt-2"
+                error={addTeamMemberForm.errors.email}
               />
             </div>
 
