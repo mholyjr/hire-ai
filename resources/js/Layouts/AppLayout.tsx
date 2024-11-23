@@ -78,9 +78,9 @@ export default function AppLayout({
                     Positions
                   </NavLink>
                   <NavLink
-                    href={route("candidates.index")}
+                    href={route("candidates.list")}
                     active={
-                      route().current("candidates.index") ||
+                      route().current("candidates.list") ||
                       route().current("candidates.show")
                     }
                   >

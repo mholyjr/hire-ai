@@ -140,7 +140,7 @@ export default function Index({ candidates, positions, filters }: Props) {
       candidates.data.map(candidate => (
         <TableRow key={candidate.id}>
           <TableCell>
-            <Link href={route("positions.show", candidate.position.slug)}>
+            <Link href={route("candidates.show", candidate.slug)}>
               {candidate.name}
             </Link>
           </TableCell>

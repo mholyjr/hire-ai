@@ -28,19 +28,25 @@ Route::middleware([
 });
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
+    // Positions
     Route::post('/positions', [PositionController::class, 'store'])->name('positions.store');
     Route::patch('/positions/{position}/archive', [PositionController::class, 'archive'])->name('positions.archive');
     Route::get('/positions/{position:slug}', [PositionController::class, 'show'])->name('positions.show');
     Route::post('/positions/{position:slug}/candidates', [CandidateController::class, 'store'])->name('candidates.store');
     Route::post('/positions/{position}/upload', [PositionController::class, 'upload'])->name('positions.upload');
 
-    Route::get('/candidates', [CandidateController::class, 'index'])->name('candidates.index');
+    // Candidates
+    Route::get('/candidates', [CandidateController::class, 'list'])->name('candidates.list');
+    Route::get('/candidates/{slug}', [CandidateController::class, 'show'])
+        ->name('candidates.show')
+        ->middleware(['auth:sanctum', 'verified']);
     Route::get('/candidates/{candidate}/ai-rating', [CandidateController::class, 'checkAiRating'])
         ->name('candidates.check-ai-rating');
     Route::patch('candidates/{candidate}/state', [CandidateController::class, 'updateState'])
         ->name('candidates.update-state')
         ->middleware(['auth']);
 
+    // Billing
     Route::get('/billing', [BillingController::class, 'index'])->name('billing');
     Route::get('/billing/portal', [StripeController::class, 'portal'])->name('billing.portal');
 });

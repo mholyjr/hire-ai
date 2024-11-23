@@ -12,12 +12,28 @@ use Illuminate\Support\Facades\Log;
 use App\Enums\CandidateState;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * Controller for managing candidate-related operations.
+ *
+ * This controller handles operations such as listing, showing, creating,
+ * and updating candidates, including their states and AI ratings.
+ *
+ * @uses \Illuminate\Foundation\Auth\Access\AuthorizesRequests
+ */
 class CandidateController extends Controller
 {
 
     use AuthorizesRequests;
 
-    public function index(Request $request)
+    /**
+     * Display a paginated list of candidates with filters.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Inertia\Response
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function list(Request $request)
     {
         $this->authorize('viewAny', Candidate::class);
 
@@ -55,7 +71,7 @@ class CandidateController extends Controller
             ->select('id', 'title')
             ->get();
 
-        return inertia('Candidates/Index', [
+        return inertia('Candidates/List', [
             'candidates' => $candidates,
             'positions' => $positions,
             'filters' => [
@@ -66,6 +82,40 @@ class CandidateController extends Controller
         ]);
     }
 
+    /**
+     * Display the specified candidate.
+     *
+     * @param  string  $slug
+     * @return \Inertia\Response
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function show(string $slug)
+    {
+
+        $candidate = Candidate::with(['position.team', 'aiRating'])
+            ->where('slug', $slug)
+            ->firstOrFail();
+
+        $this->authorize('view', $candidate);
+
+        return inertia('Candidates/Show', [
+            'candidate' => $candidate,
+        ]);
+    }
+
+    /**
+     * Store a new candidate for a specific position.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Position  $position
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Illuminate\Validation\ValidationException
+     * @throws \Exception
+     */
     public function store(Request $request, Position $position)
     {
         $this->authorize('createForPosition', [Candidate::class, $position]);
@@ -113,6 +163,13 @@ class CandidateController extends Controller
         }
     }
 
+    /**
+     * Update candidate data based on CV processing results.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Candidate  $candidate
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function updateFromCvProcessing(Request $request, Candidate $candidate)
     {
         Log::info('Received CV processing update request', [
@@ -129,6 +186,14 @@ class CandidateController extends Controller
         return response()->json(['message' => 'Candidate updated successfully']);
     }
 
+    /**
+     * Retrieve the AI rating for a specific candidate.
+     *
+     * @param  \App\Models\Candidate  $candidate
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function checkAiRating(Candidate $candidate)
     {
         $this->authorize('view', $candidate);
@@ -138,6 +203,16 @@ class CandidateController extends Controller
         return response()->json($candidate);
     }
 
+    /**
+     * Update the state of a specific candidate.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Candidate  $candidate
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Illuminate\Validation\ValidationException
+     */
     public function updateState(Request $request, Candidate $candidate)
     {
         $this->authorize('update', $candidate);

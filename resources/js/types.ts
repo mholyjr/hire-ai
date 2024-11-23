@@ -159,12 +159,13 @@ export interface Candidate {
   email: string;
   phone: string | null;
   cv_path: string;
-  cv_data: Resume;
+  cv_data: Resume | null;
   ai_rating: AiRating | null;
   status: string;
   created_at: string;
   updated_at: string;
   state: CandidateState;
+  slug: string;
 }
 
 export interface Persona {
