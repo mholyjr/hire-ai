@@ -21,16 +21,48 @@ class CandidateController extends Controller
     {
         $this->authorize('viewAny', Candidate::class);
 
-        $candidates = Candidate::query()
+        $query = Candidate::query()
             ->whereHas('position.team', function ($query) {
                 $query->where('team_id', Auth::user()->currentTeam->id);
             })
-            ->with(['position'])
-            ->orderBy('created_at', 'desc')
-            ->paginate(20);
+            ->with(['position']);
+
+        // Search by name or email
+        if ($request->search) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'like', "%{$request->search}%")
+                    ->orWhere('email', 'like', "%{$request->search}%");
+            });
+        }
+
+        // Filter by position
+        if ($request->position) {
+            $query->whereHas('position', function ($q) use ($request) {
+                $q->where('id', $request->position);
+            });
+        }
+
+        // Filter by state
+        if ($request->state) {
+            $query->where('state', $request->state);
+        }
+
+        $candidates = $query->orderBy('created_at', 'desc')->paginate(10)
+            ->withQueryString();
+
+        // Get positions for filter dropdown
+        $positions = Position::where('team_id', Auth::user()->currentTeam->id)
+            ->select('id', 'title')
+            ->get();
 
         return inertia('Candidates/Index', [
-            'candidates' => $candidates
+            'candidates' => $candidates,
+            'positions' => $positions,
+            'filters' => [
+                'search' => $request->search,
+                'position' => $request->position,
+                'state' => $request->state,
+            ],
         ]);
     }
 

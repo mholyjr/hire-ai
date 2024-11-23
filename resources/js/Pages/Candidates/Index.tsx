@@ -11,7 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/Components/ui/pagination";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { Header } from "@/Components/Header";
 import {
   Table,
@@ -24,6 +24,17 @@ import {
 import { Badge } from "@/Components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import dayjs from "dayjs";
+import { Input } from "@/Components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/Components/ui/select";
+import { candidateStateValues } from "@/Constants";
+import { FilterSelect } from "@/Components/ui/filter-select";
+import { useQueryFilter } from "@/Hooks/useQueryFilter";
 
 interface CandidateData extends Candidate {
   position: Position;
@@ -35,6 +46,12 @@ interface Props extends PageProps {
     links: any[];
     current_page: number;
     last_page: number;
+  };
+  positions: { id: number; title: string }[];
+  filters: {
+    search: string;
+    position: string;
+    state: string;
   };
 }
 
@@ -51,10 +68,11 @@ const variantByState: VariantProps = {
   rejected: "destructive",
 };
 
-export default function Index({ candidates }: Props) {
+export default function Index({ candidates, positions, filters }: Props) {
+  const { updateQueryParam } = useQueryFilter();
+
   const renderPaginationItems = React.useMemo(() => {
     return candidates.links.map((link, index) => {
-      // Skip if it's a current page without URL and not the current page
       if (!link.url && !link.active) return null;
 
       // Handle previous link
@@ -115,11 +133,69 @@ export default function Index({ candidates }: Props) {
       return null;
     });
   }, [candidates.links, candidates.current_page, candidates.last_page]);
+
+  const renderTableRows = React.useMemo(
+    () =>
+      candidates.data.map(candidate => (
+        <TableRow key={candidate.id}>
+          <TableCell>
+            <Link href={route("positions.show", candidate.position.slug)}>
+              {candidate.name}
+            </Link>
+          </TableCell>
+          <TableCell>{candidate.email}</TableCell>
+          <TableCell>
+            <Link href={route("positions.show", candidate.position.slug)}>
+              {candidate.position.title}
+            </Link>
+          </TableCell>
+          <TableCell>
+            <Badge variant={variantByState[candidate.state]}>
+              {candidate.state}
+            </Badge>
+          </TableCell>
+          <TableCell>
+            {dayjs(candidate.created_at).format("MMM D, YYYY h:mm A")}
+          </TableCell>
+        </TableRow>
+      )),
+    [candidates.data],
+  );
+
   return (
     <AppLayout
       title="Candidates"
       renderHeader={() => <Header title="Candidates" />}
     >
+      <div className="mt-4 grid gap-4 md:grid-cols-3">
+        <div>
+          <Input
+            placeholder="Search by name or email..."
+            defaultValue={filters.search}
+            onChange={e => updateQueryParam("search", e.target.value)}
+            className="max-w-sm"
+          />
+        </div>
+        <FilterSelect
+          options={positions.map(position => ({
+            id: position.id,
+            value: position.id.toString(),
+            label: position.title,
+          }))}
+          placeholder="Filter by position"
+          filterKey="position"
+          defaultValue={filters.position || "all"}
+        />
+        <FilterSelect
+          options={candidateStateValues.map(state => ({
+            value: state,
+            label: state,
+          }))}
+          placeholder="Filter by state"
+          filterKey="state"
+          defaultValue={filters.state || "all"}
+        />
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>List of all candidates</CardTitle>
@@ -135,35 +211,7 @@ export default function Index({ candidates }: Props) {
                 <TableHead>Created</TableHead>
               </TableRow>
             </TableHeader>
-            <TableBody>
-              {candidates.data.map(candidate => (
-                <TableRow key={candidate.id}>
-                  <TableCell>
-                    <Link
-                      href={route("positions.show", candidate.position.slug)}
-                    >
-                      {candidate.name}
-                    </Link>
-                  </TableCell>
-                  <TableCell>{candidate.email}</TableCell>
-                  <TableCell>
-                    <Link
-                      href={route("positions.show", candidate.position.slug)}
-                    >
-                      {candidate.position.title}
-                    </Link>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={variantByState[candidate.state]}>
-                      {candidate.state}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {dayjs(candidate.created_at).format("MMM D, YYYY h:mm A")}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+            <TableBody>{renderTableRows}</TableBody>
           </Table>
         </CardContent>
       </Card>
