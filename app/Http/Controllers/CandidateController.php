@@ -10,11 +10,29 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Log;
 use App\Enums\CandidateState;
+use Illuminate\Support\Facades\Auth;
 
 class CandidateController extends Controller
 {
 
     use AuthorizesRequests;
+
+    public function index(Request $request)
+    {
+        $this->authorize('viewAny', Candidate::class);
+
+        $candidates = Candidate::query()
+            ->whereHas('position.team', function ($query) {
+                $query->where('team_id', Auth::user()->currentTeam->id);
+            })
+            ->with(['position'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+
+        return inertia('Candidates/Index', [
+            'candidates' => $candidates
+        ]);
+    }
 
     public function store(Request $request, Position $position)
     {
