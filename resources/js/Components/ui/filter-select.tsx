@@ -31,11 +31,11 @@ export function FilterSelect({
         updateQueryParam(filterKey, value === "all" ? "" : value)
       }
     >
-      <SelectTrigger>
+      <SelectTrigger className="border-gray-200 h-10 bg-white px-3 py-2 text-sm ring-offset-white dark:border-gray-800 dark:bg-gray-950 dark:ring-offset-gray-950">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">All {placeholder.toLowerCase()}</SelectItem>
+        <SelectItem value="all">{placeholder}</SelectItem>
         {options.map(option => (
           <SelectItem
             key={option.id || option.value}

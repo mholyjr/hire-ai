@@ -47,7 +47,7 @@ class CandidateController extends Controller
             $query->where('state', $request->state);
         }
 
-        $candidates = $query->orderBy('created_at', 'desc')->paginate(10)
+        $candidates = $query->orderBy('created_at', 'desc')->paginate(20)
             ->withQueryString();
 
         // Get positions for filter dropdown

@@ -35,6 +35,7 @@ import {
 import { candidateStateValues } from "@/Constants";
 import { FilterSelect } from "@/Components/ui/filter-select";
 import { useQueryFilter } from "@/Hooks/useQueryFilter";
+import { FiltersRow } from "./Partials/FiltersRow";
 
 interface CandidateData extends Candidate {
   position: Position;
@@ -167,35 +168,7 @@ export default function Index({ candidates, positions, filters }: Props) {
       title="Candidates"
       renderHeader={() => <Header title="Candidates" />}
     >
-      <div className="mt-4 grid gap-4 md:grid-cols-3">
-        <div>
-          <Input
-            placeholder="Search by name or email..."
-            defaultValue={filters.search}
-            onChange={e => updateQueryParam("search", e.target.value)}
-            className="max-w-sm"
-          />
-        </div>
-        <FilterSelect
-          options={positions.map(position => ({
-            id: position.id,
-            value: position.id.toString(),
-            label: position.title,
-          }))}
-          placeholder="Filter by position"
-          filterKey="position"
-          defaultValue={filters.position || "all"}
-        />
-        <FilterSelect
-          options={candidateStateValues.map(state => ({
-            value: state,
-            label: state,
-          }))}
-          placeholder="Filter by state"
-          filterKey="state"
-          defaultValue={filters.state || "all"}
-        />
-      </div>
+      <FiltersRow filters={filters} positions={positions} />
       <Card>
         <CardHeader>
           <CardTitle>List of all candidates</CardTitle>
