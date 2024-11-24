@@ -10,7 +10,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/Components/ui/pagination";
-import { Link, router } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import { Header } from "@/Components/Header";
 import {
   Table,
@@ -24,6 +24,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import dayjs from "dayjs";
 import { NewPositionDialog } from "@/features/Positions/Partials/NewPositionDialog";
 import { Button } from "@/Components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu";
+import { EllipsisVerticalIcon } from "lucide-react";
 
 interface PositionsProps {
   positions: {
@@ -98,6 +105,15 @@ export default function List({ positions }: PositionsProps) {
     });
   }, [positions.links, positions.current_page, positions.last_page]);
 
+  const form = useForm();
+
+  const archivePosition = (position: Position) => {
+    form.patch(route("positions.archive", position.id), {
+      preserveState: true,
+      preserveScroll: true,
+    });
+  };
+
   const renderTableRows = React.useMemo(
     () =>
       positions.data.map(position => (
@@ -115,10 +131,25 @@ export default function List({ positions }: PositionsProps) {
           <TableCell>
             {dayjs(position.created_at).format("MMM D, YYYY h:mm A")}
           </TableCell>
-          <TableCell>
-            <Link href={route("positions.show", position.slug)}>
-              <Button>Open</Button>
-            </Link>
+          <TableCell className="flex justify-end">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="m-0 !mt-0">
+                  <EllipsisVerticalIcon size={20} />
+                  <span className="sr-only">Project actions</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href={route("positions.show", position.slug)}>
+                    Show detail
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => archivePosition(position)}>
+                  {position.state ? "Close position" : "Open position"}
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </TableCell>
         </TableRow>
       )),
@@ -144,7 +175,7 @@ export default function List({ positions }: PositionsProps) {
                 <TableHead className="w-[10%]">Avg rating</TableHead>
                 <TableHead className="w-[12%]"># of positions</TableHead>
                 <TableHead className="w-[15%]">Created</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>{renderTableRows}</TableBody>
