@@ -24,9 +24,10 @@ class PositionController extends Controller
         $positions = Position::forTeam($teamId)
             ->where('state', 1)
             ->withCount('candidates')
-            ->with(['candidates.aiRating'])  // Load the relationships
-            ->get()
-            ->map(function ($position) {
+            ->with(['candidates.aiRating'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20)
+            ->through(function ($position) {
                 // Calculate average rating manually
                 $ratings = $position->candidates->pluck('aiRating.rating')->filter();
                 $avgRating = $ratings->count() > 0 ? $ratings->avg() : 0;
