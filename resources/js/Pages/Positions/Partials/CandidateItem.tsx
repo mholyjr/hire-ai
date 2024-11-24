@@ -21,6 +21,7 @@ import { useAiRating } from "../Hooks/useAiRating";
 import { CandidateDetail } from "./CandidateDetail";
 import { ToggleGroup, ToggleGroupItem } from "@/Components/ui/toggle-group";
 import { useUpdateState } from "../Hooks/useUpdateState";
+import { Link } from "@inertiajs/react";
 
 const CandidateItemSkeleton = () => {
   return (
@@ -95,8 +96,6 @@ const ToggleState = ({
 export const CandidateItem = ({ candidate }: { candidate: Candidate }) => {
   const {
     data: freshData,
-    isLoading,
-    isError,
     refetch,
   } = useAiRating(candidate.id, candidate);
 
@@ -126,20 +125,12 @@ export const CandidateItem = ({ candidate }: { candidate: Candidate }) => {
           <ToggleState candidate={freshData} refetch={refetch} />
         </div>
         <div>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="w-full">
-                View Details
-                <ChevronRight className="ml-2 h-4 w-4" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-3xl">
-              <DialogHeader>
-                <DialogTitle>{candidate.name}</DialogTitle>
-              </DialogHeader>
-              <CandidateDetail candidate={candidate} />
-            </DialogContent>
-          </Dialog>
+          <Link href={route("candidates.show", candidate.slug)}>
+            <Button variant="outline" className="w-full">
+              View Details
+              <ChevronRight className="ml-2 h-4 w-4" />
+            </Button>
+          </Link>
         </div>
       </CardFooter>
     </Card>
