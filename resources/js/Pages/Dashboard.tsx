@@ -16,14 +16,14 @@ interface PositionsProps {
   };
 }
 
-export default function Positions({ positions, teamStats }: PositionsProps) {
+export default function Dashboard({ positions, teamStats }: PositionsProps) {
   // const { positions = [] } = usePage().props as { positions?: Position[] };
 
   const pageHeader =
     positions.length !== 0 ? <Header title="Team's daily stats" /> : <></>;
 
   return (
-    <AppLayout title="Positions" renderHeader={() => pageHeader}>
+    <AppLayout title="Dashboard" renderHeader={() => pageHeader}>
       <div className="grid gap-8">
         {positions.length !== 0 && (
           <TeamStatsCharts

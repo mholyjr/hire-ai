@@ -14,7 +14,7 @@ class PositionController extends Controller
 {
     use AuthorizesRequests;
 
-    public function index(Request $request)
+    public function list(Request $request)
     {
         $teamId = $request->user()->currentTeam->id;
 
@@ -43,7 +43,7 @@ class PositionController extends Controller
                 ];
             });
 
-        return Inertia::render('Positions', [
+        return Inertia::render('Positions/List', [
             'positions' => $positions,
             'teamStats' => $stats
         ]);
