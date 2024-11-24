@@ -167,6 +167,7 @@ export interface Candidate {
   state: CandidateState;
   slug: string;
   notes: Note[];
+  position: Position;
 }
 
 export interface Persona {
