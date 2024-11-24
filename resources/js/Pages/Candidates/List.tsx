@@ -24,16 +24,6 @@ import {
 import { Badge } from "@/Components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import dayjs from "dayjs";
-import { Input } from "@/Components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/Components/ui/select";
-import { candidateStateValues } from "@/Constants";
-import { FilterSelect } from "@/Components/ui/filter-select";
 import { useQueryFilter } from "@/Hooks/useQueryFilter";
 import { FiltersRow } from "./Partials/FiltersRow";
 

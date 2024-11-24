@@ -166,6 +166,7 @@ export interface Candidate {
   updated_at: string;
   state: CandidateState;
   slug: string;
+  notes: Note[];
 }
 
 export interface Persona {
@@ -244,3 +245,10 @@ export interface BillingPageProps extends PageProps {
   }[];
   purchases: CreditPurchase[];
 }
+
+export type Note = {
+  id: number;
+  content: string;
+  created_at: string;
+  user: User;
+};
