@@ -36,4 +36,9 @@ class Candidate extends Model
     {
         return $this->hasOne(AiRating::class);
     }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class)->orderBy('created_at', 'desc');
+    }
 }

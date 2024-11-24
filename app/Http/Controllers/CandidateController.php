@@ -94,7 +94,7 @@ class CandidateController extends Controller
     public function show(string $slug)
     {
 
-        $candidate = Candidate::with(['position.team', 'aiRating'])
+        $candidate = Candidate::with(['position.team', 'aiRating', 'notes'])
             ->where('slug', $slug)
             ->firstOrFail();
 

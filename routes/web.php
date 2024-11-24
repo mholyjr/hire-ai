@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\CandidateController;
 use App\Http\Controllers\GoogleLoginController;
+use App\Http\Controllers\NotesController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\WebhookController;
 
@@ -45,6 +46,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::patch('candidates/{candidate}/state', [CandidateController::class, 'updateState'])
         ->name('candidates.update-state')
         ->middleware(['auth']);
+
+    // Notes
+    Route::post('/candidates/{candidate}/notes', [NotesController::class, 'store'])->name('notes.store');
+    Route::delete('/notes/{note}', [NotesController::class, 'destroy'])->name('notes.destroy');
 
     // Billing
     Route::get('/billing', [BillingController::class, 'index'])->name('billing');
