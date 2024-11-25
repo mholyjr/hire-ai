@@ -11,6 +11,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\Log;
 use App\Enums\CandidateState;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 /**
  * Controller for managing candidate-related operations.
@@ -263,6 +264,39 @@ class CandidateController extends Controller
         } catch (\Exception $e) {
             report($e);
             abort(500, 'Error downloading CV');
+        }
+    }
+
+
+    public function update(Request $request, Candidate $candidate)
+    {
+        $this->authorize('update', $candidate);
+
+        $validated = $request->validate([
+            'field' => 'required|string',
+            'value' => 'required',
+            'type' => 'required|in:direct,cv_data'
+        ]);
+
+        try {
+            if ($validated['type'] === 'direct') {
+                $candidate->update([
+                    $validated['field'] => $validated['value']
+                ]);
+            } else {
+                $cvData = $candidate->cv_data;
+                $cvData[$validated['field']] = $validated['value'];
+                $candidate->update(['cv_data' => $cvData]);
+            }
+
+            // Reload the candidate with its relationships
+            $candidate->load(['position.team', 'aiRating', 'notes']);
+
+            return Inertia::render('Candidates/Show', [
+                'candidate' => $candidate
+            ]);
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => 'Failed to update candidate']);
         }
     }
 }

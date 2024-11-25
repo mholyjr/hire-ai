@@ -51,6 +51,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/candidates/{candidate}/download-cv', [CandidateController::class, 'downloadCv'])
         ->name('candidates.download-cv')
         ->middleware(['auth:sanctum', 'verified']);
+    Route::put('/candidates/{candidate}', [CandidateController::class, 'update'])
+        ->name('candidates.update');
 
     // Notes
     Route::post('/candidates/{candidate}/notes', [NotesController::class, 'store'])->name('notes.store');

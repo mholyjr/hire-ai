@@ -2,8 +2,89 @@ import React from "react";
 import { Candidate } from "@/types";
 import { Badge } from "@/Components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
-import { StarIcon } from "lucide-react";
+import { PencilIcon, StarIcon } from "lucide-react";
 import { Button } from "@/Components/ui/button";
+import { Textarea } from "@/Components/ui/textarea";
+import { Input } from "@/Components/ui/input";
+import { router } from "@inertiajs/react";
+
+interface EditableFieldProps {
+  value: string | number | null | undefined;
+  field: string;
+  type: "direct" | "cv_data";
+  candidateId: number;
+  isMultiline?: boolean;
+}
+
+const EditableField = ({
+  value,
+  field,
+  type,
+  candidateId,
+  isMultiline = false,
+}: EditableFieldProps) => {
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [currentValue, setCurrentValue] = React.useState(value);
+
+  const handleSave = async () => {
+    try {
+      router.put(
+        route("candidates.update", candidateId),
+        {
+          field,
+          value: currentValue,
+          type,
+        },
+        {
+          preserveState: true,
+          preserveScroll: true,
+          onSuccess: () => setIsEditing(false),
+        },
+      );
+    } catch (error) {
+      console.error("Failed to update:", error);
+    }
+  };
+
+  if (!isEditing) {
+    return (
+      <div className="group relative">
+        {value}
+        <button
+          onClick={() => setIsEditing(true)}
+          className="absolute -right-6 top-0 opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <PencilIcon className="h-4 w-4" />
+        </button>
+      </div>
+    );
+  }
+
+  if (!currentValue) return;
+
+  return (
+    <div className="flex gap-2">
+      {isMultiline ? (
+        <Textarea
+          value={currentValue}
+          onChange={e => setCurrentValue(e.target.value)}
+          className="min-h-[100px]"
+        />
+      ) : (
+        <Input
+          value={currentValue}
+          onChange={e => setCurrentValue(e.target.value)}
+        />
+      )}
+      <Button size="sm" onClick={handleSave}>
+        Save
+      </Button>
+      <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
+        Cancel
+      </Button>
+    </div>
+  );
+};
 
 export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
   const handleDownloadCv = () => {
@@ -17,7 +98,12 @@ export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
           <Card className="max-w-[50%]">
             <CardHeader className="flex items-center justify-between flex-row">
               <CardTitle className="text-2xl font-medium m-0 p-0">
-                {candidate.name}
+                <EditableField
+                  value={candidate.name}
+                  field="name"
+                  type="direct"
+                  candidateId={candidate.id}
+                />
               </CardTitle>
               <Button
                 variant="outline"
@@ -37,8 +123,18 @@ export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
                 </div>
               </div>
               <div className="flex flex-row items-center gap-8">
-                <p className="text-xl font-medium m-0 p-0">{candidate.email}</p>
-                <p className="text-xl font-medium m-0 p-0">{candidate.phone}</p>
+                <EditableField
+                  value={candidate.email}
+                  field="email"
+                  type="direct"
+                  candidateId={candidate.id}
+                />
+                <EditableField
+                  value={candidate.phone}
+                  field="phone"
+                  type="direct"
+                  candidateId={candidate.id}
+                />
               </div>
             </CardContent>
           </Card>
