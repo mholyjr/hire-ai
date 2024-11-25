@@ -48,6 +48,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::patch('candidates/{candidate}/state', [CandidateController::class, 'updateState'])
         ->name('candidates.update-state')
         ->middleware(['auth']);
+    Route::get('/candidates/{candidate}/download-cv', [CandidateController::class, 'downloadCv'])
+        ->name('candidates.download-cv')
+        ->middleware(['auth:sanctum', 'verified']);
 
     // Notes
     Route::post('/candidates/{candidate}/notes', [NotesController::class, 'store'])->name('notes.store');

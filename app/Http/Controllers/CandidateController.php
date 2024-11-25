@@ -230,4 +230,39 @@ class CandidateController extends Controller
             'candidate' => $candidate
         ]);
     }
+
+    /**
+     * Download the candidate's CV from Google Cloud Storage.
+     *
+     * @param  \App\Models\Candidate  $candidate
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     *
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Google\Cloud\Core\Exception\NotFoundException
+     */
+    public function downloadCv(Candidate $candidate)
+    {
+        $this->authorize('view', $candidate);
+
+        try {
+            $storage = Storage::disk('gcs');
+
+            if (!$storage->exists($candidate->cv_path)) {
+                abort(404, 'CV file not found');
+            }
+
+            $file = $storage->get($candidate->cv_path);
+            $filename = $candidate->name . '_CV.pdf';
+
+            return response()->streamDownload(function () use ($file) {
+                echo $file;
+            }, $filename, [
+                'Content-Type' => 'application/pdf',
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"'
+            ]);
+        } catch (\Exception $e) {
+            report($e);
+            abort(500, 'Error downloading CV');
+        }
+    }
 }

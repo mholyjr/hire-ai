@@ -3,17 +3,29 @@ import { Candidate } from "@/types";
 import { Badge } from "@/Components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import { StarIcon } from "lucide-react";
+import { Button } from "@/Components/ui/button";
 
 export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
+  const handleDownloadCv = () => {
+    window.location.href = route("candidates.download-cv", candidate.id);
+  };
+
   return (
     <>
       <div className="grid gap-8">
         <div>
           <Card className="max-w-[50%]">
-            <CardHeader>
+            <CardHeader className="flex items-center justify-between flex-row">
               <CardTitle className="text-2xl font-medium m-0 p-0">
                 {candidate.name}
               </CardTitle>
+              <Button
+                variant="outline"
+                onClick={handleDownloadCv}
+                className="!mt-0"
+              >
+                Download CV
+              </Button>
             </CardHeader>
             <CardContent>
               <div className="flex flex-row items-center gap-8">
