@@ -26,6 +26,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 import dayjs from "dayjs";
 import { useQueryFilter } from "@/Hooks/useQueryFilter";
 import { FiltersRow } from "./Partials/FiltersRow";
+import { Button } from "@/Components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu";
+import { EllipsisVerticalIcon } from "lucide-react";
 
 interface CandidateData extends Candidate {
   position: Position;
@@ -125,6 +133,10 @@ export default function Index({ candidates, positions, filters }: Props) {
     });
   }, [candidates.links, candidates.current_page, candidates.last_page]);
 
+  const handleDownloadCv = React.useCallback((id: number) => {
+    window.location.href = route("candidates.download-cv", id);
+  }, []);
+
   const renderTableRows = React.useMemo(
     () =>
       candidates.data.map(candidate => (
@@ -147,6 +159,28 @@ export default function Index({ candidates, positions, filters }: Props) {
           </TableCell>
           <TableCell>
             {dayjs(candidate.created_at).format("MMM D, YYYY h:mm A")}
+          </TableCell>
+          <TableCell className="text-right">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="m-0 !mt-0">
+                  <EllipsisVerticalIcon size={20} />
+                  <span className="sr-only">Project actions</span>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem asChild>
+                  <Link href={route("candidates.show", candidate.slug)}>
+                    Show detail
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => handleDownloadCv(candidate.id)}
+                >
+                  Download CV
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           </TableCell>
         </TableRow>
       )),
@@ -172,6 +206,7 @@ export default function Index({ candidates, positions, filters }: Props) {
                 <TableHead>Position</TableHead>
                 <TableHead>State</TableHead>
                 <TableHead>Created</TableHead>
+                <TableHead></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>{renderTableRows}</TableBody>
