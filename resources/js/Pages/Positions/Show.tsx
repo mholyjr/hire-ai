@@ -17,7 +17,7 @@ import {
 } from "@/Components/ui/popover";
 import { Button } from "@/Components/ui/button";
 import { PlusCircleIcon } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/Hooks/use-toast";
 
 interface Props {
   position: Position & {
