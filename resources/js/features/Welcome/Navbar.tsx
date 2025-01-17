@@ -1,6 +1,7 @@
 import React from "react";
 import useRoute from "@/Hooks/useRoute";
 import { Link } from "@inertiajs/react";
+import { Page } from "@inertiajs/core";
 
 const navigation = [
   { name: "Product", href: "#" },
@@ -10,11 +11,33 @@ const navigation = [
 ];
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { BracesIcon, XIcon } from "lucide-react";
+import { Auth } from "@/types";
 
-export const Navbar = () => {
+interface Props {
+  page: Page<{
+    jetstream: {
+      canCreateTeams: boolean;
+      canManageTwoFactorAuthentication: boolean;
+      canUpdatePassword: boolean;
+      canUpdateProfileInformation: boolean;
+      flash: any;
+      hasAccountDeletionFeatures: boolean;
+      hasApiFeatures: boolean;
+      hasTeamFeatures: boolean;
+      hasTermsAndPrivacyPolicyFeature: boolean;
+      managesProfilePhotos: boolean;
+      hasEmailVerification: boolean;
+    };
+    auth: Auth;
+    errorBags: any;
+    errors: any;
+  }>;
+}
+
+export const Navbar = ({ page }: Props) => {
   const route = useRoute();
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
-  
+
   return (
     <header className="absolute inset-x-0 top-0 z-50">
       <nav
@@ -23,7 +46,7 @@ export const Navbar = () => {
       >
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
-            <span className="sr-only">HR.Bay</span>
+            <span className="sr-only">Candai</span>
             <img
               alt=""
               src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
@@ -53,12 +76,21 @@ export const Navbar = () => {
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <Link
-            href={route("login")}
-            className="text-sm/6 font-semibold text-gray-900"
-          >
-            Log in <span aria-hidden="true">&rarr;</span>
-          </Link>
+          {page.props.auth.user ? (
+            <Link
+              href={route("dashboard")}
+              className="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              href={route("login")}
+              className="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500"
+            >
+              Log in
+            </Link>
+          )}
         </div>
       </nav>
       <Dialog
