@@ -43,7 +43,9 @@ return [
         'client_id' => env('GOOGLE_SERVICE_ACC_CLIENT_ID'),
         'client_x509_cert_url' => env('GOOGLE_SERVICE_ACC_CLIENT_X509_CERT_URL'),
         'location_id' => env('GOOGLE_CLOUD_TASKS_LOCATION_ID'),
-        'credentials_path' => env('GOOGLE_CLOUD_KEY_FILE')
+        'credentials_path' => env('GOOGLE_CLOUD_KEY_FILE'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI')
     ],
 
     'openai' => [
