@@ -91,7 +91,7 @@ class PositionController extends Controller
             throw $e;
         }
 
-        return redirect()->route('positions');
+        return redirect()->route('positions.list');
     }
 
     public function archive(Request $request, Position $position)

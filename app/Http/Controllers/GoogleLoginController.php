@@ -7,6 +7,7 @@ use App\Models\Team;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
 
 class GoogleLoginController extends Controller
 {
@@ -24,7 +25,7 @@ class GoogleLoginController extends Controller
 
         if ($existingUser) {
             // Log in the existing user
-            auth()->login($existingUser, true);
+            Auth::login($existingUser, true);
         } else {
             // Check if user exists with same email
             $userWithEmail = User::where('email', $user->email)->first();
@@ -34,7 +35,7 @@ class GoogleLoginController extends Controller
                 $userWithEmail->google_id = $user->id;
                 $userWithEmail->save();
 
-                auth()->login($userWithEmail, true);
+                Auth::login($userWithEmail, true);
             } else {
                 // Create a new user
                 $newUser = new User();
@@ -54,10 +55,10 @@ class GoogleLoginController extends Controller
                 $newUser->current_team_id = $newUser->ownedTeams()->first()->id;
                 $newUser->save();
 
-                auth()->login($newUser, true);
+                Auth::login($newUser, true);
             }
         }
 
-        return redirect()->intended('/positions');
+        return redirect()->intended('/dashboard');
     }
 }
