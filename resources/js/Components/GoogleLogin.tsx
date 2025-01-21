@@ -3,7 +3,7 @@ import React from "react";
 export const GoogleLogin = () => (
   <a
     href="/login/google"
-    className="w-full flex items-center justify-center gap-x-3 py-2.5 border rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100"
+    className="w-full flex items-center justify-center gap-x-3 py-2.5 border dark:border-gray-500 dark:hover:bg-gray-950 rounded-lg hover:bg-gray-50 duration-150 active:bg-gray-100"
   >
     <svg
       className="w-5 h-5"

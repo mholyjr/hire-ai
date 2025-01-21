@@ -83,7 +83,7 @@ export default function Login({ canResetPassword, status }: Props) {
         </Button>
         <div className="relative my-8">
           <span className="block w-full h-px bg-gray-300"></span>
-          <p className="inline-block w-fit text-sm bg-white px-2 absolute -top-2 inset-x-0 mx-auto">
+          <p className="inline-block w-fit text-sm bg-white dark:bg-gray-800 px-2 absolute -top-2 inset-x-0 mx-auto">
             Or continue with
           </p>
         </div>
