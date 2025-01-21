@@ -6,18 +6,9 @@ import { Head } from "@inertiajs/react";
 import Bento from "@/features/Welcome/Bento";
 import { Navbar } from "@/features/Welcome/Navbar";
 
-interface Props {
-  canLogin: boolean;
-  canRegister: boolean;
-  laravelVersion: string;
-  phpVersion: string;
-}
-
-export default function Welcome({ canLogin, canRegister }: Props) {
+export default function Welcome() {
   const route = useRoute();
   const page = useTypedPage();
-
-  console.log(page.props.auth);
 
   return (
     <>
@@ -41,11 +32,14 @@ export default function Welcome({ canLogin, canRegister }: Props) {
           <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
             <div className="hidden sm:mb-8 sm:flex sm:justify-center">
               <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                Announcing our next round of funding.{" "}
-                <a href="#" className="font-semibold text-indigo-600">
+                Don't be shy, try it out.{" "}
+                <Link
+                  href={route("login")}
+                  className="font-semibold text-indigo-600"
+                >
                   <span aria-hidden="true" className="absolute inset-0" />
-                  Read more <span aria-hidden="true">&rarr;</span>
-                </a>
+                  Create your account <span aria-hidden="true">&rarr;</span>
+                </Link>
               </div>
             </div>
             <div className="text-center">
