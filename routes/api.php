@@ -13,4 +13,4 @@ Route::get('/user', function (Request $request) {
 //     ->name('candidates.update-from-cv-processing');
 
 Route::post('pdfs', [PdfController::class, 'index']);
-Route::get('pdfs', [PdfController::class, 'index']);
+// Route::get('pdfs', [PdfController::class, 'index']);

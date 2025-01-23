@@ -22,7 +22,7 @@ class ProcessCandidateCv
 
         $cloudTasks->dispatch(
             queue: 'pdf-cvs',
-            url: "https://www.candaiapp.com/api/pdfs",
+            url: "https://candaiapp.com/api/pdfs",
             method: HttpMethod::POST,
             payload: $payload,
         );
