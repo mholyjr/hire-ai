@@ -21,6 +21,15 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/pricing', function () {
+    return Inertia::render('Pricing', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

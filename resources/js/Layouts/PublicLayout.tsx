@@ -5,6 +5,7 @@ import React from "react";
 
 type Props = {
   children: React.ReactNode;
+  container?: string;
   metadata: {
     title: string;
     description: string;
@@ -12,7 +13,7 @@ type Props = {
   };
 };
 
-const PublicLayout = ({ children, metadata }: Props) => {
+const PublicLayout = ({ children, metadata, container }: Props) => {
   return (
     <>
       <Head>
@@ -31,7 +32,7 @@ const PublicLayout = ({ children, metadata }: Props) => {
       </Head>
 
       <Navigation />
-      <main className="flex flex-col overflow-hidden">{children}</main>
+      <main className={container}>{children}</main>
       <Footer />
     </>
   );

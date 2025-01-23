@@ -14,7 +14,7 @@ const metadata = {
 
 export default function Welcome() {
   return (
-    <PublicLayout metadata={metadata}>
+    <PublicLayout metadata={metadata} container="flex flex-col overflow-hidden">
       <Hero />
       <Features />
       <Globe />
