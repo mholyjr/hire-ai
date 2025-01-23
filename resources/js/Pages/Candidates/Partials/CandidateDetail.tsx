@@ -91,6 +91,8 @@ export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
     window.location.href = route("candidates.download-cv", candidate.id);
   };
 
+  console.log(candidate)
+
   return (
     <>
       <div className="grid gap-8">
