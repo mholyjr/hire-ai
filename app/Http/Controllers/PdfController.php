@@ -8,6 +8,7 @@ use App\Models\Position;
 use Illuminate\Http\Request;
 use OpenAI as OpenAIClient;
 use Google\Cloud\Storage\StorageClient;
+use Illuminate\Support\Facades\Log;
 use stdClass;
 
 class PdfController extends Controller
@@ -213,6 +214,11 @@ class PdfController extends Controller
         // Check if the run failed
         if ($run->status === 'failed') {
             $errorMessage = $run->last_error->message ?? 'Unknown error';
+            Log::error('OpenAI Assistant run failed', [
+                'error' => $errorMessage,
+                'thread_id' => $thread->id,
+                'run_id' => $run->id
+            ]);
             throw new \Exception('Assistant run failed: ' . $errorMessage);
         }
 
