@@ -28,20 +28,9 @@ class Candidate extends Model
         });
     }
 
-    public function getAiRatingAttribute($value)
+    public function setCvDataAttribute($value)
     {
-        $rating = is_string($value) ? json_decode($value, true) : $value;
-
-        if ($rating && is_array($rating)) {
-            if (isset($rating['pros']) && is_string($rating['pros'])) {
-                $rating['pros'] = json_decode($rating['pros'], true) ?? [];
-            }
-            if (isset($rating['cons']) && is_string($rating['cons'])) {
-                $rating['cons'] = json_decode($rating['cons'], true) ?? [];
-            }
-        }
-
-        return $rating;
+        $this->attributes['cv_data'] = is_array($value) ? json_encode($value) : $value;
     }
 
     public function position()

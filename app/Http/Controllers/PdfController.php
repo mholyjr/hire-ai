@@ -143,7 +143,7 @@ class PdfController extends Controller
                 'name' => $data->name ?? $candidate->name,
                 'email' => $data->email ?? $candidate->email,
                 'phone' => $data->phone ?? $candidate->phone,
-                'cv_data' => $data,
+                'cv_data' => json_encode($data),
                 'status' => 'pending_rating'
             ]);
 
@@ -166,6 +166,11 @@ class PdfController extends Controller
     {
         $persona = $position['persona'];
 
+        Log::info('Candidate CV Data:', ['cv_data' => $candidate->cv_data]);
+
+        $cvData = json_encode($candidate->cv_data);
+
+
         $openai = OpenAIClient::client(config('services.openai.api_key'));
 
         $prompt = "I need you to analyze this candidate for the following position:
@@ -183,7 +188,7 @@ class PdfController extends Controller
 
         $prompt .= "
             Our candidate information:
-            CV Data: {$candidate->cv_data}
+            CV Data: {$cvData}  
         ";
 
         $thread = $openai->threads()->create([
@@ -232,8 +237,8 @@ class PdfController extends Controller
             'candidate_id' => $candidate->id,
             'rating' => $data->rating,
             'summary' => $data->summary,
-            'cons' => $data->cons, 
-            'pros' => $data->pros,
+            'cons' => json_encode($data->cons),
+            'pros' => json_encode($data->pros),
         ]);
 
         $candidate->position->team()->decrement('credits', 1);

@@ -13,6 +13,16 @@ class AiRating extends Model
         'cons' => 'array',
     ];
 
+    // public function setProsAttribute($value)
+    // {
+    //     $this->attributes['pros'] = is_array($value) ? json_encode($value) : $value;
+    // }
+
+    // public function setConsAttribute($value)
+    // {
+    //     $this->attributes['cons'] = is_array($value) ? json_encode($value) : $value;
+    // }
+
     public function getProsAttribute($value)
     {
         if (is_string($value)) {
