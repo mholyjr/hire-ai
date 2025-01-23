@@ -152,10 +152,7 @@ class CandidateController extends Controller
                 'cv_data' => "",
             ]);
 
-            // Create LRO job to process CV only in dev mode
-            if (app()->environment('local')) {
-                dispatch(new ProcessCandidateCv($candidate, $cvPath));
-            }
+            dispatch(new ProcessCandidateCv($candidate, $cvPath));
 
             return redirect()->route('positions.show', $position->slug);
         } catch (\Exception $e) {
