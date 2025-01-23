@@ -148,6 +148,32 @@ export default function Register() {
           </PrimaryButton>
         </div>
       </form>
+      <div className="mt-4">
+        <div className="text-xs text-gray-600 dark:text-gray-400">
+          By creating an account, you agree to our{" "}
+          <Link
+            href={route("terms.show")}
+            className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+          >
+            Terms of Service
+          </Link>
+          ,{" "}
+          <Link
+            href={route("privacy.show")}
+            className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+          >
+            Privacy Policy
+          </Link>
+          , and{" "}
+          <Link
+            href={route("dpa.show")}
+            className="text-indigo-600 hover:text-indigo-500 dark:text-indigo-400"
+          >
+            Data Processing Agreement
+          </Link>
+          .
+        </div>
+      </div>
     </AuthenticationCard>
   );
 }
