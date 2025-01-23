@@ -11,6 +11,7 @@ use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\WebhookController;
+use Illuminate\Support\Str;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -29,6 +30,12 @@ Route::get('/pricing', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/terms-of-service', function () {
+    return Inertia::render('TermsOfService', [
+        'terms' => Str::markdown(file_get_contents(resource_path('markdown/terms.md'))),
+    ]);
+})->name('terms.show');
 
 Route::middleware([
     'auth:sanctum',
