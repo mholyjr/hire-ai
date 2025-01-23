@@ -50,6 +50,7 @@ class GoogleLoginController extends Controller
                     'user_id' => $newUser->id,
                     'name' => explode(' ', $newUser->name, 2)[0] . "'s Team",
                     'personal_team' => true,
+                    'credits' => 10,
                 ]));
 
                 $newUser->current_team_id = $newUser->ownedTeams()->first()->id;

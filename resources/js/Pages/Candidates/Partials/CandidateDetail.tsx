@@ -165,7 +165,7 @@ export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
                 <div>
                   <h4 className="font-medium">Cons</h4>
                   <ul className="list-disc pl-5">
-                    {candidate.ai_rating?.cons.map((con, index) => (
+                    {candidate.ai_rating?.cons?.map((con, index) => (
                       <li key={index}>{con}</li>
                     ))}
                   </ul>
@@ -182,7 +182,7 @@ export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
-                  {candidate.cv_data.skills.map((skill, index) => (
+                  {candidate.cv_data.skills?.map((skill, index) => (
                     <Badge key={index} variant="secondary">
                       {skill}
                     </Badge>
@@ -212,14 +212,14 @@ export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
                 <CardTitle>Experience</CardTitle>
               </CardHeader>
               <CardContent>
-                {candidate.cv_data.experience.map((exp, index) => (
+                {candidate.cv_data.experience?.map((exp, index) => (
                   <div key={index} className="mb-4">
                     <p className="font-medium">{exp.Role}</p>
                     <p>
                       {exp.Company}, {exp.Years}
                     </p>
                     <ul className="list-disc pl-5 mt-2">
-                      {exp.Responsibilities.map((resp, respIndex) => (
+                      {exp.Responsibilities?.map((resp, respIndex) => (
                         <li key={respIndex}>{resp}</li>
                       ))}
                     </ul>
