@@ -65,12 +65,12 @@ export function Navigation() {
               >
                 Pricing
               </Link>
-              <Link
+              {/* <Link
                 className="px-2 py-1 text-gray-900 dark:text-gray-50"
                 href={siteConfig.baseLinks.changelog}
               >
                 Changelog
-              </Link>
+              </Link> */}
             </div>
           </nav>
           <Button asChild className="hidden h-10 font-semibold md:flex">
@@ -106,9 +106,9 @@ export function Navigation() {
             <li onClick={() => setOpen(false)}>
               <Link href={siteConfig.baseLinks.pricing}>Pricing</Link>
             </li>
-            <li onClick={() => setOpen(false)}>
+            {/* <li onClick={() => setOpen(false)}>
               <Link href={siteConfig.baseLinks.changelog}>Changelog</Link>
-            </li>
+            </li> */}
           </ul>
         </nav>
       </div>

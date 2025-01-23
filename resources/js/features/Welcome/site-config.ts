@@ -4,7 +4,7 @@ export const siteConfig = {
   description: "AI-Powered recruitment for modern hiring",
   baseLinks: {
     home: "/",
-    about: "/about",
+    about: "/",
     changelog: "/changelog",
     pricing: "/pricing",
     imprint: "/imprint",
