@@ -1,5 +1,3 @@
-"use server";
-
 import React from "react";
 import useRoute from "@/Hooks/useRoute";
 import useTypedPage from "@/Hooks/useTypedPage";

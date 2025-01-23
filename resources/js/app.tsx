@@ -11,7 +11,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "./Components/ui/toaster";
 
 const appName =
-  window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
+  window.document.getElementsByTagName("title")[0]?.innerText || "CandAI";
 
 const queryClient = new QueryClient({
   defaultOptions: {
