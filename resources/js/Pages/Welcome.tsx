@@ -10,6 +10,7 @@ import Hero from "@/features/Welcome/Hero";
 import { Globe } from "@/features/Welcome/Globe";
 import Features from "@/features/Welcome/Features";
 import { Navigation } from "@/features/Welcome/Navigation";
+import Footer from "@/features/Welcome/Footer";
 
 export default function Welcome() {
   const route = useRoute();
@@ -56,6 +57,7 @@ export default function Welcome() {
       <CodeExample />
       <Cta /> */}
       </main>
+      <Footer />
     </>
     // <>
     //   <Head title="Welcome" />
