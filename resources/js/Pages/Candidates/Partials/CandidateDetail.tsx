@@ -157,17 +157,19 @@ export const CandidateDetail = ({ candidate }: { candidate: Candidate }) => {
                 <div>
                   <h4 className="font-medium">Pros</h4>
                   <ul className="list-disc pl-5">
-                    {candidate.ai_rating?.pros?.map((pro, index) => (
-                      <li key={index}>{pro}</li>
-                    ))}
+                    {Array.isArray(candidate.ai_rating?.pros) &&
+                      candidate.ai_rating?.pros?.map((pro, index) => (
+                        <li key={index}>{pro}</li>
+                      ))}
                   </ul>
                 </div>
                 <div>
                   <h4 className="font-medium">Cons</h4>
                   <ul className="list-disc pl-5">
-                    {candidate.ai_rating?.cons?.map((con, index) => (
-                      <li key={index}>{con}</li>
-                    ))}
+                    {Array.isArray(candidate.ai_rating?.cons) &&
+                      candidate.ai_rating?.cons?.map((con, index) => (
+                        <li key={index}>{con}</li>
+                      ))}
                   </ul>
                 </div>
               </div>
