@@ -1,4 +1,5 @@
-import { Link } from "@inertiajs/react";
+"use server";
+
 import React from "react";
 import useRoute from "@/Hooks/useRoute";
 import useTypedPage from "@/Hooks/useTypedPage";
@@ -6,20 +7,56 @@ import { Head } from "@inertiajs/react";
 import Bento from "@/features/Welcome/Bento";
 import { Navbar } from "@/features/Welcome/Navbar";
 import Hero from "@/features/Welcome/Hero";
+import { Globe } from "@/features/Welcome/Globe";
+import Features from "@/features/Welcome/Features";
+import { Navigation } from "@/features/Welcome/Navigation";
 
 export default function Welcome() {
   const route = useRoute();
   const page = useTypedPage();
 
   return (
-    <main className="flex flex-col overflow-hidden">
-      <Hero />
-      {/* <LogoCloud />
+    <>
+      <Head>
+        <title>AI Candidate Evaluation | Make Better Hiring Decisions</title>
+        <meta
+          name="description"
+          content="Transform your hiring process with AI-powered candidate evaluation. Our platform analyzes skills and experience to help you make data-driven recruitment decisions with confidence."
+        />
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:title"
+          content="AI Candidate Evaluation | Make Better Hiring Decisions"
+        />
+        <meta
+          property="og:description"
+          content="Transform your hiring process with AI-powered candidate evaluation. Our platform analyzes skills and experience to help you make data-driven recruitment decisions with confidence."
+        />
+        <meta property="og:image" content="/og-image.jpg" />
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="AI Candidate Evaluation | Make Better Hiring Decisions"
+        />
+        <meta
+          name="twitter:description"
+          content="Transform your hiring process with AI-powered candidate evaluation. Our platform analyzes skills and experience to help you make data-driven recruitment decisions with confidence."
+        />
+        <meta name="twitter:image" content="/og-image.jpg" />
+      </Head>
+      <Navigation />
+      <main className="flex flex-col overflow-hidden">
+        <Hero />
+        <Features />
+        <Globe />
+        {/* <LogoCloud />
       <GlobalDatabase />
       <CodeExample />
-      <Features />
       <Cta /> */}
-    </main>
+      </main>
+    </>
     // <>
     //   <Head title="Welcome" />
     //   <div className="bg-white">
