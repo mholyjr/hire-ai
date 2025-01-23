@@ -13,6 +13,30 @@ class AiRating extends Model
         'cons' => 'array',
     ];
 
+    public function getProsAttribute($value)
+    {
+        if (is_string($value)) {
+            // First remove the escaped quotes
+            $value = str_replace('\"', '"', $value);
+            // Remove the leading and trailing quotes if they exist
+            $value = trim($value, '"');
+            return json_decode($value, true) ?? [];
+        }
+        return $value ?? [];
+    }
+
+    public function getConsAttribute($value)
+    {
+        if (is_string($value)) {
+            // First remove the escaped quotes
+            $value = str_replace('\"', '"', $value);
+            // Remove the leading and trailing quotes if they exist
+            $value = trim($value, '"');
+            return json_decode($value, true) ?? [];
+        }
+        return $value ?? [];
+    }
+
     public function candidate()
     {
         return $this->belongsTo(Candidate::class);

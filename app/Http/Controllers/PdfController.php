@@ -143,7 +143,7 @@ class PdfController extends Controller
                 'name' => $data->name ?? $candidate->name,
                 'email' => $data->email ?? $candidate->email,
                 'phone' => $data->phone ?? $candidate->phone,
-                'cv_data' => json_encode($data),
+                'cv_data' => $data,
                 'status' => 'pending_rating'
             ]);
 
@@ -232,8 +232,8 @@ class PdfController extends Controller
             'candidate_id' => $candidate->id,
             'rating' => $data->rating,
             'summary' => $data->summary,
-            'cons' => json_encode($data->cons),
-            'pros' => json_encode($data->pros),
+            'cons' => $data->cons, 
+            'pros' => $data->pros,
         ]);
 
         $candidate->position->team()->decrement('credits', 1);
