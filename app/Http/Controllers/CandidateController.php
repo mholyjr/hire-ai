@@ -149,7 +149,7 @@ class CandidateController extends Controller
                 'phone' => $cvData['phone'] ?? $validated['phone'] ?? "",
                 'state' => CandidateState::MAYBE->value,
                 'cv_path' => $cvPath,
-                'cv_data' => "",
+                'cv_data' => null,
             ]);
 
             dispatch(new ProcessCandidateCv($candidate, $cvPath));
