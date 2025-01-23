@@ -30,6 +30,11 @@ class Candidate extends Model
 
     public function setCvDataAttribute($value)
     {
+        if (empty($value)) {
+            $this->attributes['cv_data'] = $value;
+            return;
+        }
+        
         $this->attributes['cv_data'] = is_array($value) ? json_encode($value) : $value;
     }
 
