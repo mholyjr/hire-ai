@@ -32,10 +32,25 @@ Route::get('/pricing', function () {
 });
 
 Route::get('/terms-of-service', function () {
-    return Inertia::render('TermsOfService', [
-        'terms' => Str::markdown(file_get_contents(resource_path('markdown/terms.md'))),
+    return Inertia::render('LegalDocument', [
+        'title' => 'Terms of Service',
+        'content' => Str::markdown(file_get_contents(resource_path('markdown/terms.md'))),
     ]);
 })->name('terms.show');
+
+Route::get('/privacy-policy', function () {
+    return Inertia::render('LegalDocument', [
+        'title' => 'Privacy Policy',
+        'content' => Str::markdown(file_get_contents(resource_path('markdown/privacy.md'))),
+    ]);
+})->name('privacy.show');
+
+Route::get('/dpa', function () {
+    return Inertia::render('LegalDocument', [
+        'title' => 'Data Processing Agreement',
+        'content' => Str::markdown(file_get_contents(resource_path('markdown/dpa.md'))),
+    ]);
+})->name('dpa.show');
 
 Route::middleware([
     'auth:sanctum',

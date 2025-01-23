@@ -24,10 +24,9 @@ const navigation = {
     { name: "Status", href: "#", external: false },
   ],
   legal: [
-    { name: "Imprint", href: "#", external: false },
-    { name: "Privacy", href: "#", external: false },
-    { name: "Terms", href: "#", external: false },
-    { name: "DPA", href: "#", external: false },
+    { name: "Privacy", href: "privacy-policy", external: false },
+    { name: "Terms", href: "terms-of-service", external: false },
+    { name: "DPA", href: "dpa", external: false },
   ],
 };
 
@@ -36,7 +35,7 @@ export default function Footer() {
     <footer id="footer">
       <div className="mx-auto max-w-6xl px-3 pb-8 pt-16 sm:pt-24 lg:pt-32">
         <div className="xl:grid xl:grid-cols-6 xl:gap-20">
-          <div className="space-y-8 col-span-4">
+          <div className="space-y-8 col-span-3">
             <div className="xl:pr-[40%] space-y-8">
               <ThemedImage
                 lightSrc="./images/logo-dark.svg"
@@ -57,7 +56,7 @@ export default function Footer() {
               <div></div>
             </div>
           </div>
-          <div className="mt-16 grid grid-cols-1 gap-14 sm:gap-8 md:grid-cols-2 xl:col-span-2 xl:mt-0">
+          <div className="mt-16 grid grid-cols-1 gap-14 sm:gap-8 md:grid-cols-2 xl:col-span-3 xl:mt-0">
             <div className="grid grid-cols-2 gap-8">
               <div>
                 <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-50">
@@ -153,7 +152,7 @@ export default function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div>*/}
               <div>
                 <h3 className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-50">
                   Legal
@@ -184,7 +183,7 @@ export default function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div> */}
+              </div>
             </div>
           </div>
         </div>

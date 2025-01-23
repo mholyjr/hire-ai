@@ -4,7 +4,7 @@ import { Head } from "@inertiajs/react";
 import PublicLayout from "@/Layouts/PublicLayout";
 
 interface Props {
-  terms: string;
+  content: string;
 }
 
 const metadata = {
@@ -13,12 +13,12 @@ const metadata = {
   image: "/og-image.jpg",
 };
 
-export default function TermsOfService({ terms }: Props) {
+export default function LegalDocument({ content }: Props) {
   return (
     <PublicLayout metadata={metadata} container="mx-auto mt-36 max-w-6xl">
       <div
         className="lg:w-[50%] mx-auto mt-6 p-6 overflow-hidden sm:rounded-lg prose dark:prose-invert"
-        dangerouslySetInnerHTML={{ __html: terms }}
+        dangerouslySetInnerHTML={{ __html: content }}
       />
     </PublicLayout>
   );
