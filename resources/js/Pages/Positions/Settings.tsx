@@ -1,35 +1,21 @@
 import React from "react";
-import AppLayout from "@/Layouts/AppLayout";
-import { Position, Persona, Candidate } from "@/types";
+import { Position, Persona } from "@/types";
 import { Card, CardContent, CardHeader } from "@/Components/ui/card";
-import { Badge } from "@/Components/ui/badge";
 import { Header } from "@/Components/Header";
-import { NewPositionForm } from "@/features/Positions/Partials/NewPositionDialog/Partials/NewPositionForm";
 import { useForm } from "@inertiajs/react";
 import { PersonaForm } from "./Partials/PersonaForm";
-import { DragDrop } from "@/Components/DragDrop";
-import { CandidateRow } from "./Partials/CandidateRow";
-import { CandidateItem } from "./Partials/CandidateItem";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/Components/ui/popover";
-import { Button } from "@/Components/ui/button";
-import { PlusCircleIcon } from "lucide-react";
 import { useToast } from "@/Hooks/use-toast";
 import PositionLayout from "@/Layouts/PositionLayout";
 import { LayoutSidebar } from "./Partials/LayoutSidebar";
+import { Button } from "@/Components/ui/button";
 
 interface Props {
   position: Position & {
     persona: Persona;
-    candidates: Candidate[];
   };
-  positions: Position[];
 }
 
-export default function Show({ position, positions }: Props) {
+export default function Settings({ position }: Props) {
   const { toast } = useToast();
   const { data, setData, patch, processing, errors } = useForm({
     title: position.title,
@@ -45,18 +31,39 @@ export default function Show({ position, positions }: Props) {
     },
   });
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    patch(route("positions.update", position.slug), {
+      onSuccess: () => {
+        toast({
+          title: "Settings updated",
+          description: "Your position settings have been updated successfully.",
+        });
+      },
+    });
+  };
+
   return (
     <PositionLayout
-      title={position.title}
-      sidebar={<LayoutSidebar positions={positions} position={position} />}
+      title={`${position.title} - Settings`}
+      sidebar={<LayoutSidebar positions={[]} position={position} />}
     >
-      <div>
-        <div className="grid gap-8 grid-cols-2">
-          {position.candidates.map(candidate => (
-            <CandidateItem key={candidate.id} candidate={candidate} />
-          ))}
+      <form onSubmit={handleSubmit} className="space-y-8">
+        <Card>
+          <CardHeader>
+            <h3 className="text-lg font-semibold">Position Settings</h3>
+          </CardHeader>
+          <CardContent>
+            <PersonaForm data={data} setData={setData} />
+          </CardContent>
+        </Card>
+
+        <div className="flex justify-end">
+          <Button type="submit" disabled={processing}>
+            Save Changes
+          </Button>
         </div>
-      </div>
+      </form>
     </PositionLayout>
   );
 }

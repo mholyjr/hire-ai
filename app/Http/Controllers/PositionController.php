@@ -110,7 +110,76 @@ class PositionController extends Controller
 
         $position->load(['persona', 'candidates.aiRating']);
 
+        // Get all positions for the current team
+        $positions = Position::forTeam(auth()->user()->currentTeam->id)
+            ->where('state', 1)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($pos) {
+                return [
+                    'id' => $pos->id,
+                    'title' => $pos->title,
+                    'slug' => $pos->slug,
+                ];
+            });
+
         return Inertia::render('Positions/Show', [
+            'position' => $position,
+            'positions' => $positions
+        ]);
+    }
+
+    public function update(Request $request, Position $position)
+    {
+        $this->authorize('update', $position);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'persona.position' => 'required|string|max:255',
+            'persona.work_experience' => 'required|string',
+            'persona.education' => 'required|string',
+            'persona.seniority' => 'required|string|max:255',
+            'persona.nationality' => 'nullable|string|max:255',
+            'persona.languages_spoken' => 'required|array',
+            'persona.languages_spoken.*' => 'string|max:255',
+            'persona.additional_info' => 'nullable|string',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $position->update([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+            ]);
+
+            $position->persona->update([
+                'position' => $validated['persona']['position'],
+                'work_experience' => $validated['persona']['work_experience'],
+                'education' => $validated['persona']['education'],
+                'seniority' => $validated['persona']['seniority'],
+                'nationality' => $validated['persona']['nationality'],
+                'languages_spoken' => $validated['persona']['languages_spoken'],
+                'additional_info' => $validated['persona']['additional_info'],
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->back()->with('message', 'Position updated successfully.');
+    }
+
+    public function settings(Position $position)
+    {
+        $this->authorize('view', $position);
+
+        $position->load(['persona']);
+
+        return Inertia::render('Positions/Settings', [
             'position' => $position
         ]);
     }
