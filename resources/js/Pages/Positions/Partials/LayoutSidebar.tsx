@@ -65,8 +65,6 @@ export const LayoutSidebar = ({
     },
   ];
 
-  console.log(url, route("positions.settings", position.slug));
-
   return (
     <Sidebar>
       <SidebarHeader className="">
