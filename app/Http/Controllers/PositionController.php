@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CandidateState;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -104,13 +105,37 @@ class PositionController extends Controller
         return redirect()->back()->with('message', 'Position status updated successfully.');
     }
 
+    private function countCandidatesWithState($candidates, $state)
+    {
+        return $candidates->filter(
+            fn($candidate) =>
+            $candidate->state === $state &&
+                $candidate->status === 'done'
+        )->count();
+    }
+
+    private function calculateAverageRating($candidates)
+    {
+        $ratings = $candidates->pluck('aiRating.rating')->filter();
+        return $ratings->count() > 0 ? round($ratings->avg(), 1) : 0;
+    }
+
     public function show(Position $position)
     {
         $this->authorize('view', $position);
 
         $position->load(['persona', 'candidates.aiRating']);
 
-        // Get all positions for the current team
+        $candidateStateCounts = [
+            'rejected'  => $this->countCandidatesWithState($position->candidates, CandidateState::REJECTED),
+            'maybe'     => $this->countCandidatesWithState($position->candidates, CandidateState::MAYBE),
+            'shortList' => $this->countCandidatesWithState($position->candidates, CandidateState::SHORT_LIST),
+            'avgRating' => $this->calculateAverageRating($position->candidates)
+        ];
+
+        // var_dump($candidateStateCounts);
+
+        // Get all positions for the current team for the sidebar switcher
         $positions = Position::forTeam(auth()->user()->currentTeam->id)
             ->where('state', 1)
             ->orderBy('created_at', 'desc')
@@ -125,7 +150,9 @@ class PositionController extends Controller
 
         return Inertia::render('Positions/Show', [
             'position' => $position,
-            'positions' => $positions
+            'positions' => $positions,
+            'candidateStateCounts'  => $candidateStateCounts,
+
         ]);
     }
 

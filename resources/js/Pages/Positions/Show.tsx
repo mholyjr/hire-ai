@@ -20,6 +20,14 @@ import { PlusCircleIcon } from "lucide-react";
 import { useToast } from "@/Hooks/use-toast";
 import PositionLayout from "@/Layouts/PositionLayout";
 import { LayoutSidebar } from "./Partials/LayoutSidebar";
+import { PositionStats } from "./Partials/PositionStats";
+
+interface CandidateStateCounts {
+  rejected: number;
+  maybe: number;
+  shortList: number;
+  avgRating: number;
+}
 
 interface Props {
   position: Position & {
@@ -27,9 +35,14 @@ interface Props {
     candidates: Candidate[];
   };
   positions: Position[];
+  candidateStateCounts: CandidateStateCounts;
 }
 
-export default function Show({ position, positions }: Props) {
+export default function Show({
+  position,
+  positions,
+  candidateStateCounts,
+}: Props) {
   const { toast } = useToast();
   const { data, setData, patch, processing, errors } = useForm({
     title: position.title,
@@ -45,12 +58,54 @@ export default function Show({ position, positions }: Props) {
     },
   });
 
+  const statsData = [
+    {
+      name: "Average Rating",
+      value: candidateStateCounts.avgRating,
+      change: 0,
+      changeType: "neutral" as const,
+      href: "#",
+      id: "avgRating",
+      color: "bg-primary"
+    },
+    {
+      name: "Rejected",
+      value: candidateStateCounts.rejected,
+      change: 0,
+      changeType: "neutral" as const,
+      href: "#",
+      id: "rejected",
+      color: "bg-red-500"
+    },
+    {
+      name: "Maybe",
+      value: candidateStateCounts.maybe,
+      change: 0,
+      changeType: "neutral" as const,
+      href: "#",
+      id: "maybe",
+      color: "bg-yellow-500"
+    },
+    {
+      name: "Short-listed",
+      value: candidateStateCounts.shortList,
+      change: 0,
+      changeType: "neutral" as const,
+      href: "#",
+      id: "shortList",
+      color: "bg-green-500"
+    },
+  ];
+
   return (
     <PositionLayout
       title={position.title}
       sidebar={<LayoutSidebar positions={positions} position={position} />}
     >
       <div>
+        <div className="mb-8 pb-8 border-b">
+          <PositionStats data={statsData} />
+        </div>
         <div className="grid gap-8 grid-cols-2">
           {position.candidates.map(candidate => (
             <CandidateItem key={candidate.id} candidate={candidate} />
