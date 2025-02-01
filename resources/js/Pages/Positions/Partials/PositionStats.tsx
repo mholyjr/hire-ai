@@ -23,7 +23,7 @@ export const PositionStats: React.FC<PositionStatsProps> = ({ data }) => {
         <Card key={item.name}>
           <CardHeader className="flex space-x-3 flex-row">
             <div className={clsx(item.color, "w-1 shrink-0 rounded")} />
-            <dt className="flex w-full !mt-0 items-center justify-between truncate text-tremor-default text-tremor-content dark:text-dark-tremor-content">
+            <dt className="flex w-full !mt-0 items-center justify-between truncate">
               <span className="truncate font-medium">{item.name}</span>
             </dt>
           </CardHeader>
