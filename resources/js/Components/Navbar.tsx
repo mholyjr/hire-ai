@@ -39,7 +39,7 @@ export const Navbar = ({ sidebar }: { sidebar: boolean }) => {
   }
 
   return (
-    <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+    <nav className="bg-white dark:bg-background border-b border-gray-100 dark:border-gray-700">
       {/* <!-- Primary Navigation Menu --> */}
       <div className=" px-6">
         <div className="flex justify-between h-16">
