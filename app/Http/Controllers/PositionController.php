@@ -211,6 +211,60 @@ class PositionController extends Controller
         ]);
     }
 
+    public function candidates(Request $request, Position $position)
+    {
+        $this->authorize('view', $position);
+
+        $query = $position->candidates()
+            ->with('aiRating')
+            ->where('status', 'done')
+            ->when($request->search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->state, function ($query, $state) {
+                $query->where('state', $state);
+            });
+
+        $allCandidates = $query->orderBy('created_at', 'desc')->get();
+
+        // Transform and group candidates by state value
+        $groupedCandidates = $allCandidates->groupBy(function ($candidate) {
+            return $candidate->state->name;
+        })->map(function ($candidates) {
+            return $candidates->map(fn($candidate) => [
+                'id' => $candidate->id,
+                'name' => $candidate->name,
+                'email' => $candidate->email,
+                'state' => $candidate->state,
+                'status' => $candidate->status,
+                'created_at' => $candidate->created_at,
+                'ai_rating' => $candidate->aiRating,
+                'slug' => $candidate->slug,
+            ]);
+        });
+
+
+        // Ensure all states exist in the response, even if empty
+        $candidatesByState = [
+            'SHORT_LIST' => $groupedCandidates->get('SHORT_LIST', collect()),
+            'MAYBE' => $groupedCandidates->get('MAYBE', collect()),
+            'REJECTED' => $groupedCandidates->get('REJECTED', collect()),
+        ];
+
+
+        return Inertia::render('Positions/Candidates', [
+            'position' => $position,
+            'candidatesByState' => $candidatesByState,
+            'filters' => [
+                'search' => $request->search,
+                'state' => $request->state,
+            ],
+        ]);
+    }
+
     public function upload(Request $request, Position $position)
     {
         $this->authorize('update', $position);

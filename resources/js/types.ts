@@ -145,12 +145,13 @@ export interface AiRating {
   updated_at: string;
 }
 
-export type CandidateState =
-  | "maybe"
-  | "short_list"
-  | "no"
-  | "hired"
-  | "rejected";
+export enum CandidateState {
+  MAYBE = "maybe",
+  SHORT_LIST = "short_list",
+  NO = "no",
+  HIRED = "hired",
+  REJECTED = "rejected",
+}
 
 export interface Candidate {
   id: number;

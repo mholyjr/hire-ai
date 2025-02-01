@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/positions/{position}/upload', [PositionController::class, 'upload'])->name('positions.upload');
     Route::get('/positions/{position:slug}/settings', [PositionController::class, 'settings'])->name('positions.settings');
     Route::patch('/positions/{position:slug}', [PositionController::class, 'update'])->name('positions.update');
+    Route::get('/positions/{position:slug}/candidates', [PositionController::class, 'candidates'])->name('positions.candidates');
 
 
     // Candidates

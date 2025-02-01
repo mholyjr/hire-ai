@@ -49,10 +49,10 @@ export const LayoutSidebar = ({
     {
       title: "Candidates",
       icon: Users,
-      getUrl: (slug: string) => route("positions.show", slug),
+      getUrl: (slug: string) => route("positions.candidates", slug),
       isActive: (currentUrl: string, slug: string) =>
         currentUrl ===
-        new URL(route("positions.show", slug), window.location.origin).pathname,
+        new URL(route("positions.candidates", slug), window.location.origin).pathname,
     },
     {
       title: "Settings",
