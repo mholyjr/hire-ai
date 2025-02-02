@@ -56,7 +56,7 @@ export default function PositionLayout({
 
           <Banner />
           {/* <SidebarTrigger /> */}
-          <div className="p-6">{children}</div>
+          {children}
         </main>
       </SidebarProvider>
     </div>
