@@ -42,7 +42,7 @@ export default function Candidates({
       title={`${position.title} - Candidates`}
       sidebar={<LayoutSidebar positions={[]} position={position} />}
     >
-      <div className="space-y-8">
+      <div className="space-y-8 p-8">
         <div className="flex gap-4">
           <Input
             placeholder="Search candidates..."

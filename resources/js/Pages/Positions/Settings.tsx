@@ -48,7 +48,7 @@ export default function Settings({ position }: Props) {
       title={`${position.title} - Settings`}
       sidebar={<LayoutSidebar positions={[]} position={position} />}
     >
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} className="space-y-8 p-8">
         <Card>
           <CardHeader>
             <h3 className="text-lg font-semibold">Position Settings</h3>
