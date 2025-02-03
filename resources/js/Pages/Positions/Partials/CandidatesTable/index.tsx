@@ -24,6 +24,7 @@ import {
 } from "@/Components/ui/dropdown-menu";
 import { Badge } from "@/Components/ui/badge";
 import { StarFilledIcon } from "@radix-ui/react-icons";
+import { AIProcessing } from "./AIProcessing";
 
 type Props = {
   data: Candidate[];
@@ -157,9 +158,15 @@ export const CandidatesTable: React.FC<Props> = ({ data }) => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {data.map(candidate => (
-          <Row key={candidate.id} data={candidate} />
-        ))}
+        {data.map(candidate => {
+          if (!candidate.ai_rating) {
+            return (
+              <AIProcessing processingMessage="AI is processing the file" />
+            );
+          }
+
+          return <Row key={candidate.id} data={candidate} />;
+        })}
       </TableBody>
     </Table>
   );
