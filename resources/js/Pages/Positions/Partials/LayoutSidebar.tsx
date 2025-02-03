@@ -35,8 +35,6 @@ export const LayoutSidebar = ({
   const { toast } = useToast();
   const { url } = usePage();
 
-  const currentPath = new URL(url, window.location.origin).pathname;
-
   const navigationItems = [
     {
       title: "Overview",
