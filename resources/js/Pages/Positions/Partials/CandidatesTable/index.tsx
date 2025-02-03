@@ -130,8 +130,10 @@ const Row = ({ data }: { data: Candidate }) => {
         </span>
       </TableCell>
       <TableCell>
+        <ToggleState candidate={freshData} refetch={refetch} />
+      </TableCell>
+      <TableCell>
         <span className="flex items-center gap-2 w-full justify-end">
-          <ToggleState candidate={freshData} refetch={refetch} />
           <Button variant="outline" className="w-[100px]" asChild>
             <Link href={route("candidates.show", data.slug)}>View Details</Link>
           </Button>
@@ -150,6 +152,7 @@ export const CandidatesTable: React.FC<Props> = ({ data }) => {
           <TableHead className="w-1/6">Email</TableHead>
           <TableHead className="w-1/2">Summary</TableHead>
           <TableHead className="w-1/12">Rating</TableHead>
+          <TableHead className="w-1/12">State</TableHead>
           <TableHead></TableHead>
         </TableRow>
       </TableHeader>
