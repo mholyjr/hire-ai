@@ -4,6 +4,8 @@ import { CandidateItem } from "./Partials/CandidateItem";
 import PositionLayout from "@/Layouts/PositionLayout";
 import { LayoutSidebar } from "./Partials/LayoutSidebar";
 import { PositionStats } from "./Partials/PositionStats";
+import { Button } from "@/Components/ui/button";
+import { CandidatesTable } from "./Partials/CandidatesTable";
 
 interface CandidateStateCounts {
   rejected: number;
@@ -20,6 +22,15 @@ interface Props {
   positions: Position[];
   candidateStateCounts: CandidateStateCounts;
 }
+
+const SectionHeader = ({ title }: { title: string }) => {
+  return (
+    <div className="flex items-center justify-between mb-6">
+      <h2 className="font-semibold">{title}</h2>
+      <Button>Upload CV</Button>
+    </div>
+  );
+};
 
 export default function Show({
   position,
@@ -74,8 +85,9 @@ export default function Show({
         <PositionStats data={statsData} />
       </div>
 
-      <div className="p-6">
-        <h2>Latest candidates</h2>
+      <div className="p-8">
+        <SectionHeader title="Latest candidates" />
+        <CandidatesTable data={position.candidates} />
         <div className="grid gap-8 grid-cols-2">
           {position.candidates.map(candidate => (
             <CandidateItem key={candidate.id} candidate={candidate} />
