@@ -124,7 +124,12 @@ class PositionController extends Controller
     {
         $this->authorize('view', $position);
 
-        $position->load(['persona', 'candidates.aiRating']);
+        $position->load([
+            'persona',
+            'candidates' => function ($query) {
+                $query->orderBy('id', 'desc')->with('aiRating');
+            }
+        ]);
 
         $candidateStateCounts = [
             'rejected'  => $this->countCandidatesWithState($position->candidates, CandidateState::REJECTED),
@@ -132,8 +137,6 @@ class PositionController extends Controller
             'shortList' => $this->countCandidatesWithState($position->candidates, CandidateState::SHORT_LIST),
             'avgRating' => $this->calculateAverageRating($position->candidates)
         ];
-
-        // var_dump($candidateStateCounts);
 
         // Get all positions for the current team for the sidebar switcher
         $positions = Position::forTeam(auth()->user()->currentTeam->id)
