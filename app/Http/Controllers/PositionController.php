@@ -139,7 +139,7 @@ class PositionController extends Controller
         ];
 
         // Get all positions for the current team for the sidebar switcher
-        $positions = Position::forTeam(auth()->user()->currentTeam->id)
+        $positions = Position::forTeam(Auth::user()->currentTeam->id)
             ->where('state', 1)
             ->orderBy('created_at', 'desc')
             ->get()
