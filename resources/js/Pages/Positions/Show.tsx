@@ -6,6 +6,7 @@ import { LayoutSidebar } from "./Partials/LayoutSidebar";
 import { PositionStats } from "./Partials/PositionStats";
 import { Button } from "@/Components/ui/button";
 import { CandidatesTable } from "./Partials/CandidatesTable";
+import { Card, CardContent, CardHeader, CardTitle } from "@/Components/ui/card";
 
 interface CandidateStateCounts {
   rejected: number;
@@ -86,13 +87,14 @@ export default function Show({
       </div>
 
       <div className="p-8">
-        <SectionHeader title="Latest candidates" />
-        <CandidatesTable data={position.candidates} />
-        <div className="grid gap-8 grid-cols-2">
-          {position.candidates.map(candidate => (
-            <CandidateItem key={candidate.id} candidate={candidate} />
-          ))}
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>Latest candidates</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CandidatesTable data={position.candidates} />
+          </CardContent>
+        </Card>
       </div>
     </PositionLayout>
   );

@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from "@/Components/ui/dropdown-menu";
 import { Badge } from "@/Components/ui/badge";
+import { StarFilledIcon } from "@radix-ui/react-icons";
 
 type Props = {
   data: Candidate[];
@@ -73,16 +74,16 @@ const ToggleState = ({
       case "rejected":
         return "destructive";
       case "maybe":
-        return "secondary";
+        return "maybe";
       case "short_list":
-        return "default";
+        return "short_list";
     }
   };
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Badge variant={getVariant(candidate.state)}>
+        <Badge variant={getVariant(candidate.state)} className="truncate">
           {activeLabel} <ChevronDown className="ml-2 h-3 w-3" />
         </Badge>
       </DropdownMenuTrigger>
@@ -107,28 +108,34 @@ const ToggleState = ({
 
 const Row = ({ data }: { data: Candidate }) => {
   const { data: freshData, refetch } = useAiRating(data.id, data);
+  const truncateText = (text: string, maxLength: number) =>
+    text.length > maxLength ? `${text.slice(0, maxLength)}...` : text;
 
   return (
     <TableRow>
       <TableCell>
-        <span className="font-semibold ">{data.name}</span>
-        <br />
-        {/* {data.ai_rating?.summary} */}
+        <span className="font-semibold">{data.name}</span>
       </TableCell>
-      <TableCell className="">{data.email}</TableCell>
+      <TableCell className="truncate">{data.email}</TableCell>
+      <TableCell title={data?.ai_rating?.summary}>
+        {data.ai_rating?.summary ? (
+          truncateText(data.ai_rating.summary, 130)
+        ) : (
+          <span className="italic">No summary available</span>
+        )}
+      </TableCell>
       <TableCell className="font-semibold text-xl">
-        {data.ai_rating?.rating}
+        <span className="flex items-center gap-1">
+          <StarFilledIcon /> {data.ai_rating?.rating}
+        </span>
       </TableCell>
       <TableCell>
-        <ToggleState candidate={freshData} refetch={refetch} />
-      </TableCell>
-      <TableCell className="text-right">
-        <Button variant="outline" className="w-full" asChild>
-          <Link href={route("candidates.show", data.slug)}>
-            View Details
-            <ChevronRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
+        <span className="flex items-center gap-2 w-full justify-end">
+          <ToggleState candidate={freshData} refetch={refetch} />
+          <Button variant="outline" className="w-[100px]" asChild>
+            <Link href={route("candidates.show", data.slug)}>View Details</Link>
+          </Button>
+        </span>
       </TableCell>
     </TableRow>
   );
@@ -137,14 +144,13 @@ const Row = ({ data }: { data: Candidate }) => {
 export const CandidatesTable: React.FC<Props> = ({ data }) => {
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-1/4">Candidate</TableHead>
-          <TableHead className="w-1/4">Email</TableHead>
+          <TableHead className="w-1/6">Candidate</TableHead>
+          <TableHead className="w-1/6">Email</TableHead>
+          <TableHead className="w-1/2">Summary</TableHead>
           <TableHead className="w-1/12">Rating</TableHead>
-          <TableHead className="w-1/3">Actions</TableHead>
-          <TableHead className="text-right w-3"></TableHead>
+          <TableHead></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
