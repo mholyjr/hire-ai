@@ -8,20 +8,12 @@ import {
   CardTitle,
 } from "@/Components/ui/card";
 import { ChevronRight, Loader2, Star } from "lucide-react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/Components/ui/dialog";
 import { Button } from "@/Components/ui/button";
 import { Candidate, CandidateState } from "@/types";
 import { useAiRating } from "../Hooks/useAiRating";
-import { CandidateDetail } from "./CandidateDetail";
 import { ToggleGroup, ToggleGroupItem } from "@/Components/ui/toggle-group";
 import { useUpdateState } from "../Hooks/useUpdateState";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 
 const CandidateItemSkeleton = () => {
   return (
@@ -67,6 +59,9 @@ const ToggleState = ({
       {
         onSuccess: () => {
           refetch();
+          router.reload({
+            only: ["candidatesByState"],
+          });
         },
       },
     );
@@ -94,10 +89,7 @@ const ToggleState = ({
 };
 
 export const CandidateItem = ({ candidate }: { candidate: Candidate }) => {
-  const {
-    data: freshData,
-    refetch,
-  } = useAiRating(candidate.id, candidate);
+  const { data: freshData, refetch } = useAiRating(candidate.id, candidate);
 
   if (!freshData.ai_rating) {
     return <CandidateItemSkeleton />;
