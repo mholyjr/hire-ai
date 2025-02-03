@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CandidateState;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -104,14 +105,166 @@ class PositionController extends Controller
         return redirect()->back()->with('message', 'Position status updated successfully.');
     }
 
+    private function countCandidatesWithState($candidates, $state)
+    {
+        return $candidates->filter(
+            fn($candidate) =>
+            $candidate->state === $state &&
+                $candidate->status === 'done'
+        )->count();
+    }
+
+    private function calculateAverageRating($candidates)
+    {
+        $ratings = $candidates->pluck('aiRating.rating')->filter();
+        return $ratings->count() > 0 ? round($ratings->avg(), 1) : 0;
+    }
+
     public function show(Position $position)
     {
         $this->authorize('view', $position);
 
-        $position->load(['persona', 'candidates.aiRating']);
+        $position->load([
+            'persona',
+            'candidates' => function ($query) {
+                $query->orderBy('id', 'desc')->with('aiRating');
+            }
+        ]);
+
+        $candidateStateCounts = [
+            'rejected'  => $this->countCandidatesWithState($position->candidates, CandidateState::REJECTED),
+            'maybe'     => $this->countCandidatesWithState($position->candidates, CandidateState::MAYBE),
+            'shortList' => $this->countCandidatesWithState($position->candidates, CandidateState::SHORT_LIST),
+            'avgRating' => $this->calculateAverageRating($position->candidates)
+        ];
+
+        // Get all positions for the current team for the sidebar switcher
+        $positions = Position::forTeam(Auth::user()->currentTeam->id)
+            ->where('state', 1)
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->map(function ($pos) {
+                return [
+                    'id' => $pos->id,
+                    'title' => $pos->title,
+                    'slug' => $pos->slug,
+                ];
+            });
 
         return Inertia::render('Positions/Show', [
+            'position' => $position,
+            'positions' => $positions,
+            'candidateStateCounts'  => $candidateStateCounts,
+
+        ]);
+    }
+
+    public function update(Request $request, Position $position)
+    {
+        $this->authorize('update', $position);
+
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'persona.position' => 'required|string|max:255',
+            'persona.work_experience' => 'required|string',
+            'persona.education' => 'required|string',
+            'persona.seniority' => 'required|string|max:255',
+            'persona.nationality' => 'nullable|string|max:255',
+            'persona.languages_spoken' => 'required|array',
+            'persona.languages_spoken.*' => 'string|max:255',
+            'persona.additional_info' => 'nullable|string',
+        ]);
+
+        DB::beginTransaction();
+
+        try {
+            $position->update([
+                'title' => $validated['title'],
+                'description' => $validated['description'],
+            ]);
+
+            $position->persona->update([
+                'position' => $validated['persona']['position'],
+                'work_experience' => $validated['persona']['work_experience'],
+                'education' => $validated['persona']['education'],
+                'seniority' => $validated['persona']['seniority'],
+                'nationality' => $validated['persona']['nationality'],
+                'languages_spoken' => $validated['persona']['languages_spoken'],
+                'additional_info' => $validated['persona']['additional_info'],
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw $e;
+        }
+
+        return redirect()->back()->with('message', 'Position updated successfully.');
+    }
+
+    public function settings(Position $position)
+    {
+        $this->authorize('view', $position);
+
+        $position->load(['persona']);
+
+        return Inertia::render('Positions/Settings', [
             'position' => $position
+        ]);
+    }
+
+    public function candidates(Request $request, Position $position)
+    {
+        $this->authorize('view', $position);
+
+        $query = $position->candidates()
+            ->with('aiRating')
+            ->where('status', 'done')
+            ->when($request->search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->when($request->state, function ($query, $state) {
+                $query->where('state', $state);
+            });
+
+        $allCandidates = $query->orderBy('created_at', 'desc')->get();
+
+        // Transform and group candidates by state value
+        $groupedCandidates = $allCandidates->groupBy(function ($candidate) {
+            return $candidate->state->name;
+        })->map(function ($candidates) {
+            return $candidates->map(fn($candidate) => [
+                'id' => $candidate->id,
+                'name' => $candidate->name,
+                'email' => $candidate->email,
+                'state' => $candidate->state,
+                'status' => $candidate->status,
+                'created_at' => $candidate->created_at,
+                'ai_rating' => $candidate->aiRating,
+                'slug' => $candidate->slug,
+            ]);
+        });
+
+
+        // Ensure all states exist in the response, even if empty
+        $candidatesByState = [
+            'SHORT_LIST' => $groupedCandidates->get('SHORT_LIST', collect()),
+            'MAYBE' => $groupedCandidates->get('MAYBE', collect()),
+            'REJECTED' => $groupedCandidates->get('REJECTED', collect()),
+        ];
+
+
+        return Inertia::render('Positions/Candidates', [
+            'position' => $position,
+            'candidatesByState' => $candidatesByState,
+            'filters' => [
+                'search' => $request->search,
+                'state' => $request->state,
+            ],
         ]);
     }
 
